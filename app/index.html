@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Call Copilot — Scale Systems</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">▲</span>
+    <div>
+      <h1>Call Copilot</h1>
+      <p class="brand-sub">Real-time sales-call assistant · Scale Systems</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <span id="mode-badge" class="mode-badge mode-offline">Keyword mode</span>
+    <button id="btn-settings" class="btn btn-ghost" title="Settings">⚙ Settings</button>
+    <button id="btn-newcall" class="btn btn-ghost" title="Start a fresh call">↻ New call</button>
+  </div>
+</header>
+
+<!-- Funnel stage strip -->
+<nav class="stage-strip" id="stage-strip" aria-label="Funnel stage"></nav>
+
+<main class="layout">
+
+  <!-- LEFT: input + call log -->
+  <section class="panel panel-left">
+    <h2 class="panel-title">Call Log</h2>
+    <div class="input-zone">
+      <textarea id="input" rows="3"
+        placeholder="Type what the prospect just said (or paste it) and press Enter…"></textarea>
+      <div class="input-row">
+        <button id="btn-analyze" class="btn btn-primary">Analyze ⏎</button>
+        <button id="btn-export" class="btn btn-ghost btn-sm" title="Download the call log">↓ Export log</button>
+      </div>
+      <p class="hint">Enter = analyze · Shift+Enter = new line</p>
+    </div>
+    <div id="log" class="log" aria-live="polite"></div>
+  </section>
+
+  <!-- RIGHT: copilot guidance -->
+  <section class="panel panel-right">
+    <h2 class="panel-title">Copilot says…</h2>
+    <div id="copilot" class="copilot">
+      <div class="empty-state">
+        <p class="empty-big">Ready.</p>
+        <p>Type what the prospect just said on the left. The copilot will tell you
+           what to say back, flag what to probe, and keep you on the funnel.</p>
+      </div>
+    </div>
+
+    <div class="stage-ref" id="stage-ref">
+      <!-- current funnel stage reference, filled by JS -->
+    </div>
+  </section>
+
+</main>
+
+<!-- Settings modal -->
+<div id="settings-modal" class="modal hidden">
+  <div class="modal-card">
+    <h3>Settings</h3>
+    <label class="field">
+      <span>Smart mode — Anthropic API key (optional)</span>
+      <input type="password" id="api-key" placeholder="sk-ant-… (stored only in this browser)" />
+    </label>
+    <p class="field-note">
+      With a key, the copilot also asks Claude (Haiku, low-latency) to read the call live —
+      it catches objections &amp; flags phrased in ways the keyword engine misses. Leave blank
+      to run 100% offline on the built-in keyword engine. Your key is stored only in this
+      browser's localStorage and sent only to Anthropic.
+    </p>
+    <label class="field field-inline">
+      <input type="checkbox" id="smart-toggle" />
+      <span>Use smart mode when a key is set</span>
+    </label>
+    <div class="modal-actions">
+      <button id="btn-save-settings" class="btn btn-primary">Save</button>
+      <button id="btn-close-settings" class="btn btn-ghost">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="data/data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

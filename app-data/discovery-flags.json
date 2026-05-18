@@ -1,0 +1,198 @@
+{
+  "version": "1.0",
+  "description": "Discovery flags for the Call Copilot. During discovery, when the prospect says something that should be dug into, the app surfaces the flag + the exact probe question. Built from Cole Gordon's discovery methodology (the 7 beliefs: pain, doubt, cost, desire, money, support, trust).",
+  "flags": [
+    {
+      "id": "vague-answer",
+      "signal": "Vague or surface-level answer — they haven't really told you anything yet",
+      "belief": "pain",
+      "triggers": ["kind of", "sort of", "you know", "i guess", "things could be better", "a few things", "stuff like that", "here and there", "it's complicated", "hard to say", "a bit of everything"],
+      "probe": "Tell me more — when you said [that], what do you mean exactly? How do you mean exactly?",
+      "note": "Don't move on. Paint the full portrait — repeat their last 3 words back as a question to get them to expand."
+    },
+    {
+      "id": "emotional-word",
+      "signal": "They used an emotional word — there's real pain here, go deeper",
+      "belief": "pain",
+      "triggers": ["stressed", "stressful", "frustrated", "frustrating", "overwhelmed", "exhausted", "burnt out", "burned out", "worried", "anxious", "fed up", "sick of it", "drained", "miserable", "scared", "embarrassed", "ashamed"],
+      "probe": "Tell me more about that. Has that put you in a tough position? ... In what way though? How's that showing up for you?",
+      "note": "Emotional words are gold — chase them. Get to the real, personal cost, not the surface."
+    },
+    {
+      "id": "names-a-number",
+      "signal": "They named a specific goal/number — find out why THAT number",
+      "belief": "desire",
+      "triggers": ["i want to get to", "i want to hit", "my goal is", "k a month", "k per month", "a month", "a year", "per year", "million", "figures", "i'd like to make"],
+      "probe": "You seem like you've thought of that number before — can I ask, why that number? Why is that important to you? When do you want to hit it by?",
+      "note": "A number with no 'why' behind it is shallow. Anchor it."
+    },
+    {
+      "id": "mentions-spouse",
+      "signal": "They mentioned a spouse/partner — FLAG support; qualify it now, don't handle it",
+      "belief": "support",
+      "triggers": ["my wife", "my husband", "my spouse", "my partner", "my girlfriend", "my boyfriend", "my fiance", "we decided", "talk to my wife", "my better half"],
+      "probe": "Is your partner supportive of you fixing this? Are you guys on the same page about it? Does your partner know you're on this call?",
+      "note": "Gather it now, naturally — do NOT handle a spouse objection in discovery. You'll need this later."
+    },
+    {
+      "id": "says-we",
+      "signal": "They said 'we' / 'us' / 'the team' — there may be other decision-makers",
+      "belief": "support",
+      "triggers": ["we decided", "we want to", "we're looking", "we need to", "we both", "the two of us", "our team", "my business partner", "the partners", "my co-founder", "my co founder", "run it by the"],
+      "probe": "When you say 'we' — who else is involved in a decision like this? Who would need to be comfortable with it if we decided it's the right move?",
+      "note": "Surface every decision-maker early. A hidden one kills the close."
+    },
+    {
+      "id": "past-attempt",
+      "signal": "They've tried something before — run solution questions, set up the pitch",
+      "belief": "trust",
+      "triggers": ["i tried", "i've tried", "we tried", "i hired", "i bought", "i did a program", "i did a course", "worked with", "used an agency", "had a coach", "in the past i", "before i"],
+      "probe": "What did you like or dislike about it? What was missing? What was the difference between what you expected and what actually happened?",
+      "note": "This is your ammo. The pitch must explain why that failed and why this is different."
+    },
+    {
+      "id": "surface-goal-no-why",
+      "signal": "They gave a goal but not the real reason behind it",
+      "belief": "desire",
+      "triggers": ["i want to grow", "i want more", "i want to scale", "want to make more", "want to be bigger", "the goal is to", "i'd love to"],
+      "probe": "Why is that important to you? Why now though? And seeing as you're the founder — why is that important to you personally?",
+      "note": "Use permission-reason-why for the deep personal reason: 'Can I ask a personal question? The reason I'm asking is...'"
+    },
+    {
+      "id": "stuck-long-time",
+      "signal": "They've been stuck a long time — find the moment of decision",
+      "belief": "cost",
+      "triggers": ["for years", "a few years", "3 years", "5 years", "10 years", "a long time", "forever", "as long as i can remember", "always been", "still haven't", "keep trying"],
+      "probe": "Take me back to the day you decided this had to change — the day you drew the line in the sand. What actually happened? What was going on that day?",
+      "note": "The moment of decision resurfaces the emotions of change. This is the highest-leverage discovery question."
+    },
+    {
+      "id": "no-pain",
+      "signal": "They're downplaying — no real pain surfaced yet",
+      "belief": "pain",
+      "triggers": ["things are okay", "things are fine", "things are good", "no real problems", "nothing major", "just looking", "just curious", "just exploring", "no real challenges", "can't complain", "pretty good actually"],
+      "probe": "In a perfect world, where would [their metric] be? ... How does that compare to where you're at right now? ... So what do you feel like you need to get there?",
+      "note": "No problem, no sale. If there's no pain, find the unfulfilled-desire gap before going further."
+    },
+    {
+      "id": "story-not-numbers",
+      "signal": "They're telling a story instead of giving you numbers",
+      "belief": "pain",
+      "triggers": ["so basically", "what happened was", "let me explain", "it's a long story", "so the thing is", "honestly it's been"],
+      "probe": "Got it — let's get specific. Last week exactly, how many [leads/calls/sales]? What about the week before? What was your exact revenue last month?",
+      "note": "People tell stories about their problems; the truth is in the numbers. Chunk down."
+    },
+    {
+      "id": "mentions-competitor",
+      "signal": "They mentioned a competitor or other option — FLAG, note it, don't chase now",
+      "belief": "trust",
+      "triggers": ["another company", "another option", "looking at other", "talking to", "i saw another", "comparing", "other quotes", "shopping around"],
+      "probe": "(Note it — don't handle it in discovery.) Later, at the close: 'Price aside, which are you more certain can actually get you there?'",
+      "note": "Don't reframe in discovery. Flush it out, save it for the transition/objections."
+    },
+    {
+      "id": "asks-price-early",
+      "signal": "They're pushing to price before discovery is done",
+      "belief": "none",
+      "triggers": ["what's the price", "how much is it", "how much does it cost", "what's the investment", "just tell me the price", "what are we talking", "ballpark"],
+      "probe": "Everything we do is customized — so the most time-efficient thing is to get a little context first, then I can share the parts relevant to you. Is that fair?",
+      "note": "Don't drop the price early. Redirect to discovery. Pricing before value = lost deal."
+    },
+    {
+      "id": "logistics-question",
+      "signal": "They asked a logistics question — there may be a hidden objection under it",
+      "belief": "trust",
+      "triggers": ["is it group", "is this group coaching", "how long is the program", "how does it work", "do i get one on one", "is it one on one", "how often do we meet", "what's included"],
+      "probe": "There are elements of [X] — but just so I can answer your question correctly, is there a specific reason you're asking?",
+      "note": "Never answer a logistics question flat. The reason behind it is usually the real objection."
+    },
+    {
+      "id": "deadline-pressure",
+      "signal": "They mentioned a deadline or external pressure — that's cost/urgency",
+      "belief": "cost",
+      "triggers": ["by the end of the year", "by next year", "my wife said", "my husband said", "running out of", "if i don't", "or else", "have to figure this out", "can't keep going like this"],
+      "probe": "What happens if nothing changes? If we roll this forward 90 days and you're still dealing with the same thing — what gets harder, what stays off the table?",
+      "note": "This is the cost-of-inaction lever. Dig the consequence, then ladder deeper."
+    },
+    {
+      "id": "uncertain-tonality",
+      "signal": "They're hedging — uncertainty you'll need to clear at the temp check",
+      "belief": "trust",
+      "triggers": ["i think so", "i guess so", "i'm not sure", "maybe", "we'll see", "possibly", "i suppose", "i hope so"],
+      "probe": "(Note the hedge.) At the temp check, push for certainty: 'Do you think this is 100% going to work? Do you 100% want to do this?'",
+      "note": "A hedge now becomes an objection at the close. Flag it."
+    },
+    {
+      "id": "job-they-want-to-leave",
+      "signal": "They mentioned a job/situation they want out of — run the two-truths + moment of decision",
+      "belief": "cost",
+      "triggers": ["my nine to five", "my 9 to 5", "my corporate job", "my day job", "want to quit", "leave my job", "my current job", "i work full time", "escape the"],
+      "probe": "What do you do for work? Do you like it? ... What's the worst part about that? ... After all this time, what shifted — why now?",
+      "note": "Two-truths question: whatever they answer, you tee it up. Find the moment of decision."
+    },
+    {
+      "id": "fear-risk-word",
+      "signal": "They voiced a fear or risk — note it; it becomes the nerves objection later",
+      "belief": "trust",
+      "triggers": ["nervous", "scared", "risky", "afraid", "what if it doesn't work", "worried it won't", "big decision", "big leap", "burned before", "been burned"],
+      "probe": "(Note it.) At the close, if it resurfaces: name it — 'it sounds like a bit of nerves — and nerves are good, they mean there's weight to this.'",
+      "note": "Don't handle fear in discovery. Flag it for the committing phase."
+    },
+    {
+      "id": "mentions-family-lifestyle",
+      "signal": "They mentioned kids/family/lifestyle — tie the goal to the personal payoff",
+      "belief": "desire",
+      "triggers": ["my kids", "my family", "my children", "more time", "freedom", "lifestyle", "be present", "my daughter", "my son", "retire my", "for my family"],
+      "probe": "Can I ask you a personal question? The reason I'm asking is we want this to work around your lifestyle goals — so what are the personal goals you want your business to allow you to achieve?",
+      "note": "The strongest sales tie the monetary goal to a non-monetary, personal one."
+    },
+    {
+      "id": "contradiction",
+      "signal": "They contradicted something they said earlier — flag it for the loop",
+      "belief": "none",
+      "triggers": ["now that i think about it", "what i meant was", "on second thought", "well actually", "come to think of it", "i take that back"],
+      "probe": "(Note the contradiction.) Later: 'Earlier you said [X], but now you're saying [Y] — what's really going on?'",
+      "note": "Their own words are the most powerful tool to handle a later objection."
+    },
+    {
+      "id": "rambling",
+      "signal": "Long rambling answer — cut in, redirect, get specific",
+      "belief": "none",
+      "triggers": ["and then", "anyway", "i don't know if that makes sense", "long story short", "to make a long story"],
+      "probe": "Got it — let me make sure I understand. So the main thing is [their core point], right? Let's dig into that specifically.",
+      "note": "Don't let discovery sprawl. Stay in the lead, get to the gap."
+    },
+    {
+      "id": "busy-no-time",
+      "signal": "They mentioned being busy / no time — probe priorities now, it'll become an objection later",
+      "belief": "cost",
+      "triggers": ["i'm so busy", "i'm really busy", "no time", "don't have time", "swamped", "stretched thin", "too much on my plate", "wearing all the hats"],
+      "probe": "If [their constraint] is the #1 thing holding the business back — why wouldn't fixing it be your #1 priority? If not now, when?",
+      "note": "Pre-empt the 'no time to implement' objection by anchoring priorities here."
+    },
+    {
+      "id": "misdiagnosis",
+      "signal": "They've named a problem — but make sure it's the REAL constraint",
+      "belief": "doubt",
+      "triggers": ["the problem is", "my biggest issue is", "what i need is", "i just need more", "if i could just"],
+      "probe": "What do you think has been the biggest thing keeping you from fixing that on your own? What's in the way?",
+      "note": "Prospects often misdiagnose. Probe the real constraint before agreeing with their diagnosis."
+    },
+    {
+      "id": "doubt-themselves",
+      "signal": "They expressed doubt (or overconfidence) about doing it alone — the doubt belief",
+      "belief": "doubt",
+      "triggers": ["i could probably do it myself", "i should be able to", "i just haven't", "i know what to do i just", "i could figure it out"],
+      "probe": "If you could've done it on your own, you probably would have by now — so what's actually been in the way? What's been the hardest part?",
+      "note": "Address why a proven path beats DIY: less time, energy, and risk to the result."
+    },
+    {
+      "id": "real-reason-because",
+      "signal": "They gave you a real reason — anchor it, then go one level deeper",
+      "belief": "desire",
+      "triggers": ["the real reason", "if i'm being honest", "to be honest with you", "what really gets me", "deep down", "what really bothers me", "if i'm honest"],
+      "probe": "I guess that makes sense — is there any other reason this is important to you now though?",
+      "note": "The 'any other reason' question often surfaces the truest, most emotional driver."
+    }
+  ]
+}

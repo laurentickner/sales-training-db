@@ -1,0 +1,90 @@
+{
+  "version": "1.0",
+  "description": "The 6-stage sales call funnel for the Call Copilot stage tracker. Each stage gives the rep the goal, what to listen for, the verbatim lines to say, and when to advance. Sourced from MASTER-SALES-SCRIPT.md and sales-process/.",
+  "stages": [
+    {
+      "id": "introduction",
+      "name": "1. Introduction",
+      "goal": "Rapport + frame the call. Prove you're a normal human, qualify the buying situation, set the agenda.",
+      "listen_for": "Are they present and able to focus? Driving / distracted = reposition.",
+      "say": [
+        "Hey, is this [name]? Hey [name], it's [you] here — what's up?",
+        "Awesome — I just got done with a workout, super excited to chat. You been having a good week?",
+        "Great — I know we've got limited time, so are you ready to jump in? You got a clean sheet of paper, something to take notes with?",
+        "FRAME: What I've found works best on these calls is first diving into the specifics of your situation — what's working, what's not, and the biggest challenges keeping you from moving forward. Once we get clarity, if we can help I'll walk you through it; if not, I'll point you in the right direction. Sound fair?"
+      ],
+      "advance_when": "They've agreed to the frame and you've asked the first discovery question."
+    },
+    {
+      "id": "discovery",
+      "name": "2. Discovery",
+      "goal": "Understand IF and HOW you can help. Cover the 7 beliefs (pain, doubt, cost, desire, money, support, trust). Eliminate objections before the close.",
+      "listen_for": "Discovery flags — vague answers, emotional words, numbers, spouse/team mentions, past attempts, hedging. The copilot will surface probes.",
+      "say": [
+        "What's your biggest challenge right now? Or what's not working at the level it truly could be?",
+        "Tell me more — when you said [X], what do you mean exactly?",
+        "Take me back to the moment you decided this had to change — what actually happened?",
+        "Begin with the end in mind — ultimately, what's the goal? What's your monetary goal? Why that number?",
+        "Before I tell you what I think the fix is, I want the real numbers so my read is accurate, not a guess.",
+        "If we roll this forward 90 days and nothing changes — what gets harder, what stays off the table?",
+        "Can I ask a personal question? The reason I'm asking is we want this to work around your lifestyle goals — what are the personal goals you want your business to allow you to achieve?",
+        "What else have you tried to fix this? What did you like or dislike about it?",
+        "Are you married? Is your partner supportive of the change? Do they know you're on this call?"
+      ],
+      "advance_when": "You're 100% clear on their biggest challenge AND their real desire — business and personal. Not surface-level."
+    },
+    {
+      "id": "transition",
+      "name": "3. Transition",
+      "goal": "Move from questions to pitch with zero sales resistance — get the prospect to ask you to pitch them.",
+      "listen_for": "Confirmation they feel understood.",
+      "say": [
+        "I don't think I have any more questions — is there anything else you feel like we haven't covered that I need to know?",
+        "Based on what you've told me, we can definitely help.",
+        "HAMBURGER TRANSITION: So where do you think we should go from here? I can walk you through exactly how we'd get you from [current] to [goal] if you want — but you tell me where you want to go. (Equal or downward inflection — never upward.)"
+      ],
+      "advance_when": "They ask you to walk them through it."
+    },
+    {
+      "id": "pitch",
+      "name": "4. Pitch",
+      "goal": "Sell the METHOD, not the deliverables. High-level promise -> bridge (3-4 pillars) -> delivery. Each pillar is the simultaneous explanation of why their past attempts failed and why this is different.",
+      "listen_for": "Comprehension. If they say 'yeah' but clearly don't get it — stop and re-explain.",
+      "say": [
+        "Do you have a pen and pad? Write out one through four. (Pause until ready.)",
+        "Everything we do is customized — for you specifically it's gonna be [3-4] things, to take you from [current] to [desired] while [removing the pain].",
+        "PILLAR: When it comes to [outcome], here's the problem — most people do [wrong behavior], so they end up with [problem], which means [consequence]. So instead, what we do is [your method], which lets you [benefit], and ultimately [benefit of the benefit]. Does that make sense? Cool — what are your thoughts on that?",
+        "DELIVERY (~60 sec, last): here's how we work together, account manager, calls, etc. — then end on benefits."
+      ],
+      "advance_when": "You've covered all pillars + delivery, with a tie-down after each."
+    },
+    {
+      "id": "committing",
+      "name": "5. Committing Phase",
+      "goal": "Get them 100% bought in on the thesis BEFORE money is on the table. Temp check -> onboarding -> price drop.",
+      "listen_for": "Tonality on the temp check. 'Dude, absolutely' = yes. 'I think so' = no.",
+      "say": [
+        "What questions do you have about those [4] things specifically? (Answer in 1-2 sentences. Check for hidden objections: 'is there a specific reason you're asking?')",
+        "How do you feel about the process specifically? Do you feel like that's what you need to get to [outcome]?",
+        "SCALE: What's really important to us is alignment — our team is all in. On a scale of 1-10, where do you fall exactly? ... What's keeping you from a 9 or 10?",
+        "ONBOARDING (before price): You'll process the investment with me, then we set a baseline — homework, then your implementation pathway call mapping the next 30-60 days.",
+        "And the investment is just [X]. (Soft, downward inflection. Then go quiet — not a weird standoff.)",
+        "CLOSE: How do you feel? ... Cool, you sure? ... You ready to get started on some homework? ... What's your billing address?"
+      ],
+      "advance_when": "Price is dropped. Now expect 1-2 objections — that's normal."
+    },
+    {
+      "id": "objections",
+      "name": "6. Objections",
+      "goal": "Diffuse -> isolate -> handle uncertainty before logistics -> re-tie-down -> close. Loop until they're 100% in.",
+      "listen_for": "Which objection. The copilot detects it and surfaces the rebuttal. Handle UNCERTAINTY before money/support/timing.",
+      "say": [
+        "No problem. (Diffuse — always.)",
+        "Just so I can stay organized — when you say [objection], are you more in a 'should I do this' place where you're not 100% certain, or a 'how can I do this' place where it's just logistics?",
+        "[Objection] aside — is there anything else keeping you from being less than 100% certain this is the right thing and now is the right time? ... So you're 100% in?",
+        "(Then handle the specific objection — the copilot shows the verbatim rebuttal. Trade every concession for a decision: 'If I'm willing to do that for you, are you willing to move forward right now?')"
+      ],
+      "advance_when": "They're 100% in and you've closed — then button down the sale (restate next steps, reassure, mitigate buyer's remorse)."
+    }
+  ]
+}
