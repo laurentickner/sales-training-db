@@ -1,255 +1,212 @@
 # The Objection Playbook
 
-The complete objection-handling reference, consolidated for live use on a call. This is
-also the **knowledge base the call-assistant app reads from.**
+The complete objection-handling reference, consolidated from the full Cole Gordon corpus
+(134 channel videos + 19 hand-processed sources). **26 objections.**
 
-Detailed sourcing for every line is in the `objections/` folder; this is the fast-lookup
-version.
+This is the human-readable reference. The machine-readable twin — with full verbatim
+response steps and 286 trigger phrases — is `app-data/objection-responses.json` (the
+knowledge base the call-assistant app reads from). Raw mining detail: `app-data/_mining/`.
 
 ---
 
-## How to use it (the universal handle)
+## The universal handle (run this on EVERY objection first)
 
-Every objection runs through the same 4 steps before you touch the specific rebuttal:
+1. **DIFFUSE** — "No problem." (Always. Pause after it.)
+2. **ISOLATE** — "Just so I can stay organized — when you say [objection], are you more in a
+   'should I do this' place where you're not 100% certain, or a 'how can I do this' place
+   where you're 100% certain and it's just logistics?"
+3. **TEMP CHECK** — "[Objection] aside, do you feel like this is 100% what you need to get
+   to [outcome], and that it's 100% going to work?"
+4. **SCALE (if they waffle)** — "On a scale of 1-10, where do you fall exactly? ... What's
+   keeping you from a 9 or 10?"
+5. **DOUBLE TIE-DOWN** — "So [objection] aside — anything else keeping you from being less
+   than 100% certain? ... So you're 100% in?"
+6. **HANDLE** the specific objection, then re-tie-down and close.
 
-1. **DIFFUSE** — "No problem." (Always. It drops the pressure.)
-2. **ISOLATE** — "Just so I can stay organised, when you say [objection], are you more in a
-   'should I do this' place where you're not even 100% certain this is what you want, or a
-   'how can I do this' place where you're 100% certain and it's just logistics?"
-3. **DOUBLE TIE-DOWN** — "[That] aside, is there anything else keeping you from being less
-   than 100% certain this is the right thing and now's the right time? … So you're 100% in?"
-4. **HANDLE** the specific objection (below), then re-tie-down and close.
+**Iron rule:** handle **UNCERTAINTY before any LOGISTIC** (money / support / timing). A
+logistic handled while they're secretly unsure is a smoke screen — you'll lose the deal.
 
-**The iron rule:** handle **UNCERTAINTY before any LOGISTIC.** Money / partner / timing are
-logistics — never handle them while the prospect is secretly unsure it'll work, or you're
-chasing a smoke screen.
-
-| Bucket | What it is | Handle |
-|--------|-----------|--------|
-| **Uncertainty** | Not 100% sure it's right / now is right (money aside) | FIRST — it's the real objection |
-| **Support** | Must check with someone else | A logistic — only after uncertainty is clear |
-| **Financial** | Literally can't make it work right now | A logistic — only after uncertainty is clear |
+**Concession rule:** never give better terms for free. Trade every concession for a
+decision: *"If I'm willing to do that for you, are you willing to move forward right now?"*
 
 ---
 
 ## Quick-reference index
 
-| Prospect says… | Go to |
-|----------------|-------|
-| "It's too expensive / I can't afford it / that's a lot" | §1 Price |
-| "I want to think about it / sleep on it / send a proposal" | §2 Think about it |
-| "I need to talk to my spouse / partner / team" | §3 Support |
-| "I've been burned before / it didn't work last time" | §4 Been burned |
-| "Your competitor is cheaper / I'm shopping around" | §5 Competitor |
-| "I want to start later / after the holidays" | §6 Timing |
-| They're 100% in but freeze (nerves / fear) | §7 Nerves |
-| "We need to discuss amongst ourselves" (multi-partner) | §8 Multi-partner |
-| "I need to see it first" | §9 See it |
-| "I never make same-day decisions" | §10 Same-day |
-| "Why should I trust you / too good to be true" | §11 Trust |
-| "Do you have a payment plan?" | §12 Payment plan |
+**Financial:** §1 too expensive · §2 payment plan · §3 move money around · §4 discount request
+**Uncertainty:** §5 think about it · §6 do research · §7 talk to your clients · §8 been
+burned · §9 competitor cheaper · §10 timing/start later · §11 no time to implement ·
+§12 nerves/fear · §13 what if it doesn't work · §14 is there a guarantee · §15 too risky ·
+§16 do it myself · §17 want to see it · §18 same-day decisions · §19 trust/why you ·
+§20 make money first · §21 not allowed to buy coaching · §22 waffling/smoke screen
+**Support:** §23 spouse/partner · §24 multiple partners · §25 run it by my team
+**Process:** §26 prospect taking control / "just get to the price"
 
 ---
 
-## §1 — Price / "It's too expensive" *(financial — logistic)*
+## FINANCIAL
 
-**What they say:** too expensive · can't afford it · that's a lot of money · more than I
-thought · out of budget · pricey · don't have the money.
+### §1 — "It's too expensive / I can't afford it"
+Isolate value-vs-budget: *"When you say you can't afford it, do you really want it and just
+don't have the budget — or do you not think it's worth the value?"* → "Money aside, you're
+100% in?" → "Most clients pay up front, but for clients who really want it and it's just
+the money, we break it up — open to an honest financial conversation?" → **OPEN WALLET**
+(30-day cash → cash on hand exactly → credit) → "And you really want this, right?" → *"I
+don't think the best thing is to drain your savings, but I also don't think the best thing
+is to do nothing — so what I'd be willing to do is let you in for [half/third] down. If
+I'm willing to do that, are you willing to move forward right now?"*
+Reframes: *"Expensive compared to what? 5K for dinner is expensive; 5K for a car is
+cheap."* / *"Do you want 10K to always be a lot to you?"*
 
-**Response:**
-1. "No problem. When you say you can't afford it, are you more in a 'should I do this' place
-   where you're not 100% certain, or a 'how can I do this' place where you're 100% certain
-   and it's just making it work financially?"
-2. "Gotcha. So money aside, you're 100% in?"
-3. "Most clients do the investment up front, but for certain clients where they really want
-   it and it's just the money, we break it up. Are you open to an honest conversation
-   financially so we can see if there's a way?"
-4. **Open wallet:** "In the next 30 days, how much is coming in? … And what's your cash on
-   hand exactly right now? (Not what you can spend — what you have access to.) … And credit
-   available?"
-5. "And you really want to do this, right?"
-6. "I don't think the best thing for you is to drain your savings. But I also don't think
-   the best thing is to do nothing. So what I'd be willing to do is [half / a third] down —
-   and if I'm willing to do that for you, are you willing to move forward right now?"
+### §2 — "Do you have a payment plan?"
+Never blurt "what about a two-pay?" Confirm "money aside, 100% in" → run the open wallet →
+find the biggest plan they can ethically do → **trade it:** "If I'm willing to do that,
+are you willing to move forward right now?" Going lower again → also ask for a case study.
 
-**Do NOT:** offer a payment plan as the rebuttal to uncertainty. Cheaper terms don't fix
-belief. Confirm "money aside, 100% in" FIRST.
+### §3 — "I just need to move money around"
+*"Walk me through it — where's it coming from, selling stocks, a 401k? And when's it done?
+You're 100% moving forward that day?"* → "Why don't you do half now, half when you're done
+— that way we knock out onboarding now." Gentleman's-agreement framing.
 
----
+### §4 — "Are you offering discounts?"
+**"No."** Nothing more needed. No fast-action discounts — they're a closing crutch and
+cheapen the offer. Payment terms (not discounts) are the only lever, used only after a
+true financial objection is isolated.
 
-## §2 — "I want to think about it" *(uncertainty — true objection)*
+## UNCERTAINTY
 
-**What they say:** think about it · sleep on it · send me the info / a proposal · get back
-to you · need time · do some research · mull it over.
+### §5 — "I want to think about it / send me the info"
+"No problem. Before we get into that — how do you actually feel? Money aside, do you feel
+like this is 100% what you need, and 100% going to work?" → waffle = NO, cut in: *"It
+doesn't sound 100% certain — what's really going on?"* → if genuine sleep-on-it: *"If we
+talk tomorrow and you feel the same way, that means we're 100% moving forward, yes?"*
 
-**Response:**
-1. "No problem. Before we get into that — how do you feel? Do you feel like this is 100%
-   what you need to get to [their goal]?"
-2. If they waffle: "Got it — but what I'm really trying to understand is, do you think this
-   is 100% going to work, and do you want to do this?" → that surfaces the REAL objection;
-   handle that.
-3. If it's a genuine sleep-on-it: "Totally fine, I'd sleep on it too. So just to clarify —
-   if we schedule a time tomorrow and you wake up feeling the exact same way, that means
-   we're 100% processing the payment and moving forward, yes?"
+### §6 — "I need to do research / due diligence"
+"What's keeping you from being 100% certain?" → "So you 100% think it'll work, you just
+want to confirm what I told you checks out — and as long as it does, you're good to go?"
+→ "I can speed that up — what do you want to see?" → if they can't name anything: *"I
+can't help feeling you're just not that into this — what's really going on?"*
 
-**Do NOT:** accept a vague "I'll get back to you" and book a loose follow-up. Desire fades —
-isolate it now or lock a 24-48h next step with a definitive tie-down.
+### §7 — "I need to talk to one of your clients"
+"Aside from that, do you feel like this is 100% what you need? So if a client validated
+everything I said, we'd be processing payment?" → "Our policy: 100+ people reach out
+monthly; it's not realistic to fill our clients' calendars with people still deciding —
+that's why we have 500+ case studies. What kind were you looking for?"
 
----
+### §8 — "I've been burned before / I tried something like this"
+"Totally get it — frustrating. Tell me what happened. ... What we've found is it's one of
+three things: the process didn't work, the service was bad, or both were fine and you
+didn't show up. Which was it?" → "So if the method's right and the service is the same,
+wouldn't it make sense you wouldn't get the same result? Do you really think this'll
+work?" → *"You learned 'don't work with a beginner' — don't learn the wrong lesson and
+make it 'this never works.'"*
 
-## §3 — "I need to talk to my spouse / partner / team" *(support — logistic)*
+### §9 — "Your competitor is cheaper / I'm shopping around"
+"What held you back from the other ones? ... It's really about who gets you there. Price
+aside — which are you more certain can actually get you there? ... You want to get to
+[Y] — whether it's 5K or 50K relative to that, who cares? Go with whoever's done it the
+most times." Don't trash the competitor — educate and sequence.
 
-**What they say:** talk to my wife/husband/spouse/partner · run it by · check with my
-business partner · ask my team.
+### §10 — "I want to start later / after the holidays"
+"Timing aside, you're 100% in? ... If we had this exact conversation on [date] you'd move
+forward? ... I've got an idea — I'll add 30 days onto your engagement so you start now,
+knock out onboarding, and hit the ground running on your start date. If I do that, are
+you willing to move forward right now?"
 
-**Response:**
-1. "No problem. For you personally — do you 100% want to do this?"
-2. "If it was solely your decision, we'd be processing the payment and you'd be 100% moving
-   forward?"
-3. "Is this something where you've made the decision and you're just going to let them
-   know — or do you genuinely need to decide together?"
-4. If collaboration → discovery: "What do you think they'll think? What will they say about
-   the price? What, if anything, would be their reason not to do this?"
-5. Middle-ground close: "Here's an easy solution — let's put down a refundable deposit now,
-   I'll onboard you, and we'll schedule a call with you, them and me so they see exactly
-   what you'd be investing in. If they hate it, we refund it. So if I was willing to do
-   that, would you be willing to move forward right now?"
+### §11 — "I don't have time to implement"
+*"The problem you're here to solve is [constraint]. Your bottleneck is time. But the
+reason you have no time IS [constraint] — so the very problem you're here to fix is what's
+stopping you from fixing it. You're in a self-perpetuating loop."* → "It's not a time
+problem, it's a priorities problem — isn't this your #1 priority? If not now, when?"
 
-**Do NOT:** chase the spouse objection before confirming the prospect themselves is 100%
-sold. If they're not sold, they can't sell anyone who wasn't on the call.
+### §12 — Nerves / fear / "it's a big decision"
+Release pressure: *"What's really going on?"* → name it: *"It seems like it's a little bit
+of nerves — is it? Good, nerves are good, they mean there's weight to this."* → identity:
+*"The real question is who do you want to be — feel the fear and do it anyway, or let
+nervousness decide?"* → head/heart tug-of-war; monkey brain ("knew about Bitcoin in 2010
+and did nothing").
 
----
+### §13 — "What if it doesn't work for me?"
+"So despite the case studies and the success rate, you're worried you'll be the exception?
+Honest question: are you 100% going to do the work? And raise your hand when you hit a
+snag? ... Then with a 90%+ success rate, why wouldn't this work for you?" Camping-gear
+analogy: *"Who fills the canteen? You."*
 
-## §4 — "I've been burned before / it didn't work last time" *(uncertainty)*
+### §14 — "Is there a guarantee?"
+"Sure — just curious, is there a specific reason you're asking?" (sniffs the hidden
+objection). "Guaranteeing a result would be illegal/unethical — what I CAN guarantee is
+every tool and resource you need, plus an impeccable track record. What matters is: will
+you do the work and raise your hand?"
 
-**What they say:** been burned · didn't work · tried before · bad experience · last company
-overpromised · wasted money.
+### §15 — "It's too risky / too good to be true"
+"Your goal puts you in the top 1%. Few people get there because of fear of risk. The 99%
+hit the glass wall and contract; the 1% feel the fear and break through. Which do you
+want to be?"
 
-**Response:**
-1. "Totally get it, that's super frustrating — a lot of times we're picking up the pieces
-   after someone overpromised and underdelivered."
-2. "Tell me what happened — what was the difference between what you thought would happen
-   and what was actually implemented?"
-3. "What we've found, doing this with thousands, is it comes down to one of three things:
-   the process they used just didn't work; or the strategy was good but the service wasn't;
-   or both were fine and you just didn't show up the way you should have. Which was it?"
-4. [They name it] → explain why your method is different → "So given the service quality is
-   the same, if the method is right, wouldn't it make sense you wouldn't get the same
-   result? So with that out of the way — do you really think this is going to work?"
+### §16 — "I'll just do it myself"
+Use their words: *"Earlier you said [they've been stuck] — now you say you'll do it alone.
+What's really going on?"* → "You probably have every capability — the question isn't can
+you, it's what's the fastest path that stacks everything in your favor?" Curse-of-
+knowledge reframe for experts/agency owners.
 
-**Do NOT:** argue them out of the feeling with a glib analogy. Diagnose what actually
-happened, then separate it from your offer.
+### §17 — "I need to see it first"
+"What exactly are you looking to see? ... Let me share my screen right now and walk you
+through the portal and community." (They just can't picture working with you — show them.)
 
----
+### §18 — "I never make same-day decisions"
+"Let's put down a refundable deposit, I'll onboard you, and if it's not in alignment I
+refund 100% — no-risk. If it's no-risk and you're a 10, what would hold you back? ... The
+way you've made decisions created the results you have now — to change them we change the
+pattern. You can only make an informed decision from the inside."
 
-## §5 — "Your competitor is cheaper / I'm shopping around" *(uncertainty)*
+### §19 — "Why should I trust you?"
+B2C: *"I'm texting you right now — that's my personal cell, text or call me any time,
+I've got your back."* B2B: *"[Big-name clients] trusted us — you think they make bad
+buying decisions?"*
 
-**What they say:** competitor · cheaper · other option · other quotes · shopping around ·
-someone else · yours is more.
+### §20 — "Let me make money first, then buy"
+"If you had the winning lottery ticket you'd have cashed it by now. If you had the tools
+to change [their situation] you'd have already done it — and we wouldn't be on this call."
 
-**Response:**
-1. "What held you back from going with the other ones, I'm curious?"
-2. "Price aside for a moment — out of the two options, which are you more certain can
-   actually get you there?"
-3. "Can I be real with you? You're doing [X], you want [Y]. Whether the investment is five
-   grand or fifty relative to that goal — who cares? The real question isn't 'are we more
-   than them,' it's who's most likely to get you there."
-4. "Have the other companies done the exact thing you want, and at what scale? There are
-   people who've done it a few times and very few who've done it hundreds of times. Go with
-   the team you're most sure can get you there."
+### §21 — "I'm not allowed to / not interested in a coaching program"
+"Based on what we covered, we can definitely help. You said you're not interested — but
+you told me [their pain/goal], and we've gotten [case studies] that result. If you're
+open I'll walk you through it — but only if you're seriously considering it."
 
-**Do NOT:** trash the competitor. Educate on the options instead — bulldozing makes you
-look like "just a closer."
+### §22 — Waffling / smoke screen / "I think so"
+Cut in playfully: *"'I think so' doesn't sound 100% certain — let's be honest, what's
+really going on?"* → *"There's probably something else going through your head — will you
+just open up? ... It feels like something's on your mind we haven't discussed."* → if
+still nothing, feed them the objection: *"It sounds like a bit of nerves — is it?"*
 
----
+## SUPPORT
 
-## §6 — "I want to start later / after the holidays" *(timing — logistic)*
+### §23 — "I need to talk to my spouse / partner"
+"For you personally, do you 100% want this? If it was solely your call, we'd be moving
+forward? ... Is this a respect thing where you've decided and you're just letting them
+know, or do you genuinely need their permission?" → discovery (what will they think / say
+about the price) → **two-conversations coaching** (the unsure guy vs. the committed guy —
+which convinces his wife?) → **middle-ground close:** refundable deposit + a call with the
+spouse so they see what you'd be investing in.
 
-**What they say:** start later · after the holidays · next quarter · next month · not right
-now · too busy · after my vacation.
+### §24 — "We need to discuss amongst ourselves" (3+ partners)
+Go person-by-person on the temp check ("Jim, out of 10? ... Mark? ... Alex, you're the
+only one not certain — two-to-three vote, we're good"). Can't close on the call → schedule
+a recap call with all decision-makers; lock the tie-down.
 
-**Response:**
-1. "Got it. So timing aside — you're 100% in?"
-2. "Just to be clear — if we're having this exact conversation on [date] and you feel the
-   same way, you're 100% moving forward?"
-3. "I've got an idea — are you open to it? I don't think the best thing is to wait and do
-   nothing, but I also don't think the best thing is to start when you can't fully commit.
-   So what I'd be willing to do is add 30 days onto your engagement — you start now, knock
-   out onboarding, and when your official start date comes we hit the ground running. So if
-   I was willing to do that, would you be willing to move forward right now?"
+### §25 — "I need to run it by my team / board"
+"If you believe this is the #1 constraint, your job as CEO is to set the priority and
+align everyone — not ask permission. You're asking your team for buy-in, not permission."
+If it's genuinely bandwidth, get the implementer on a call.
 
----
+## PROCESS
 
-## §7 — Nerves / can't pull the trigger *(uncertainty — they're "100% in" but freeze)*
-
-**What they say:** nervous · scared · anxious · cold feet · can't pull the trigger · "I
-don't know" · hesitant.
-
-**Response:**
-1. Release pressure: "Can I ask you a personal question? There's probably something else
-   going through your head — will you just level with me, what's really going on?"
-2. Name it: "It just seems like it's a little bit of nerves. And nerves are good — that
-   means there's weight to this. Nothing great was ever built by someone who wasn't a
-   little nervous at first."
-3. Identity: "So the real question isn't the nerves — it's who do you want to be? The
-   person who feels the fear and does it anyway, or the one who lets nervousness make the
-   decision? Which is it?"
-4. Head vs heart: "Does it feel like your head and your heart are playing tug-of-war? Your
-   brain is trying to keep you safe — but your heart is what lit up when you told me what
-   [outcome] would mean. Which one will take you farther?"
-
----
-
-## §8 — "We need to discuss amongst ourselves" (3+ partners) *(support)*
-
-**Response:** Go person by person on the temp check — "Jim, where are you out of 10? …
-Mark? … Alex, looks like you're the only one not certain — two-to-three vote, we're good to
-go." Just close each person. If you can't close on the call: "So if you go collaborate and
-come back feeling the same way you feel right now — when we talk tomorrow, if you feel the
-same, we're 100% moving forward, yes or no?"
-
----
-
-## §9 — "I need to see it first" *(uncertainty)*
-
-**Response:** "That's totally fine — help me understand, when you say 'see it,' what
-exactly are you looking to see? … Yeah, no worries, let me share my screen right now and
-walk you through it so you can see exactly what it'd look like to be a client." *(They
-usually just can't picture working with you — so show them.)*
+### §26 — "Just get to the price" / prospect taking control
+"I'm prepared to share everything — but it's all customized, so let me get a little
+context first so I can show you the parts relevant to you. That's the most time-efficient
+way — cool?" Take responsibility if the call slipped; match their energy; stay in the
+lead.
 
 ---
 
-## §10 — "I never make same-day decisions" *(uncertainty)*
-
-**Response:** "Can I tell you what I think we should do? Let's put down a refundable deposit
-— I'll fully onboard you, and if what I said we'd deliver isn't in alignment with what you
-get, I'll refund you 100%. So it's a no-risk decision. … Help me understand — if it's
-no-risk and you're a 10 out of 10, what would hold you back? … The way you've made
-decisions in the past created the results you have now — the exact ones you're trying to
-change. To change them, we have to change the pattern."
-
----
-
-## §11 — "Why should I trust you / too good to be true" *(uncertainty)*
-
-**Response:** "[Name], totally hear you. Here's what I'm going to do — I'm sending you a
-text right now. Got it? That's my personal cell. Any time you're a client, if you need
-anything, text or call me. I've got your back, I'm not going to let you fail." *(B2B
-variant: "[Big-name clients] trusted us — do you think they don't make good buying
-decisions? You should trust this too.")*
-
----
-
-## §12 — "Do you have a payment plan?"
-
-Don't let the prospect set the terms. First confirm "money aside, you're 100% in." Then run
-the **open wallet** (30-day cash → cash on hand exactly → credit) to find the biggest plan
-they can comfortably and ethically do. Then **trade the concession for a decision:** "If
-I'm willing to do that for you, are you willing to move forward right now?" If you have to
-go lower again, ask for something back (a case study, a decision now).
-
----
-
-*This playbook = the app's knowledge base. Every section maps to a record in
-`app-data/objection-responses.json`. Next pass: mine the 134 channel transcripts in
-`transcripts/youtube/` for more variations and trigger phrases.*
+*Full verbatim response steps + all 286 trigger phrases: `app-data/objection-responses.json`.*
