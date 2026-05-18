@@ -1,9 +1,9 @@
 # Scale Systems Sales Script — v2
 
 The current script with all 6 gap-fixes from `SCRIPT-COMPARISON.md` dropped in, plus the
-**4 things that close every deal** from the $30M sales-calls video (Ravi Abuvala): all
-decision-makers on the call, an accurate numbers diagnostic, cost of inaction, and
-conservative upside math.
+closing principles from the $30M sales-calls video (Ravi Abuvala): an accurate numbers
+diagnostic, cost of inaction, and conservative upside math. (The 4th — all decision-makers
+present — is confirmed on the triage call, so it's not repeated here.)
 
 ⭐ = new or upgraded vs. the original script. Everything unmarked is kept as-is because it
 was already aligned with Cole's funnel.
@@ -32,13 +32,7 @@ was already aligned with Cole's funnel.
 >
 > And assuming you get all of that, what happens… next… in your world?
 
-⭐ **Decision-makers on the call** *($30M video, thing #1)*
-> Quick question before we go further, besides you, is there anyone else who'd need to be
-> comfortable with this if we decide it's the right move?
-
-- If it's solely them → note it, you'll tie this down later if a partner objection appears.
-- If there's a partner/spouse → either get them on the call now, or run discovery knowing
-  you'll need to arm this person as your champion (see Obstacle Busting + Objection Handling).
+*(Decision-makers are confirmed on the triage call, so there's no need to re-ask here.)*
 
 ---
 
@@ -303,7 +297,8 @@ same exact way, that means we're 100% moving forward, yes?"
 call, we'd be moving forward? … Is this you making the decision and just letting them know,
 or do you genuinely need to decide together?" → if collaboration: refundable deposit now +
 get the partner on a call with you so they see exactly what you'd be investing in.
-*(This is why you asked the decision-maker question in the intro.)*
+*(Decision-makers should already be confirmed from the triage call — if a new one surfaces
+here, that's a flag the triage missed it.)*
 
 **Competitor cheaper / nerves / "want to see it" / other:** full rebuttals in the
 `objections/` folder.
