@@ -9,11 +9,12 @@
       "listen_for": "Are they present and able to focus? Driving / distracted = reposition.",
       "say": [
         "Hey, is this [name]? Hey [name], it's [you] here — what's up?",
-        "Awesome — I just got done with a workout, super excited to chat. You been having a good week?",
+        "Awesome — I just got done with a workout, super excited to chat. You been having a good week? ... Oh — is that a good busy or a bad busy?",
+        "If they're distracted / driving: Oh okay, gotcha — well, is now still a good time to connect? We can find a better slot if not.",
         "Great — I know we've got limited time, so are you ready to jump in? You got a clean sheet of paper, something to take notes with?",
-        "FRAME: What I've found works best on these calls is first diving into the specifics of your situation — what's working, what's not, and the biggest challenges keeping you from moving forward. Once we get clarity, if we can help I'll walk you through it; if not, I'll point you in the right direction. Sound fair?"
+        "FRAME: What I've found works best on these calls is first diving into the specifics of your situation — what's working, what's not, and the biggest challenges keeping you from moving forward. Once we get clarity, if we can help I'll walk you through it; if not, I'll refer you to somebody I know or just give you some homework to work on in the meantime. Sound fair?"
       ],
-      "advance_when": "They've agreed to the frame and you've asked the first discovery question."
+      "advance_when": "They have a clean sheet of paper / can focus AND said yes to the frame ('Sound fair?')."
     },
     {
       "id": "discovery",
@@ -22,14 +23,17 @@
       "listen_for": "Discovery flags — vague answers, emotional words, numbers, spouse/team mentions, past attempts, hedging. The copilot will surface probes.",
       "say": [
         "What's your biggest challenge right now? Or what's not working at the level it truly could be?",
-        "Tell me more — when you said [X], what do you mean exactly?",
-        "Take me back to the moment you decided this had to change — what actually happened?",
-        "Begin with the end in mind — ultimately, what's the goal? What's your monetary goal? Why that number?",
-        "Before I tell you what I think the fix is, I want the real numbers so my read is accurate, not a guess.",
-        "If we roll this forward 90 days and nothing changes — what gets harder, what stays off the table?",
+        "Tell me more — when you said [X], what do you mean exactly? Why do you say that though?",
+        "What do you do for work full-time? Do you like it? ... What's the worst part about that? (Two-truths setup — leads into the moment of decision.)",
+        "Take me back to the last day you were at work and had that sudden realization that enough is enough — I'm going to draw the line in the sand, step across it, burn the boats. Take me back to that day — what happened?",
+        "CHUNK DOWN TO NUMBERS: Last week specifically, how many [leads / sales calls] did you generate? What about the week before? Out of those, how many fit the exact ideal client you want? ... Just for clarity — what was your exact revenue last month? What about the month before? (People tell stories about their problems; the truth is in the numbers.)",
+        "Assumption-correction: So you're making [guess] a month right now then, correct? (Make an assumption so they correct you with the truth.)",
+        "Begin with the end in mind — ultimately, what's the goal? What's your monetary goal? Why that number? And how much would you have to make just to replace the income you're earning full-time?",
+        "Can I ask another personal question — and I really hate to ask this — but what's your plan if nothing changes? What if the last five years are like the next five years?",
+        "I guess that makes sense — is there any other reason this is important to you now though?",
         "Can I ask a personal question? The reason I'm asking is we want this to work around your lifestyle goals — what are the personal goals you want your business to allow you to achieve?",
-        "What else have you tried to fix this? What did you like or dislike about it?",
-        "Are you married? Is your partner supportive of the change? Do they know you're on this call?"
+        "What else have you tried to fix this? What did you like or dislike about it? What we've found is when people don't get the result, it's one of two things — [blank] or [blank]. Which do you think it was?",
+        "Are you married? Is your partner supportive of the change? Do they know you're on this call — and what would they think if they knew?"
       ],
       "advance_when": "You're 100% clear on their biggest challenge AND their real desire — business and personal. Not surface-level."
     },
@@ -39,7 +43,7 @@
       "goal": "Move from questions to pitch with zero sales resistance — get the prospect to ask you to pitch them.",
       "listen_for": "Confirmation they feel understood.",
       "say": [
-        "I don't think I have any more questions — is there anything else you feel like we haven't covered that I need to know?",
+        "I don't think I have any more questions — is there anything else you feel like we haven't covered that you feel like I need to know?",
         "Based on what you've told me, we can definitely help.",
         "HAMBURGER TRANSITION: So where do you think we should go from here? I can walk you through exactly how we'd get you from [current] to [goal] if you want — but you tell me where you want to go. (Equal or downward inflection — never upward.)"
       ],
@@ -66,12 +70,13 @@
       "say": [
         "What questions do you have about those [4] things specifically? (Answer in 1-2 sentences. Check for hidden objections: 'is there a specific reason you're asking?')",
         "How do you feel about the process specifically? Do you feel like that's what you need to get to [outcome]?",
-        "SCALE: What's really important to us is alignment — our team is all in. On a scale of 1-10, where do you fall exactly? ... What's keeping you from a 9 or 10?",
+        "SCALE: What's really important to us is alignment — our team is all in. On a scale of 1-10, one being 'I hate this guy, get me off the phone,' ten being 'that's exactly what I need' — where do you fall exactly? ... What's keeping you from a 9 or 10? (Nothing in life is a 10 — it's not even 100% certain you'll wake up tomorrow. A 9 is about as close to certain as you'll ever be. And I'm not asking if you're a 10 on the price — in terms of the [4] things, do you feel in alignment?)",
+        "MINI-TRANSITION: So you feel really good about the process, no questions — what's next, where do you want to go from here? (Gets them to ask for the price.)",
         "ONBOARDING (before price): You'll process the investment with me, then we set a baseline — homework, then your implementation pathway call mapping the next 30-60 days.",
-        "And the investment is just [X]. (Soft, downward inflection. Then go quiet — not a weird standoff.)",
+        "And the next steps are very simple — the investment is just [X]. (Soft, downward inflection, price ENDS the sentence on a period. Then go quiet — not a weird standoff.)",
         "CLOSE: How do you feel? ... Cool, you sure? ... You ready to get started on some homework? ... What's your billing address?"
       ],
-      "advance_when": "Price is dropped. Now expect 1-2 objections — that's normal."
+      "advance_when": "After the price drop + close attempt, the prospect stalls or raises an objection. (If they say yes through the close, the sale is done — skip the Objections stage.)"
     },
     {
       "id": "objections",
@@ -79,12 +84,26 @@
       "goal": "Diffuse -> isolate -> handle uncertainty before logistics -> re-tie-down -> close. Loop until they're 100% in.",
       "listen_for": "Which objection. The copilot detects it and surfaces the rebuttal. Handle UNCERTAINTY before money/support/timing.",
       "say": [
-        "No problem. (Diffuse — always.)",
-        "Just so I can stay organized — when you say [objection], are you more in a 'should I do this' place where you're not 100% certain, or a 'how can I do this' place where it's just logistics?",
+        "No problem. Not an issue at all. No problem. (Diffuse — always, as a triple. Pause.)",
+        "Just so I can stay organized — when you say [objection], are you more in a 'should I do this' place where you're not 100% certain, or a 'how can I do this' place where it's just logistics? (If 'should I' -> handle the uncertainty/belief. If 'how can I' -> it's a logistic, trade and close.)",
+        "If the tonality is off and the stated objection feels like a smokescreen: For real — I can tell there's something. So what's really going on? What's really coming up for you?",
         "[Objection] aside — is there anything else keeping you from being less than 100% certain this is the right thing and now is the right time? ... So you're 100% in?",
-        "(Then handle the specific objection — the copilot shows the verbatim rebuttal. Trade every concession for a decision: 'If I'm willing to do that for you, are you willing to move forward right now?')"
+        "(Then handle the specific objection — the copilot shows the verbatim rebuttal. Trade every concession for a decision AND a commitment: 'If I'm willing to do that for you, are you willing to move forward right now?')"
       ],
-      "advance_when": "They're 100% in and you've closed — then button down the sale (restate next steps, reassure, mitigate buyer's remorse)."
+      "advance_when": "They're 100% in and you've closed — move to Close Confirmation to button down the sale."
+    },
+    {
+      "id": "close-confirmation",
+      "name": "7. Close Confirmation",
+      "goal": "Button down the sale. Restate next steps, reassure, pre-frame against buyer's remorse, start onboarding momentum. The deal isn't safe until cash clears and onboarding begins.",
+      "listen_for": "Hesitation, second thoughts, a tone shift after the card is processed — post-close remorse. If it appears, handle it (see the buyers-remorse objection) — don't go silent.",
+      "say": [
+        "Awesome — congratulations, this is a big move and I'm genuinely excited for you. Here's exactly what happens next: [restate the onboarding steps + first call date].",
+        "PRE-FRAME REMORSE: Real quick — right after a big decision like this, your brain might get loud and try to second-guess it. That's totally normal, it's the monkey brain doing its job. It doesn't mean it was the wrong call — it means it mattered. If anything comes up, you call me directly, okay?",
+        "Lock momentum: Let's get your onboarding form done right now while we're together, and get your first call on the calendar — momentum is what makes this work.",
+        "Reassure: You made a great decision. I've got your back — anytime you need anything, you reach out. Let's go get you [their outcome]."
+      ],
+      "advance_when": "Payment has cleared, onboarding form is done, and the first call is booked. The sale is complete."
     }
   ]
 }

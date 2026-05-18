@@ -3,28 +3,98 @@
   "description": "The knowledge base for the real-time sales-call assistant. The rep types what the prospect just said; the app fuzzy/semantic-matches it against `triggers`, then surfaces `response_steps` in order. Built from the full Cole Gordon transcript corpus (134 channel videos + 19 hand-processed sources). Every response line is verbatim or near-verbatim from the source material.",
   "universal_framework": {
     "rule": "Every objection runs through the same opening before the specific rebuttal: DIFFUSE, then ISOLATE whether it is an UNCERTAINTY objection (a true objection) or a LOGISTIC (money / support / timing). Handle uncertainty FIRST, always.",
-    "step_1_diffuse": "No problem. (Always. It drops the pressure. Pause after it.)",
-    "step_2_isolate": "Just so I can stay organized on my end — when you say [their objection], are you more in a 'should I do this' place where you're not even 100% certain this is what you want, or a 'how can I do this' place where you're 100% certain and it's just a matter of logistics?",
-    "step_3_temp_check": "Money / [objection] aside — how do you feel about the process? Do you feel like this is 100% what you need to get to [their outcome]? Do you think this is 100% going to work?",
-    "step_4_scale": "Just to be 100% clear — on a scale of one to ten, one being 'I hate this guy, get me off the phone,' ten being 'that's exactly what I need' — where do you fall out exactly? ... What's keeping you from being a nine or a ten?",
+    "funnel_order": ["uncertainty", "financial", "support", "process"],
+    "funnel_order_note": "When more than one objection fires, handle them in this order — uncertainty before any logistic. Timing is a logistic, but Cole reframes it as a priorities/certainty problem, so timing objections live in the uncertainty bucket and are handled as true objections (there is no separate timing bucket). 'process' (prospect taking control) is an app-level call-control bucket outside Cole's 3-bucket objection model — it is handled before the objection phase, not during it.",
+    "step_1_diffuse": "No problem. Not an issue at all. No problem. (Always. Say it as a triple. It drops the pressure. Pause after it.)",
+    "step_2_isolate": "Just so I can stay organized on my end — when you say [their objection], are you more in a 'should I do this' place where you're not even 100% certain this is what you want, or a 'how can I do this' place where you're 100% certain and it's just a matter of logistics? (For a financial objection the isolate is value-vs-budget instead: do you not see the value, or do you want it and it's purely the money?)",
+    "step_3_temp_check": "Money / [objection] aside — how do you feel about the process? Do you feel like this is 100% what you need to get to [their outcome], that it's 100% going to work, and that now is 100% the right time?",
+    "step_4_scale": "What's really important to me is alignment — we're rolling up the sleeves with you, so what matters is you feel good about the process. Just to be 100% clear — on a scale of one to ten, one being 'I hate this guy, get me off the phone,' ten being 'that's exactly what I need' — where do you fall out exactly? ... What's keeping you from being a nine or a ten? (Nothing in life is a 10 — it's not even 100% certain you'll wake up tomorrow. A 9 is about as close to certain as you'll ever be.)",
     "step_5_double_tie_down": "So [objection] aside — is there anything else keeping you from being less than 100% certain that this is the right thing and now is the right time? ... So you're 100% in?",
-    "smoke_screen_note": "'I want to think about it' / 'it's too expensive' are usually smoke screens. The job is to turn the intangible objection into a tangible one you can actually handle. If they waffle ('I think so'), that is a NO — cut in playfully and call out the tonality.",
-    "concession_rule": "Never give better terms (a payment plan, an extension, a deposit) for free. Trade every concession for a decision now: 'If I'm willing to do that for you, are you willing to move forward right now?' Going lower again? Also ask for a case study."
+    "smoke_screen_note": "'I want to think about it' / 'it's too expensive' are usually smoke screens. The job is to turn the intangible objection into a tangible one you can actually handle. If they waffle ('I think so'), that is a NO — cut in playfully and call out the tonality. CRITICAL: a logistic (money / support / timing) handled while uncertainty is still unresolved is itself a smoke screen — if you handle a spouse before doing uncertainty first, you're handling a smoke screen.",
+    "concession_rule": "Never give better terms (a payment plan, an extension, a deposit) for free. Trade every concession for a decision now: 'If I'm willing to do that for you, are you willing to move forward right now?' Going lower again? Also ask for a case study AND a commitment to show up and do the work. People who pay more up front get better results — they burn the boats — so pitch the full price first and use payment terms only as closing leverage."
   },
+  "situations": [
+    {
+      "id": "went-quiet",
+      "button": "Went quiet",
+      "label": "Prospect went quiet / one-word answers",
+      "response_steps": [
+        "Call out the silence directly, with warmth: 'Hey — you got quiet on me there. What's going through your head right now?'",
+        "Don't push the close into the silence. Re-engage first: 'Be straight with me — what's really going on? Earlier you said this is what you need. Something shifted — what is it?'",
+        "Once they name it, that's the real objection — handle it through diffuse -> isolate."
+      ],
+      "do_not": "Don't keep pitching into a dead line, and don't read silence as a yes. A quiet prospect is the call dying — surface what changed before you do anything else."
+    },
+    {
+      "id": "flat-energy",
+      "button": "Flat / low energy",
+      "label": "Energy dropped — flat 'yeah', 'sure', 'mm-hm'",
+      "response_steps": [
+        "Name the tonality playfully: 'I can hear the energy dropped a little — and that's totally fine. Let's just be honest with each other: what's really going on?'",
+        "Re-anchor to their own words: 'Earlier you told me [their goal / their pain]. Is that still true? Because right now it doesn't sound 100%.'",
+        "If they waffle, feed them the objection — it's usually nerves: 'It sounds like a bit of nerves — is it?' Then handle nerves."
+      ],
+      "do_not": "Don't ignore a flat 'yeah' and treat it as agreement. Flat tonality is a no — surface it now, not after the price drop."
+    },
+    {
+      "id": "hedging",
+      "button": "Hedging tonality",
+      "label": "Hedging — 'I think so', 'probably', 'we'll see'",
+      "response_steps": [
+        "Cut in playfully and call out the hedge: 'I think so? That doesn't sound 100% certain — so let's just be honest with each other, what's really going on?'",
+        "Push for the real answer: 'Do you 100% think this will work, and do you 100% want to do this? If it's not a clear yes, that's fine — but tell me what's in the way.'",
+        "A hedge is a NO until proven otherwise. Turn the intangible into a tangible objection you can handle."
+      ],
+      "do_not": "Don't let a hedge slide into a booked follow-up. 'I think so' is not a yes."
+    },
+    {
+      "id": "combative",
+      "button": "Got combative",
+      "label": "Prospect is hostile / rude / 'you're just a salesperson'",
+      "response_steps": [
+        "De-escalate and reset the frame: 'I hear you — and I'm genuinely not here to sell you. I'm here to see if this is a fit. If it's not, I'll tell you straight and point you in the right direction.'",
+        "Match-then-lower their energy: stay calm, lower your tone, don't get defensive. Treat it as a puzzle, not a threat.",
+        "Take responsibility if the call slipped: 'That's my bad — I think I got ahead of myself. Let's slow down. The main thing is [their problem] — talk to me about that.'"
+      ],
+      "do_not": "Don't argue back or get defensive. A combative prospect is testing whether you'll fold or stay in the lead — stay calm and stay in the lead."
+    },
+    {
+      "id": "sticker-shock",
+      "button": "Sticker-shock pause",
+      "label": "Pause right after the price — before any named objection",
+      "response_steps": [
+        "Hold the silence. After the price, do not talk first. Let them react.",
+        "If they ask 'how much was that again?' — re-anchor to the outcome, don't just repeat the number: 'The investment to take you from [current] to [outcome] is [price].'",
+        "Then ask the temp check: 'How are you feeling about it?' — and handle whatever objection surfaces."
+      ],
+      "do_not": "Don't fill the post-price silence with a softener, a discount, or a payment plan. The first one to talk loses leverage."
+    },
+    {
+      "id": "emotional",
+      "button": "Got emotional",
+      "label": "Prospect is emotional / vulnerable / opened up",
+      "response_steps": [
+        "Slow down and hold the moment — don't rush to close on top of it: 'I really appreciate you sharing that. That takes guts.'",
+        "Chase it gently: 'Tell me more about that — how's that been showing up for you?'",
+        "Tie it to the decision when the moment settles: 'That right there is exactly why this matters. So let's make sure we fix it.'"
+      ],
+      "do_not": "Don't pounce on an emotional moment with a hard close, and don't brush past it. Sit in it, then bridge to the decision."
+    }
+  ],
   "objections": [
     {
       "id": "price-too-expensive",
       "bucket": "financial",
-      "type": "logistic-or-smokescreen",
+      "type": "logistic",
       "label": "It's too expensive / I can't afford it / that's a lot of money",
-      "triggers": ["too expensive", "can't afford it", "can't afford that", "that's a lot of money", "that's a lot", "it's too much", "it's too much money", "more than I thought", "way more than I thought", "out of my budget", "out of budget", "stretch out of budget", "pricey", "expensive", "don't have the money", "no money", "that's pretty steep", "that's steep", "almost as much as a new car", "got to find the money", "got to see if I can afford it", "10k is a lot", "that's just a lot for me right now"],
+      "triggers": ["too expensive", "pretty expensive", "can't afford it", "can't afford that", "don't know if I can afford", "how I can afford", "that's a lot of money", "a lot of money for this", "that's just a lot for me right now", "it's just a lot for me right now", "it's too much", "it's too much money", "more than I thought", "out of my budget", "out of budget", "stretch out of budget", "pricey", "don't have the money", "I have no money", "got no money", "can't make this work", "come up with the money", "really struggling", "that's pretty steep", "that's steep", "almost as much as a new car", "got to find the money", "got to see if I can afford it"],
       "response_steps": [
-        "No problem. Now just so I can stay organized on my end — when you say you can't afford it, do you mean you really want to do it and physically don't have the budget, or do you mean you don't think the investment is worth the value?",
+        "No problem. Now just so I can stay organized on my end — when you say you can't afford it, do you mean you don't think the investment is worth the value, or do you really want to do it and it's just finances standing in the way — so if you could make it work financially, you'd 100% move forward?",
         "Gotcha. So if I'm hearing you correctly — money aside, you're 100% in?",
         "Most of our clients do the investment up front, but for certain clients who really want to do it and it's just the money, we break it up. So given you're 100% in, are you open to having an honest conversation financially, getting everything on the table, so we can see if there's a way to do this now — or at the very least create a game plan for the future?",
-        "OPEN WALLET: In the next 30 days, how much cash flow do you have coming in total — after expenses, what's left over? ... And what's your cash on hand right now exactly? (I'm not asking what you can spend right this second — I'm asking what you actually have access to, what's in checking.) ... And in terms of credit, what's available?",
-        "And you really want to do this, right?",
-        "Look, I don't think the best thing for you is to drop the whole thing up front and zero out your savings or go into credit card debt. But I also don't think the best thing for you, based on what you told me, is to do nothing. So what I'd be willing to do is let you in for [half / a third] down — that way you come in, build momentum, and when the next payment comes around 30 days down the road it's basically an afterthought. So if I'm willing to do that for you, are you willing to move forward right now?"
+        "OPEN WALLET: I don't even know if you can do this right now — but I want to make sure that even if we can't do something now, you have a game plan. So: in the next 30 days, how much cash flow do you have coming in total — after expenses, what's left over? ... And what's your cash on hand right now exactly? (I'm not asking what you can spend right this second — I'm asking what you actually have access to, what's in checking.) ... And in terms of credit — not saying we have to use it, just so we know what's available — what do you have access to?",
+        "And you really want to do this, right? (This must get a clear 'yes.' If they hesitate here, it was never a financial objection — go back to the uncertainty handle.)",
+        "Look, I don't think the best thing for you is to drop the whole thing up front and zero out your savings or go into credit card debt. But I also don't think the best thing for you, based on what you told me, is to do nothing — and besides, for you it's only [N] clients / sales to break even, right? So what I'd be willing to do is let you in for [a third] down — that way you come in, build momentum, and when the next payment comes around 30 days down the road it's basically an afterthought, bankrolled by the results. So if I'm willing to do that for you, are you willing to move forward right now?"
       ],
       "do_not": "Do not offer a payment plan as the rebuttal to uncertainty. Cheaper terms never fix belief. Confirm 'money aside, 100% in' FIRST. Also: never offer payment plans or discounts before the price drop — they're closing leverage.",
       "alt_reframes": ["Expensive compared to what, though? 5K for a dinner is expensive; 5K for a car is cheap. Does it really matter what we pay if what we get in return is everything you've ever wanted?", "Has 10K always been a lot to you? Do you want it to always be a lot, or do you want to be the kind of person who can move on something that's going to 100% help you? You're never going to get out of the place where 10K is a lot if you make decisions out of your circumstances instead of your vision."],
@@ -35,7 +105,7 @@
       "bucket": "uncertainty",
       "type": "true-objection",
       "label": "I want to think about it / send me the info / I'll get back to you",
-      "triggers": ["think about it", "need to think about it", "think it over", "think on this", "let me think", "send this over", "send it over", "send me the info", "send me everything", "send me a proposal", "in an email", "get back to you", "get back to you next week", "I'll let you know", "need some time", "need some space", "mull it over", "circle back", "circle back next quarter"],
+      "triggers": ["think about it", "need to think about it", "think it over", "think on this", "let me think", "pray on it", "pray about it", "send this over", "send it over", "send me the info", "send me everything", "send me a proposal", "send me an email", "all this in an email", "get back to you", "get back to you next week", "I'll let you know", "I need some time", "give me some time", "gather myself", "have all the information", "mull it over", "circle back", "circle back next quarter"],
       "response_steps": [
         "No problem. Before we get into any of that — let me ask you this, just because we've been through a lot today. How do you actually feel? Money and everything aside, do you feel like this is 100% what you need to get to [their goal], and that it's 100% going to work?",
         "If they waffle ('I think so'): Got it — but what I'm really trying to understand is, do you think this is 100% going to work, and do you 100% want to do this? It doesn't sound 100% certain — so let's just be honest with each other, what's really going on?",
@@ -79,10 +149,10 @@
       "bucket": "support",
       "type": "logistic",
       "label": "I need to talk to my spouse / partner / business partner",
-      "triggers": ["talk to my wife", "talk to my husband", "talk to my spouse", "talk to my partner", "run it by my wife", "run it by my partner", "run it by my husband", "my business partner", "ask my wife", "ask my husband", "check with my partner", "let her know", "let him know", "discuss with my partner", "sync with my partner", "need to talk to somebody else"],
+      "triggers": ["talk to my wife", "talk to my husband", "talk to my spouse", "talk to my partner", "run it by my wife", "run it by my partner", "run it by my husband", "run this by my", "my business partner", "ask my wife", "ask my husband", "let my wife know", "let my husband know", "let my spouse know", "check with my partner", "check with somebody", "check with someone else", "pass it by", "financial advisor", "discuss with my partner", "sync with my partner", "need to talk to somebody else"],
       "response_steps": [
-        "No problem. Just so I can be clear — how do you feel for you personally? Do you 100% want to do this?",
-        "Cool. So just to clarify — if it was solely your decision, we'd be processing the payment and you'd be 100% moving forward right now?",
+        "No problem. Just so I can be clear — talking to your spouse aside, how do you feel for you personally? Do you feel this is 100% what you need to get to [goal], and that it's 100% going to work?",
+        "Cool. So just to clarify — if your spouse was on this call right now and said 'I believe you, do whatever's best for the business,' if they'd already given you that green light, would you be 100% moving forward and processing the payment with me right now?",
         "Aside from letting your spouse know, is there anything else keeping you from being less than 100% certain this is what you need?",
         "Just for clarity's sake — is this a respect thing where you've basically decided and you're just letting them know, or do you genuinely need to sit down, collaborate, and get their permission to move forward?",
         "DISCOVERY: What do you think they're going to think about this? What will they say when they hear the investment? Are they supportive of you fixing [the problem]? Do they know you're on this call?",
@@ -123,7 +193,7 @@
       "bucket": "uncertainty",
       "type": "true-objection",
       "label": "I've been burned before / I tried something like this and it didn't work",
-      "triggers": ["been burned", "burned before", "didn't work", "it didn't work last time", "tried before", "tried something like this", "tried something similar", "bad experience", "got scammed", "wasted money", "wasted my money", "last company didn't fulfill", "overpromised", "I've done this before", "I've seen this before", "skeptical", "paid an agency before"],
+      "triggers": ["been burned", "burned before", "it didn't work", "it didn't work last time", "how is this different", "how is this going to be different", "don't see how this is different", "what we did before", "tried before", "tried something like this", "tried something similar", "bad experience", "got scammed", "wasted money", "wasted my money", "last company didn't fulfill", "overpromised", "I've done this before", "I've seen this before", "skeptical", "paid an agency before"],
       "response_steps": [
         "Totally get it, that's super frustrating — a lot of times we're picking up the pieces after someone overpromised and underdelivered.",
         "Tell me what happened in that company — what was the difference between what you thought would happen and what was actually implemented?",
@@ -140,13 +210,13 @@
       "bucket": "uncertainty",
       "type": "true-objection",
       "label": "Your competitor is cheaper / I'm shopping around / talking to other people",
-      "triggers": ["competitor", "cheaper", "cheaper option", "other option", "other quotes", "get a couple quotes", "shopping around", "other companies", "talking to other", "someone else", "another program", "another guy", "talked to a guy", "yours is more", "5k cheaper", "way more than I thought", "we're talking to three other guys"],
+      "triggers": ["competitor", "cheaper", "cheaper option", "other option", "other quotes", "get a couple quotes", "shopping around", "other companies", "talking to other", "go with someone else", "talking to someone else", "another program", "another guy", "talked to a guy", "yours is more", "5k cheaper", "looking into other", "looking into a couple", "we're talking to three other guys"],
       "response_steps": [
+        "Quick question before anything else — are you looking for the cheapest option, or are you looking for the team that's most likely to get you there?",
         "Curious — how are you thinking about this? What held you back from going with the other ones?",
-        "Ultimately, how would you know if you'd found the right team to help you? ... So it's really just about who's going to get you where you want to go, right?",
-        "Aside from evaluating which option to go with, it sounds like you're going to do something — it's just a matter of who. So let's take price aside for a moment: out of the two options, which are you more certain can actually get you there?",
+        "Ultimately, how would you know if you'd found the right team to help you? ... So it's really just about who's going to get you where you want to go, right? Aside from evaluating which option to go with, it sounds like you're going to do something — it's just a matter of who. So let's take price aside for a moment: out of the two options, which are you more certain can actually get you there?",
         "Can I just be your bro for a sec? You're doing [X], you want to get to [Y]. Whether the investment is five grand or fifty relative to that goal — who gives a damn? Go with the team that's done what you want to do the most amount of times and that you're most sure can get you there.",
-        "So do you want to nickel-and-dime, go with the lesser option, jeopardize the success you want and come back later anyway — or just go with us and get it right from the start? If we get you from 100 to 500, what's 5K?"
+        "If the other option is genuinely solid, sequence it instead of trashing it: come work with us first to get the foundation right, and if you still want to, go work with that guy in three months. And just so you know what to watch for — a team that won't even let you go talk to other programs first, that's a red flag."
       ],
       "do_not": "Don't trash the competitor — bulldozing makes you look like 'just a closer.' Educate on the options instead. If a competitor is genuinely solid, sequence it: 'come work with us first, then go work with that guy in 3 months.'",
       "source": "objections/competitor-cheaper.md"
@@ -154,9 +224,9 @@
     {
       "id": "timing-start-later",
       "bucket": "uncertainty",
-      "type": "logistic",
+      "type": "true-objection",
       "label": "I want to start later / after the holidays / next quarter / after my trip",
-      "triggers": ["start later", "after the holidays", "after the new year", "next quarter", "next month", "not right now", "bad timing", "in january", "start january", "after my vacation", "after my trip", "after the wedding", "want to do it in two months", "start in two weeks", "wait till next quarter"],
+      "triggers": ["start later", "after the holidays", "after the new year", "start next quarter", "next quarter initiative", "wait till next quarter", "circle back in three months", "start next month", "do it next month", "wait till next month", "not right now", "bad timing", "start january", "after my vacation", "after my trip", "after the wedding", "want to do it in two months", "start in two weeks"],
       "response_steps": [
         "Got it. So timing aside — you're 100% in?",
         "Just to be clear — if we're having this exact conversation on [their start date] and you feel the same way, you're 100% giving me your credit card and moving forward?",
@@ -170,7 +240,7 @@
       "bucket": "uncertainty",
       "type": "true-objection",
       "label": "I don't have time to implement this right now",
-      "triggers": ["don't have time", "no time", "don't have the time", "too busy", "no time to implement", "can't dedicate the time", "swamped", "no bandwidth", "too much on my plate"],
+      "triggers": ["don't have time", "no time", "don't have the time", "too busy", "no time to implement", "can't dedicate the time", "can't dedicate any time", "able to dedicate", "swamped", "no bandwidth", "stretched thin", "wearing all the hats", "too much on my plate"],
       "response_steps": [
         "No problem. So timing aside — is there anything else keeping you from being less than 100% certain?",
         "Can I tell you what I'm seeing? You told me the number one problem in your business is [their constraint]. And your bottleneck to solving it is time. But the reason you don't have time IS [the constraint]. So the very problem you got on this call to solve is the exact thing keeping you from getting started — you're in a self-perpetuating loop, you're stuck.",
@@ -185,7 +255,7 @@
       "bucket": "uncertainty",
       "type": "true-objection",
       "label": "Nerves / fear — they're 100% in but freeze, or it's 'a big decision'",
-      "triggers": ["nervous", "scared", "nerves", "anxious", "hesitant", "cold feet", "freaking out", "it's a big decision", "big decision", "can't pull the trigger", "I don't know", "it's just hard to decide", "this is a lot to take in", "scary"],
+      "triggers": ["nervous", "scared", "nerves", "anxious", "hesitant", "cold feet", "freaking out", "it's a big decision", "big decision", "can't pull the trigger", "it's just hard to decide", "hard for me to make a decision", "hard to make a decision", "this is a lot to take in", "it's just a lot", "scary"],
       "response_steps": [
         "Release the pressure: Can I ask you a personal question? There's probably something else going through your head. We've been talking a while, and from my end everything about this makes sense for you. Will you just open up and tell me what you're thinking — what's really going on?",
         "Name it: It just seems like it's a little bit of nerves. Is it? ... Good — the nerves are good. That means there's weight to this, there's meaning to it. I'd think you were an alien if you weren't a little nervous. Nothing great in the world was ever built by someone who wasn't a little nervous at first.",
@@ -227,7 +297,7 @@
       "bucket": "uncertainty",
       "type": "true-objection",
       "label": "It's too risky / too big a risk / too good to be true",
-      "triggers": ["too risky", "it's a risk", "big risk", "risky", "too good to be true", "sounds too good", "big leap"],
+      "triggers": ["too risky", "it's a risk", "it's risky", "feels risky", "big risk", "too big of a risk", "too good to be true", "sounds too good", "big leap"],
       "response_steps": [
         "I hear you on that. Can I give you a little coaching on it? ... Your goal is to make [X] a year — that would put you in the top 1%. Have you ever wondered why so few people make that kind of money despite wanting it? It's the fear of risk.",
         "So the real question isn't 'is this too risky' — the real question is who do you want to be? When 99% of people bump into that glass wall of fear and risk, they contract and retreat to their comfort zone — which is exactly what keeps them where they are. The 1% feel the fear and break through.",
@@ -281,7 +351,7 @@
       "bucket": "uncertainty",
       "type": "true-objection",
       "label": "Why should I trust you / how do I know you're legit",
-      "triggers": ["why should I trust you", "how do I know", "are you legit", "is this a scam", "trust you", "why you", "why is it you I should trust", "how do I know this is real", "you could be anyone"],
+      "triggers": ["why should I trust you", "how do I know", "are you legit", "is this a scam", "trust you", "why is it you I should trust", "how do I know this is real", "you could be anyone"],
       "response_steps": [
         "B2C: [Name], totally hear you. Here's what I'm going to do — I'm sending you a text right now. Did you get it? Great, that's my personal cell. When I say I care about your success, I mean it — any time you're a client, if you need anything, text or call me. I've got your back, I'm not going to let you fail.",
         "B2B: [Big-name clients] trusted us. Do you think they don't know how to make good buying decisions? Of course they do. You should trust this too.",
@@ -309,11 +379,11 @@
       "bucket": "financial",
       "type": "logistic",
       "label": "I'm 100% in, I just need to move money around / wait for a payment",
-      "triggers": ["move money around", "move some money", "move funds", "transfer funds", "free up some money", "wait for a client payment", "waiting on a payment", "give me two days", "give me till friday", "pay in full in a couple days", "money's tied up"],
+      "triggers": ["move money around", "move some money", "move funds", "transfer funds", "organize my funds", "organize funds", "free up some money", "wait for a client payment", "waiting on a payment", "buying a house", "give me two days", "give me till friday", "pay in full in a couple days", "money's tied up"],
       "response_steps": [
         "Okay, walk me through it real fast so I can stay organized. When you say you're moving money around — what does that look like? Where's it coming from? Selling stocks, a 401k, a brokerage account?",
         "And when is that going to be finished? ... And once it's done, you're 100% moving forward that day?",
-        "Why don't you do half now and half when you're done moving money around — that way we can still get onboarding, the assessment and the forms out of the way, and take care of the rest in a week.",
+        "Then let's do the bulk of it now — say seven-and-a-half of the ten — that way we still get you onboarded, get the assessment, get the forms and the onboarding call out of the way, and we just take care of the rest in a week when you're done moving the money around. (You're already 100% in and the money is real — take most of it now, not half.)",
         "Gentleman's agreement: Let's get this done now so you get access to everything and knock out the onboarding forms — just make me a gentleman's agreement that you'll have the rest down before your onboarding call."
       ],
       "source": "objections/timing-start-later.md"
@@ -360,7 +430,7 @@
       "bucket": "uncertainty",
       "type": "true-objection",
       "label": "Prospect is waffling / won't name a concern / 'I think so'",
-      "triggers": ["I think so", "I guess so", "I don't know", "maybe", "I'm not sure", "I wouldn't say 100", "kind of", "it's just a lot to think about", "I just need to process this"],
+      "triggers": ["I think so", "I guess so", "I don't know", "I'm not sure", "I wouldn't say 100", "it's just a lot to think about", "I just need to process this"],
       "response_steps": [
         "Cut in playfully and call out the tonality: 'I think so? That doesn't sound 100% certain — so let's just be honest with each other for a second, what's really going on?'",
         "Man, can I ask you a personal question? There's probably something else going through your head. From my end everything about this makes sense for you. Will you just open up and tell me what you're thinking?",
@@ -375,12 +445,58 @@
       "bucket": "financial",
       "type": "logistic",
       "label": "Are you offering any discounts?",
-      "triggers": ["discount", "any discounts", "can you do better on price", "deal", "any deals", "knock the price down", "lower the price", "best price"],
+      "triggers": ["discount", "any discounts", "can you do better on price", "do anything on the price", "best you can do", "any deals", "anything cheaper", "knock the price down", "lower the price", "best price"],
       "response_steps": [
         "No. (There's nothing more you need to say than that. Don't do fast-action discounts or incentive-based pricing — they're a closing crutch and they cheapen the offer.)",
-        "If pressed, redirect to value/the process, never to price: keep the investment simple and fixed; use payment terms (not discounts) as the only lever, and only after isolating a true financial objection."
+        "Quote the price as a flat statement and then go silent — 'the investment to get your business to [outcome] is just [price].' Do not fill the pause with a softener or a payment plan. Let the silence sit.",
+        "If pressed, redirect to value, never to price: re-anchor the price to the outcome, and ask the binary — 'are you looking for the cheapest option, or a premium-quality option?' Keep the investment simple and fixed; payment terms (not discounts) are the only lever, and only after isolating a true financial objection."
       ],
       "source": "objections/price-and-financial.md"
+    },
+    {
+      "id": "send-me-recording",
+      "bucket": "uncertainty",
+      "type": "true-objection",
+      "label": "Send me the recording / a summary / email me and I'll review it",
+      "triggers": ["send me the recording", "send the recording", "send me a summary", "email me the", "send me a recap", "send over the recording", "I'll review it", "review it on my own time", "go over it later"],
+      "response_steps": [
+        "No problem. Before I do that — let me ask you this: money and everything aside, do you feel like this is 100% what you need to get to [their goal], and that it's 100% going to work?",
+        "Here's what I've found — a recording without me there to answer the questions that come up usually just sits there. So let's not let that happen to you. What's the real thing you'd be reviewing for — is there something specific you're still not sure about?",
+        "If a real concern surfaces, that's the true objection — handle it. If there isn't one, don't book a loose follow-up: 'It sounds like you're 100% there. Let's just get you started — what's your billing address?'",
+        "If they genuinely need a hard next step: lock a specific time tomorrow with a definitive tie-down — 'when we talk at [time], if you feel the same way, we're 100% moving forward, yes?'"
+      ],
+      "do_not": "Don't treat this like 'think about it' and isolate certainty for ten minutes — and don't just send a recording into the void. This is the post-call-disappearance setup. Either close now or lock a hard, tied-down next step.",
+      "source": "objections/think-about-it.md"
+    },
+    {
+      "id": "flat-exit",
+      "bucket": "uncertainty",
+      "type": "true-objection",
+      "label": "I'll get back to you — flat exit / hand on the doorknob",
+      "triggers": ["I'll get back to you", "let me get back to you", "I'll be in touch", "I'll reach out", "we'll let you know", "leave it with me", "I'll think it through and let you know"],
+      "response_steps": [
+        "Read the tonality. If they've clearly already decided and are just being polite, don't run another temp-check loop — use the honest takeaway.",
+        "TAKEAWAY: 'Can I be totally straight with you? It feels like this is a no — and that's completely okay, I'd rather you tell me than disappear. Be honest with me: it's a no, isn't it?'",
+        "This usually does one of two things — it either gets a real 'yes it's a no' (so you can ask the one question that surfaces the real reason: 'fair enough — what was the thing that didn't land?'), or it snaps them back: 'no, no, it's not that...' — and now the real objection is on the table.",
+        "Whatever they name, handle it through diffuse -> isolate. Do not accept a vague exit."
+      ],
+      "do_not": "Don't book a polite follow-up call you both know won't happen. A flat 'I'll get back to you' is a no being delivered gently — call it, with respect, so you get a real answer.",
+      "source": "objections/think-about-it.md"
+    },
+    {
+      "id": "buyers-remorse",
+      "bucket": "uncertainty",
+      "type": "true-objection",
+      "label": "Post-close cold feet / can I cancel / I'm not sure I should have done this",
+      "triggers": ["can I cancel", "I want to cancel", "I changed my mind", "not sure I should have", "having second thoughts", "did I make the right", "want a refund", "regret this", "cold feet now"],
+      "response_steps": [
+        "Diffuse and stay calm — do not panic or get defensive: 'Totally hear you, and I'm glad you told me instead of sitting on it. Talk to me — what came up?'",
+        "Re-anchor to why they bought: 'Earlier you told me [their goal / their pain] and that this was exactly what you needed. None of that changed in the last ten minutes — so what's actually going on right now?'",
+        "Name it as nerves if that's what it is: 'This is the monkey brain doing its job — the moment after a big decision is when fear shouts loudest. That doesn't mean it was the wrong decision.'",
+        "Re-confirm the decision and move them into action fast: 'Let's get you into onboarding right now and book your first call — momentum is what kills the doubt. You good?'"
+      ],
+      "do_not": "Don't ignore post-close remorse hoping it passes, and don't immediately offer the refund. The deal isn't safe until cash clears and onboarding starts — reassure, re-anchor, and move them into action.",
+      "source": "sales-process/03-committing-phase-and-closes.md"
     }
   ]
 }

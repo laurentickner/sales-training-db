@@ -3,14 +3,18 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Content-Security-Policy"
+  content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.anthropic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Call Copilot — Scale Systems</title>
 <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
+<a class="skip-link" href="#input">Skip to call input</a>
+
 <header class="topbar">
   <div class="brand">
-    <span class="brand-mark">▲</span>
+    <span class="brand-mark" aria-hidden="true">▲</span>
     <div>
       <h1>Call Copilot</h1>
       <p class="brand-sub">Real-time sales-call assistant · Scale Systems</p>
@@ -18,8 +22,8 @@
   </div>
   <div class="topbar-actions">
     <span id="mode-badge" class="mode-badge mode-offline">Keyword mode</span>
-    <button id="btn-settings" class="btn btn-ghost" title="Settings">⚙ Settings</button>
-    <button id="btn-newcall" class="btn btn-ghost" title="Start a fresh call">↻ New call</button>
+    <button id="btn-settings" class="btn btn-ghost" title="Settings"><span aria-hidden="true">⚙</span> Settings</button>
+    <button id="btn-newcall" class="btn btn-ghost" title="Start a fresh call"><span aria-hidden="true">↻</span> New call</button>
   </div>
 </header>
 
@@ -29,24 +33,26 @@
 <main class="layout">
 
   <!-- LEFT: input + call log -->
-  <section class="panel panel-left">
+  <section class="panel panel-left" aria-label="Call input and log">
     <h2 class="panel-title">Call Log</h2>
     <div class="input-zone">
-      <textarea id="input" rows="3"
+      <textarea id="input" rows="3" maxlength="2000"
         placeholder="Type what the prospect just said (or paste it) and press Enter…"></textarea>
       <div class="input-row">
-        <button id="btn-analyze" class="btn btn-primary">Analyze ⏎</button>
-        <button id="btn-export" class="btn btn-ghost btn-sm" title="Download the call log">↓ Export log</button>
+        <button id="btn-analyze" class="btn btn-primary">Analyze <span aria-hidden="true">⏎</span></button>
+        <button id="btn-export" class="btn btn-ghost btn-sm" title="Download the call log"><span aria-hidden="true">↓</span> Export log</button>
       </div>
       <p class="hint">Enter = analyze · Shift+Enter = new line</p>
+      <div class="situation-bar" id="situation-bar" aria-label="Non-verbal situations"></div>
     </div>
-    <div id="log" class="log" aria-live="polite"></div>
+    <div id="log" class="log"></div>
   </section>
 
   <!-- RIGHT: copilot guidance -->
-  <section class="panel panel-right">
+  <section class="panel panel-right" aria-label="Copilot guidance">
     <h2 class="panel-title">Copilot says…</h2>
-    <div id="copilot" class="copilot">
+    <div id="copilot" class="copilot" role="region" aria-live="polite"
+         aria-label="Copilot guidance" tabindex="-1">
       <div class="empty-state">
         <p class="empty-big">Ready.</p>
         <p>Type what the prospect just said on the left. The copilot will tell you
@@ -54,7 +60,7 @@
       </div>
     </div>
 
-    <div class="stage-ref" id="stage-ref">
+    <div class="stage-ref" id="stage-ref" tabindex="0" aria-label="Current stage reference">
       <!-- current funnel stage reference, filled by JS -->
     </div>
   </section>
@@ -62,18 +68,21 @@
 </main>
 
 <!-- Settings modal -->
-<div id="settings-modal" class="modal hidden">
+<div id="settings-modal" class="modal hidden" role="dialog" aria-modal="true"
+     aria-labelledby="settings-title">
   <div class="modal-card">
-    <h3>Settings</h3>
+    <h3 id="settings-title">Settings</h3>
     <label class="field">
       <span>Smart mode — Anthropic API key (optional)</span>
-      <input type="password" id="api-key" placeholder="sk-ant-… (stored only in this browser)" />
+      <input type="password" id="api-key" autocomplete="off" spellcheck="false"
+        placeholder="sk-ant-… (stored only in this browser)" />
     </label>
     <p class="field-note">
       With a key, the copilot also asks Claude (Haiku, low-latency) to read the call live —
       it catches objections &amp; flags phrased in ways the keyword engine misses. Leave blank
-      to run 100% offline on the built-in keyword engine. Your key is stored only in this
-      browser's localStorage and sent only to Anthropic.
+      to run 100% offline on the built-in keyword engine. Your key is stored in this
+      browser's localStorage and sent only to Anthropic — anyone with access to this device
+      can recover it, so use a dedicated key with a low spend limit and clear it on shared machines.
     </p>
     <label class="field field-inline">
       <input type="checkbox" id="smart-toggle" />

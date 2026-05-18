@@ -6,15 +6,15 @@
       "id": "vague-answer",
       "signal": "Vague or surface-level answer — they haven't really told you anything yet",
       "belief": "pain",
-      "triggers": ["kind of", "sort of", "you know", "i guess", "things could be better", "a few things", "stuff like that", "here and there", "it's complicated", "hard to say", "a bit of everything"],
-      "probe": "Tell me more — when you said [that], what do you mean exactly? How do you mean exactly?",
+      "triggers": ["kind of", "sort of", "i guess", "things could be better", "a few things", "stuff like that", "here and there", "it's complicated", "hard to say", "a bit of everything"],
+      "probe": "Tell me more — when you said [that], what do you mean exactly? Why do you say that though?",
       "note": "Don't move on. Paint the full portrait — repeat their last 3 words back as a question to get them to expand."
     },
     {
       "id": "emotional-word",
       "signal": "They used an emotional word — there's real pain here, go deeper",
       "belief": "pain",
-      "triggers": ["stressed", "stressful", "frustrated", "frustrating", "overwhelmed", "exhausted", "burnt out", "burned out", "worried", "anxious", "fed up", "sick of it", "drained", "miserable", "scared", "embarrassed", "ashamed"],
+      "triggers": ["stressed", "stressful", "frustrated", "frustrating", "overwhelmed", "exhausted", "burnt out", "burned out", "worried", "anxious", "fed up", "sick of it", "drained", "miserable", "scared", "embarrassed", "ashamed", "struggling", "struggle", "i hate", "hopeless", "fed up with", "can't stand"],
       "probe": "Tell me more about that. Has that put you in a tough position? ... In what way though? How's that showing up for you?",
       "note": "Emotional words are gold — chase them. Get to the real, personal cost, not the surface."
     },
@@ -22,7 +22,7 @@
       "id": "names-a-number",
       "signal": "They named a specific goal/number — find out why THAT number",
       "belief": "desire",
-      "triggers": ["i want to get to", "i want to hit", "my goal is", "k a month", "k per month", "a month", "a year", "per year", "million", "figures", "i'd like to make"],
+      "triggers": ["i want to get to", "i want to hit", "my goal is", "k a month", "k per month", "grand a month", "k per year", "per year", "million", "figures", "seven figures", "i'd like to make"],
       "probe": "You seem like you've thought of that number before — can I ask, why that number? Why is that important to you? When do you want to hit it by?",
       "note": "A number with no 'why' behind it is shallow. Anchor it."
     },
@@ -30,8 +30,8 @@
       "id": "mentions-spouse",
       "signal": "They mentioned a spouse/partner — FLAG support; qualify it now, don't handle it",
       "belief": "support",
-      "triggers": ["my wife", "my husband", "my spouse", "my partner", "my girlfriend", "my boyfriend", "my fiance", "we decided", "talk to my wife", "my better half"],
-      "probe": "Is your partner supportive of you fixing this? Are you guys on the same page about it? Does your partner know you're on this call?",
+      "triggers": ["my wife", "my husband", "my spouse", "my partner", "my girlfriend", "my boyfriend", "my fiance", "talk to my wife", "my better half", "my significant other"],
+      "probe": "Is your partner supportive of you fixing this? Are you guys on the same page about that problem? Does your partner know you're on this call — and what would they think if they knew?",
       "note": "Gather it now, naturally — do NOT handle a spouse objection in discovery. You'll need this later."
     },
     {
@@ -45,9 +45,9 @@
     {
       "id": "past-attempt",
       "signal": "They've tried something before — run solution questions, set up the pitch",
-      "belief": "trust",
-      "triggers": ["i tried", "i've tried", "we tried", "i hired", "i bought", "i did a program", "i did a course", "worked with", "used an agency", "had a coach", "in the past i", "before i"],
-      "probe": "What did you like or dislike about it? What was missing? What was the difference between what you expected and what actually happened?",
+      "belief": "doubt",
+      "triggers": ["i tried", "i've tried", "we tried", "i hired", "i bought", "i did a program", "i did a course", "signed up for", "invested in", "took a course", "worked with", "used an agency", "had a coach", "in the past i", "before i"],
+      "probe": "What did you like or dislike about it? What was missing? When people go into something like that and don't get the result, it's usually one of two things — the method, or the execution. Which do you think it was?",
       "note": "This is your ammo. The pitch must explain why that failed and why this is different."
     },
     {
@@ -62,17 +62,17 @@
       "id": "stuck-long-time",
       "signal": "They've been stuck a long time — find the moment of decision",
       "belief": "cost",
-      "triggers": ["for years", "a few years", "3 years", "5 years", "10 years", "a long time", "forever", "as long as i can remember", "always been", "still haven't", "keep trying"],
-      "probe": "Take me back to the day you decided this had to change — the day you drew the line in the sand. What actually happened? What was going on that day?",
+      "triggers": ["for years", "a few years", "a couple years", "3 years", "5 years", "10 years", "a long time", "a while now", "for the longest time", "as long as i can remember", "always been", "still haven't", "keep trying", "been at this"],
+      "probe": "Take me back to the last day you had that sudden realization that enough is enough — the day you decided to draw the line in the sand, step across it, burn the boats. Take me back to that day — what actually happened?",
       "note": "The moment of decision resurfaces the emotions of change. This is the highest-leverage discovery question."
     },
     {
       "id": "no-pain",
       "signal": "They're downplaying — no real pain surfaced yet",
       "belief": "pain",
-      "triggers": ["things are okay", "things are fine", "things are good", "no real problems", "nothing major", "just looking", "just curious", "just exploring", "no real challenges", "can't complain", "pretty good actually"],
-      "probe": "In a perfect world, where would [their metric] be? ... How does that compare to where you're at right now? ... So what do you feel like you need to get there?",
-      "note": "No problem, no sale. If there's no pain, find the unfulfilled-desire gap before going further."
+      "triggers": ["things are okay", "things are fine", "things are good", "things are steady", "no real problems", "nothing major", "just looking", "just curious", "just exploring", "no real challenges", "can't complain", "not bad", "could be worse", "pretty good actually"],
+      "probe": "On a scale of one to ten — one being it could not be worse, ten being it's exactly where you want it — where's [their area] at right now? ... And what does a [their number] mean to you specifically? Tell me more about that. ... So what would it take to close that gap?",
+      "note": "No problem, no sale. The 1-10 scale gap question surfaces the unfulfilled-desire gap when a prospect downplays — chase the number, don't accept 'fine'."
     },
     {
       "id": "story-not-numbers",
@@ -132,11 +132,11 @@
     },
     {
       "id": "fear-risk-word",
-      "signal": "They voiced a fear or risk — note it; it becomes the nerves objection later",
-      "belief": "trust",
-      "triggers": ["nervous", "scared", "risky", "afraid", "what if it doesn't work", "worried it won't", "big decision", "big leap", "burned before", "been burned"],
-      "probe": "(Note it.) At the close, if it resurfaces: name it — 'it sounds like a bit of nerves — and nerves are good, they mean there's weight to this.'",
-      "note": "Don't handle fear in discovery. Flag it for the committing phase."
+      "signal": "They voiced a fear or risk — chase it now, it becomes the nerves objection later",
+      "belief": "doubt",
+      "triggers": ["nervous", "scared", "afraid", "what if it doesn't work", "worried it won't", "big leap", "burned before", "been burned"],
+      "probe": "Tell me more about that — what specifically worries you? Why do you say that though?",
+      "note": "A voiced fear in discovery is the doubt belief surfacing early. Chase the emotional word now to understand it — but don't fully HANDLE it as the nerves objection until the committing phase."
     },
     {
       "id": "mentions-family-lifestyle",
@@ -158,7 +158,7 @@
       "id": "rambling",
       "signal": "Long rambling answer — cut in, redirect, get specific",
       "belief": "none",
-      "triggers": ["and then", "anyway", "i don't know if that makes sense", "long story short", "to make a long story"],
+      "triggers": ["anyway", "i don't know if that makes sense", "long story short", "to make a long story"],
       "probe": "Got it — let me make sure I understand. So the main thing is [their core point], right? Let's dig into that specifically.",
       "note": "Don't let discovery sprawl. Stay in the lead, get to the gap."
     },
@@ -190,9 +190,41 @@
       "id": "real-reason-because",
       "signal": "They gave you a real reason — anchor it, then go one level deeper",
       "belief": "desire",
-      "triggers": ["the real reason", "if i'm being honest", "to be honest with you", "what really gets me", "deep down", "what really bothers me", "if i'm honest"],
+      "triggers": ["the real reason", "if i'm being honest", "to be honest with you", "what really gets me", "deep down", "what really bothers me", "if i'm honest", "truthfully", "the truth is", "what it really comes down to"],
       "probe": "I guess that makes sense — is there any other reason this is important to you now though?",
-      "note": "The 'any other reason' question often surfaces the truest, most emotional driver."
+      "note": "The 'any other reason' question often surfaces the truest, most emotional driver. Everyone has two reasons — the one that sounds good and the real one."
+    },
+    {
+      "id": "money-tightness",
+      "signal": "They mentioned money/cash being tight — install the money belief NOW, in discovery",
+      "belief": "money",
+      "triggers": ["things are tight", "money is tight", "cash flow", "cash is tight", "can't really afford", "tight on money", "tight financially", "strapped", "running low on cash", "money's been tight"],
+      "probe": "Has that put you in a tough position financially — in what way though? ... And how much would you have to bring in just to replace the income you're making right now and feel comfortable?",
+      "note": "Surface and install the money belief in discovery — a financial-tightness comment now, left alone, becomes a price objection at the close. Installing the money belief in discovery creates the consistency that eliminates the financial objection later."
+    },
+    {
+      "id": "income-replacement",
+      "signal": "They want to leave a job / replace income — run the income-replacement qualifier",
+      "belief": "money",
+      "triggers": ["replace my income", "replace my salary", "quit my job", "leave my job", "hand in my two weeks", "match what i make", "what i earn at work", "full time income"],
+      "probe": "How much would you have to make just to replace the income you're earning full-time? ... And is replacing that enough to walk in, hand in your two weeks and be done — or what's the real number that gets you there?",
+      "note": "The non-invasive way to learn what a job-leaver actually earns. Quantifies the money belief without it feeling like an interrogation."
+    },
+    {
+      "id": "cost-of-inaction",
+      "signal": "Long-running problem or a goal with no urgency — install the cost belief",
+      "belief": "cost",
+      "triggers": ["if nothing changes", "stay the same", "keep going like this", "same as last year", "another year of", "if this carries on", "where i've always been", "stuck where i am"],
+      "probe": "Can I ask you another personal question — and I really hate to ask this — but what's your plan if nothing changes? What if the last five years are like the next five years?",
+      "note": "The cost-of-inaction lever. This is Cole's single most-repeated cost question — it makes the prospect feel the price of standing still."
+    },
+    {
+      "id": "lead-volume-no-fit",
+      "signal": "They talk lead/revenue volume without qualifying fit — probe ICP quality",
+      "belief": "doubt",
+      "triggers": ["i get leads", "we get leads", "plenty of leads", "lots of leads", "i get traffic", "get enquiries", "get inquiries", "i get some leads"],
+      "probe": "Out of those leads, how many actually fit the exact ideal client you want to attract? ... Let's get specific — what was your exact revenue last month? What about the month before? Is that gross or net?",
+      "note": "Chunk down to numbers. The real problem is often lead QUALITY, not volume — and stories hide it, numbers reveal it."
     }
   ]
 }
