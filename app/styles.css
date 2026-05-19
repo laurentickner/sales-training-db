@@ -152,6 +152,7 @@ body {
 .card {
   border-radius: var(--radius); border: 1px solid var(--border);
   background: var(--bg-card); overflow: hidden;
+  flex-shrink: 0;   /* never let a tall card get squashed + clipped */
 }
 .card-obj    { border-left: 4px solid var(--red); }
 .card-flag   { border-left: 4px solid var(--cyan); }
