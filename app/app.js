@@ -127,13 +127,10 @@
       var phrase = tn.slice(1, -1);     // trimmed
       if (phrase.length < 2) continue;
       var words = phrase.split(" ");
-      // direct hit: match the space-padded form so a short trigger does not
-      // bleed across word boundaries ("a lot" inside "a lottery").
-      var padHit = inputNorm.indexOf(tn) !== -1;
-      var edgeHit = !padHit && (
-        inputNorm.indexOf(tn.slice(1)) === 0 ||
-        inputNorm.indexOf(tn.slice(0, -1)) === inputNorm.length - tn.length + 1);
-      if (padHit || edgeHit) {
+      // direct hit: both input and trigger are space-padded on each end, so a
+      // plain indexOf already matches the phrase at the start, middle or end of
+      // the input without bleeding across word boundaries ("a lot" / "a lottery").
+      if (inputNorm.indexOf(tn) !== -1) {
         // single-word triggers are weak (high false-positive rate) — weight down
         var base = words.length === 1 ? 0.4 : 1;
         score += base + Math.min(words.length - 1, 4) * 0.4;
