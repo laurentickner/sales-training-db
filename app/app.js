@@ -23,6 +23,31 @@
     return cur;
   }
 
+  /* ---------- visible error banner — surface any JS error on screen ---------- */
+  function showErrorBanner(msg, file, line) {
+    var loc = file ? (" (" + String(file).split("/").pop() + (line ? ":" + line : "") + ")") : "";
+    var bar = document.getElementById("err-banner");
+    if (!bar) {
+      bar = document.createElement("div");
+      bar.id = "err-banner";
+      bar.setAttribute("style",
+        "position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#3a1f1f;" +
+        "color:#ffb4b4;font:13px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;" +
+        "padding:11px 16px;border-top:2px solid #ff6b6b;white-space:pre-wrap;cursor:pointer");
+      bar.title = "Click to dismiss";
+      bar.addEventListener("click", function () { bar.remove(); });
+      (document.body || document.documentElement).appendChild(bar);
+    }
+    bar.textContent = "⚠ App error — screenshot this and send it over:\n" + msg + loc;
+  }
+  window.addEventListener("error", function (e) {
+    showErrorBanner((e.error && e.error.message) || e.message || "Unknown error", e.filename, e.lineno);
+  });
+  window.addEventListener("unhandledrejection", function (e) {
+    var r = e.reason;
+    showErrorBanner("Unhandled promise rejection: " + ((r && r.message) || String(r)));
+  });
+
   var DATA = window.COPILOT_DATA;
   if (!DATA) fail("data/data.js failed to load.");
 
