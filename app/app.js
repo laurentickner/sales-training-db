@@ -91,7 +91,8 @@
     handledObjections: [],   // labels of objections surfaced earlier this call
     beliefsCovered: {},      // belief id -> true once touched in discovery
     prospect: null,          // { name, business, situation, source, goal, extra, prep }
-    liveFacts: store.get("copilot_livefacts") || ""   // rep's running call notes
+    liveFacts: store.get("copilot_livefacts") || "",  // rep's running call notes
+    activeObjection: null    // last objection raised — stays live until New call
   };
   var nextId = 1;            // monotonic log id (Date.now can collide)
   var reqSeq = 0;            // smart-mode request token — stale fetches no-op
@@ -238,6 +239,24 @@
       "</span></div></div></div>";
   }
 
+  function continuingCard(o) {
+    var h = '<div class="card card-continuing">';
+    h += '<div class="card-head"><span class="card-kicker">' + glyph("↻") +
+      " Still working — no new objection</span></div>";
+    h += '<div class="card-title">' + esc(o.label) + "</div>";
+    h += '<div class="card-sub">That line didn’t raise anything new. You’re still on this objection — re-tie-down, then close. (New call resets this.)</div>';
+    h += '<div class="say-block"><div class="say-label">Re-tie-down</div>';
+    h += '<div class="say-step"><span class="say-num">' + glyph("→") + "</span><span>" +
+      esc("So that aside — is there anything else keeping you from being less than 100% certain this is the right thing, and that now is the right time? ... So you're 100% in?") +
+      "</span></div></div>";
+    h += '<div class="say-block"><div class="say-label">The handle, if you need it again</div>';
+    (o.response_steps || []).forEach(function (s, i) {
+      h += '<div class="say-step"><span class="say-num">' + (i + 1) + "</span><span>" + esc(s) + "</span></div>";
+    });
+    h += "</div></div>";
+    return h;
+  }
+
   function noneCard() {
     var st = currentStage();
     return '<div class="card card-none">' +
@@ -261,7 +280,7 @@
       textHtml + "</span></div></div></div>";
   }
 
-  function renderCopilot(result, smartPlaceholder, showRetie) {
+  function renderCopilot(result, smartPlaceholder, showRetie, activeObj) {
     var c = $("copilot");
     var objHtml = result.objections.map(objectionCard).join("");
     var flagHtml = result.flags.map(flagCard).join("");
@@ -272,7 +291,9 @@
     // on appearance). Flags lead only when there is no objection at all.
     if (result.objections.length) { body += objHtml + flagHtml; }
     else { body += flagHtml; }
-    if (!objHtml && !flagHtml) body += noneCard();
+    // nothing new this line — if an objection is still live, keep working it
+    // instead of falsely signalling "all clear".
+    if (!objHtml && !flagHtml) body += activeObj ? continuingCard(activeObj) : noneCard();
     c.innerHTML = body;
     c.scrollTop = 0;
   }
@@ -339,13 +360,14 @@
         if (state.handledObjections.indexOf(m.item.label) === -1)
           state.handledObjections.push(m.item.label);
       });
+      if (result.objections.length) state.activeObjection = result.objections[0].item;
       result.flags.forEach(function (m) { markBelief(m.item.belief); });
       renderBeliefTracker();
       $("input").value = "";
       renderLog();
       var useSmart = state.smart && state.apiKey;
       var myReq = ++reqSeq;
-      renderCopilot(result, useSmart, showRetie);
+      renderCopilot(result, useSmart, showRetie, state.activeObjection);
       if (useSmart) runSmart(text, result, myReq);
       $("copilot").focus();
     } finally {
@@ -814,6 +836,7 @@
     state.log = [];
     state.handledObjections = [];
     state.beliefsCovered = {};
+    state.activeObjection = null;
     nextId = 1;
     reqSeq++;
     analyzing = false;

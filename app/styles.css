@@ -330,6 +330,10 @@ body {
 #live-facts:focus { outline: none; border-color: var(--amber); }
 #live-facts::placeholder { color: var(--text-dim); }
 
+/* ---- Still-working (call memory) card ---- */
+.card-continuing { border-left: 4px solid var(--amber); }
+.card-continuing .card-kicker { color: var(--amber); }
+
 /* ---- Belief-prompts card ---- */
 .card-belief { border-left: 4px solid var(--cyan); }
 .card-belief .card-kicker { color: var(--cyan); }
