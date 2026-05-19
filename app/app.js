@@ -56,6 +56,7 @@
   var FLAGS      = need(DATA, "discoveryFlags.flags");
   var STAGES     = need(DATA, "funnel.stages");
   var SITUATIONS = (DATA.objections && DATA.objections.situations) || [];
+  var BELIEF_PROMPTS = (DATA.discoveryFlags && DATA.discoveryFlags.belief_prompts) || {};
   if (!Array.isArray(OBJECTIONS) || !Array.isArray(FLAGS) ||
       !Array.isArray(STAGES) || !STAGES.length)
     fail("data/data.js has empty or non-array core tables.");
@@ -89,7 +90,8 @@
     smart: store.get("copilot_smart") === "1",
     handledObjections: [],   // labels of objections surfaced earlier this call
     beliefsCovered: {},      // belief id -> true once touched in discovery
-    prospect: null           // { name, business, situation, source, goal, extra, prep }
+    prospect: null,          // { name, business, situation, source, goal, extra, prep }
+    liveFacts: store.get("copilot_livefacts") || ""   // rep's running call notes
   };
   var nextId = 1;            // monotonic log id (Date.now can collide)
   var reqSeq = 0;            // smart-mode request token — stale fetches no-op
@@ -423,6 +425,7 @@
       if (state.prospect.goal) ctx += "; goal: " + state.prospect.goal;
       ctx += "\n";
     }
+    if (state.liveFacts) ctx += "Known facts (rep's live call notes):\n" + state.liveFacts + "\n";
     var recent = state.log.slice(-7, -1).map(function (e) {
       var labels = e.result.objections.map(function (m) { return m.item.label; }).join(", ");
       return "- prospect: " + e.text + (labels ? "  [matched: " + labels + "]" : "");
@@ -604,7 +607,25 @@
         '" aria-pressed="' + on + '">' + (on ? "✓ " : "") + esc(BELIEF_LABEL[b]) + "</button>";
     }).join("");
     el.innerHTML = '<span class="belief-label">7 beliefs — ' + done + "/7</span>" +
-      chips + '<span class="belief-hint">tick each belief as you cover it</span>';
+      chips + '<span class="belief-hint">click a belief for prompts &amp; to tick it off</span>';
+  }
+  function showBeliefPrompts(b) {
+    reqSeq++;   // a manual card supersedes any in-flight smart fetch
+    var prompts = BELIEF_PROMPTS[b] || [];
+    var on = !!state.beliefsCovered[b];
+    var h = '<div class="card card-belief">';
+    h += '<div class="card-head"><span class="card-kicker">' + glyph("◇") + " Belief: " +
+      esc(BELIEF_LABEL[b]) + "</span>";
+    h += '<button class="belief-cover-btn' + (on ? " on" : "") + '" data-cover="' + b + '">' +
+      (on ? "✓ Covered" : "Mark covered") + "</button></div>";
+    h += '<div class="say-block"><div class="say-label">Ask this to surface it</div>';
+    prompts.forEach(function (p, i) {
+      h += '<div class="say-step"><span class="say-num">' + (i + 1) + "</span><span>" + esc(p) + "</span></div>";
+    });
+    h += "</div></div>";
+    $("copilot").innerHTML = h;
+    $("copilot").scrollTop = 0;
+    $("copilot").focus();
   }
 
   /* ---------- pre-call prep ---------- */
@@ -846,13 +867,25 @@
       var b = e.target.closest ? e.target.closest(".stage-pill") : null;
       if (b) setStage(b.getAttribute("data-id"));
     });
-    // delegated belief-chip handler
+    // belief chip -> show that belief's prompts
     $("belief-tracker").addEventListener("click", function (e) {
       var b = e.target.closest ? e.target.closest(".belief-chip") : null;
-      if (!b) return;
-      var k = b.getAttribute("data-belief");
-      state.beliefsCovered[k] = !state.beliefsCovered[k];
+      if (b) showBeliefPrompts(b.getAttribute("data-belief"));
+    });
+    // "Mark covered" button inside a belief-prompts card
+    $("copilot").addEventListener("click", function (e) {
+      var btn = e.target.closest ? e.target.closest(".belief-cover-btn") : null;
+      if (!btn) return;
+      var b = btn.getAttribute("data-cover");
+      state.beliefsCovered[b] = !state.beliefsCovered[b];
       renderBeliefTracker();
+      showBeliefPrompts(b);
+    });
+    // live prospect-facts scratchpad
+    $("live-facts").value = state.liveFacts;
+    $("live-facts").addEventListener("input", function () {
+      state.liveFacts = this.value;
+      store.set("copilot_livefacts", state.liveFacts);
     });
     $("input").focus();
   }

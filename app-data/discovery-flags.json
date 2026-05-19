@@ -1,6 +1,43 @@
 {
   "version": "1.0",
   "description": "Discovery flags for the Call Copilot. During discovery, when the prospect says something that should be dug into, the app surfaces the flag + the exact probe question. Built from Cole Gordon's discovery methodology (the 7 beliefs: pain, doubt, cost, desire, money, support, trust).",
+  "belief_prompts": {
+    "pain": [
+      "What's the single biggest challenge in the business right now? Or what's not working at the level it truly could be?",
+      "Tell me more — when you said [that], what do you mean exactly? Why do you say that though?",
+      "Has that put you in a tough position? In what way? How's it showing up day to day?"
+    ],
+    "doubt": [
+      "What have you already tried to fix this? What happened?",
+      "When something like that doesn't work, it's usually one of two things — the method or the execution. Which do you think it was?",
+      "What's been the single biggest thing keeping you from fixing this on your own?"
+    ],
+    "cost": [
+      "Can I ask you a personal question — what's your plan if nothing changes? What if the last five years are like the next five?",
+      "If we roll forward 12 months and the business is still exactly here, what does that actually cost you — money, time, energy?",
+      "What's it costing you right now to keep going the way you are?"
+    ],
+    "desire": [
+      "Where do you want the business to be? What's the revenue number you're driving toward, and why that number specifically?",
+      "What would hitting that actually let you do — personally — that you can't do right now?",
+      "Is there any other reason this is important to you now though?"
+    ],
+    "money": [
+      "Just for clarity — what was your exact revenue last month? And the month before?",
+      "What's a single client worth to you over their lifetime?",
+      "If this is the right move, is the budget there to make it happen — or would you need to free something up?"
+    ],
+    "support": [
+      "Who else is involved in a decision like this?",
+      "Is your partner supportive of you making this change? Do they know you're on this call — what would they think if they knew?",
+      "If your team has to implement this, do they have the bandwidth this quarter?"
+    ],
+    "trust": [
+      "What would make you 100% confident that we're the team to get you there?",
+      "Have you looked at other options? What's drawing you to look at this now?",
+      "Is there anything about working with us specifically you're unsure of — so I can clear it up now?"
+    ]
+  },
   "flags": [
     {
       "id": "vague-answer",

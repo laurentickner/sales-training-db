@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.anthropic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Scale Systems Sales Call Copilot</title>
-<link rel="stylesheet" href="styles.css?v=6" />
+<link rel="stylesheet" href="styles.css?v=7" />
 </head>
 <body>
 
@@ -56,6 +56,11 @@
       </div>
       <p class="hint">Enter = analyze · Shift+Enter = new line</p>
       <div class="situation-bar" id="situation-bar" aria-label="Non-verbal situations"></div>
+    </div>
+    <div class="facts-zone">
+      <label class="facts-label" for="live-facts">Prospect facts — jot the goal &amp; numbers as you get them</label>
+      <textarea id="live-facts" rows="3"
+        placeholder="goal = 100k/mo&#10;last month revenue = 32k · client LTV = 6k&#10;partner involved in the decision"></textarea>
     </div>
     <div id="log" class="log"></div>
   </section>
@@ -152,7 +157,7 @@
   </div>
 </div>
 
-<script src="data/data.js?v=6"></script>
-<script src="app.js?v=6"></script>
+<script src="data/data.js?v=7"></script>
+<script src="app.js?v=7"></script>
 </body>
 </html>

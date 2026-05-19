@@ -315,6 +315,35 @@ body {
   * { transition: none !important; }
 }
 
+/* ---- Live prospect-facts scratchpad ---- */
+.facts-zone { flex-shrink: 0; margin-bottom: 12px; }
+.facts-label {
+  display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.3px;
+  text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px;
+}
+#live-facts {
+  width: 100%; resize: vertical; min-height: 56px;
+  background: var(--bg-input); color: var(--amber);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 9px 11px; font-size: 13px; font-family: inherit; line-height: 1.5;
+}
+#live-facts:focus { outline: none; border-color: var(--amber); }
+#live-facts::placeholder { color: var(--text-dim); }
+
+/* ---- Belief-prompts card ---- */
+.card-belief { border-left: 4px solid var(--cyan); }
+.card-belief .card-kicker { color: var(--cyan); }
+.belief-cover-btn {
+  font-size: 11px; font-weight: 700; font-family: inherit;
+  padding: 4px 11px; border-radius: 20px; cursor: pointer;
+  background: var(--bg-input); color: var(--text-dim);
+  border: 1px solid var(--border);
+}
+.belief-cover-btn:hover { color: var(--text); }
+.belief-cover-btn.on {
+  background: #15402c; color: var(--green); border-color: #1e5e40;
+}
+
 /* ---- Prep button + prospect badge ---- */
 .btn-prep {
   background: var(--aubergine); color: var(--text);
