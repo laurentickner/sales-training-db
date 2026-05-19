@@ -1,0 +1,10 @@
+# Netlify deploy config for the Call Copilot app.
+# The app is a static, no-build site living in app/.
+[build]
+  publish = "app"
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "no-cache"
