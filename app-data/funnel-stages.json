@@ -52,15 +52,17 @@
     {
       "id": "pitch",
       "name": "4. Pitch",
-      "goal": "Sell the METHOD, not the deliverables. High-level promise -> bridge (3-4 pillars) -> delivery. Each pillar is the simultaneous explanation of why their past attempts failed and why this is different.",
-      "listen_for": "Comprehension. If they say 'yeah' but clearly don't get it — stop and re-explain.",
+      "goal": "Sell the METHOD, not the deliverables. High-level promise -> 3 pillars -> delivery. Each pillar is the simultaneous explanation of why their past attempts failed and why this is different. Tie-down after every pillar.",
+      "listen_for": "Comprehension. If they say 'yeah' but clearly don't get it — stop and re-explain. Pillars 1 & 2 are paradigm shifts; 3 is the payoff.",
       "say": [
-        "Do you have a pen and pad? Write out one through four. (Pause until ready.)",
-        "Everything we do is customized — for you specifically it's gonna be [3-4] things, to take you from [current] to [desired] while [removing the pain].",
-        "PILLAR: When it comes to [outcome], here's the problem — most people do [wrong behavior], so they end up with [problem], which means [consequence]. So instead, what we do is [your method], which lets you [benefit], and ultimately [benefit of the benefit]. Does that make sense? Cool — what are your thoughts on that?",
-        "DELIVERY (~60 sec, last): here's how we work together, account manager, calls, etc. — then end on benefits."
+        "Do you have a pen and paper, something to take notes with? I want to break this down so you can see exactly how this works for you. (Pause until ready.)",
+        "It's not your fault it hasn't worked — there's so much complicated, conflicting information out there. For you specifically it's going to be three things, to take you from [current: posting with no real revenue from social] to [their stated goal], while [removing the specific pain they named].",
+        "PILLAR 1 — MESSAGING / 'SELL THE VACATION': Use the Japan-restaurant analogy — a great restaurant in Japan with the menu only in Japanese won't sell to you, not because it's not good but because the value isn't communicated in a language you understand. The first thing we do is give you the right social media strategy so your value is communicated in a language the right people understand. 'Are you following me so far? What questions do you have about that part specifically?'",
+        "PILLAR 2 — CONTENT STRATEGY & SYSTEM: Use the gym analogy — a treadmill alone won't transform you; you need the strategy AND the system. We build you the AI Content System that writes your content in your voice, so it's done. Drop the case study: someone who joined last week booked 3 sales calls within 24 hours. 'What do you feel that would do for your business? Does that make sense — what questions do you have about that specifically?'",
+        "PILLAR 3 — THE SOCIAL MEDIA BRIDGE: Use the bridge analogy — traffic on one side, your solution on the other; with no bridge there are no sales. The last thing we do is give you the bridge, so you're left with prequalified prospects ready to buy. 'Does that make sense?'",
+        "DELIVERY (~60 sec, last): here's how we work together — Lauren builds your strategy, Mariana delivers it 1:1, plus the AI Content System and ongoing support. The reason we do it that way is so that instead of [blank] you can actually [benefit], so you can [benefit of the benefit]."
       ],
-      "advance_when": "You've covered all pillars + delivery, with a tie-down after each."
+      "advance_when": "You've covered all 3 pillars + delivery, with a tie-down after each."
     },
     {
       "id": "committing",
@@ -73,7 +75,7 @@
         "How do you feel about the process specifically? Do you feel like that's what you need to get to [outcome]?",
         "SCALE: What's really important to us is alignment — our team is all in. On a scale of 1-10, one being 'I hate this guy, get me off the phone,' ten being 'that's exactly what I need' — where do you fall exactly? ... What's keeping you from a 9 or 10? (Nothing in life is a 10 — it's not even 100% certain you'll wake up tomorrow. A 9 is about as close to certain as you'll ever be. And I'm not asking if you're a 10 on the price — in terms of the [4] things, do you feel in alignment?)",
         "MINI-TRANSITION: So you feel really good about the process, no questions — what's next, where do you want to go from here? (Gets them to ask for the price.)",
-        "ONBOARDING (before price): You'll process the investment with me, then we set a baseline — homework, then your implementation pathway call mapping the next 30-60 days.",
+        "ONBOARDING (before price — removes the 'black hole' of the unknown so price lands against a clear picture): Basically, next steps — you'll process the investment with me. Once we take care of that, we set up an onboarding call, give you some homework, and lay out when we're going to meet, how often, what we'll give you and what we need from you — so you have complete clarity and certainty on exactly what's going to happen over the next 12 weeks. Does that sound good?",
         "And the next steps are very simple — the investment is just [X]. (Soft, downward inflection, price ENDS the sentence on a period. Then go quiet — not a weird standoff.)",
         "CLOSE: How do you feel? ... Cool, you sure? ... You ready to get started on some homework? ... What's your billing address?"
       ],

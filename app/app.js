@@ -42,6 +42,14 @@
   var MAX_INPUT = 2000;   // one spoken turn, not a pasted transcript
   var MIN_SCORE = 1.0;    // below this, a keyword match is too weak to surface
 
+  /* Cole's 7 beliefs — every objection traces to one of these going uninstalled */
+  var BELIEFS = ["pain", "doubt", "cost", "desire", "money", "support", "trust"];
+  var BELIEF_LABEL = {
+    pain: "Pain", doubt: "Doubt", cost: "Cost", desire: "Desire",
+    money: "Money", support: "Support", trust: "Trust"
+  };
+  var PROSPECTS_KEY = "copilot_prospects";
+
   /* ---------- safe localStorage ---------- */
   var store = {
     get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
@@ -54,7 +62,9 @@
     log: [],                 // { id, time, stageName, text, result }
     apiKey: store.get("copilot_api_key") || "",
     smart: store.get("copilot_smart") === "1",
-    handledObjections: []    // labels of objections surfaced earlier this call
+    handledObjections: [],   // labels of objections surfaced earlier this call
+    beliefsCovered: {},      // belief id -> true once touched in discovery
+    prospect: null           // { name, business, situation, source, goal, extra, prep }
   };
   var nextId = 1;            // monotonic log id (Date.now can collide)
   var reqSeq = 0;            // smart-mode request token — stale fetches no-op
@@ -305,6 +315,8 @@
         if (state.handledObjections.indexOf(m.item.label) === -1)
           state.handledObjections.push(m.item.label);
       });
+      result.flags.forEach(function (m) { markBelief(m.item.belief); });
+      renderBeliefTracker();
       $("input").value = "";
       renderLog();
       var useSmart = state.smart && state.apiKey;
@@ -383,6 +395,12 @@
 
   function runSmart(text, kwResult, reqId) {
     var ctx = "Current funnel stage: " + state.stage + ".\n";
+    if (state.prospect) {
+      ctx += "Prospect: " + state.prospect.name;
+      if (state.prospect.business) ctx += " — " + state.prospect.business;
+      if (state.prospect.goal) ctx += "; goal: " + state.prospect.goal;
+      ctx += "\n";
+    }
     var recent = state.log.slice(-7, -1).map(function (e) {
       var labels = e.result.objections.map(function (m) { return m.item.label; }).join(", ");
       return "- prospect: " + e.text + (labels ? "  [matched: " + labels + "]" : "");
@@ -481,37 +499,50 @@
     state.stage = stageById(id).id;
     renderStageStrip();
     renderStageRef();
+    renderBeliefTracker();
   }
 
-  /* ---------- settings + modal ---------- */
-  var lastFocused = null;
-  function modalEls() {
-    return Array.prototype.filter.call(
-      $("settings-modal").querySelectorAll('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])'),
-      function (el) { return el.offsetParent !== null; });
-  }
+  /* ---------- generic modal (focus trap + Escape) ---------- */
+  var modalState = { id: null, lastFocused: null, onClose: null };
   function modalKeydown(e) {
-    if (e.key === "Escape") { closeSettings(); return; }
+    if (!modalState.id) return;
+    if (e.key === "Escape") { closeModal(); return; }
     if (e.key !== "Tab") return;
-    var f = modalEls();
+    var f = Array.prototype.filter.call(
+      $(modalState.id).querySelectorAll('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])'),
+      function (el) { return el.offsetParent !== null; });
     if (!f.length) return;
     var first = f[0], last = f[f.length - 1];
     if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   }
+  function openModal(id, focusId, onClose) {
+    if (modalState.id) closeModal();
+    modalState.lastFocused = document.activeElement;
+    modalState.id = id;
+    modalState.onClose = onClose || null;
+    $(id).classList.remove("hidden");
+    $(id).addEventListener("keydown", modalKeydown);
+    if (focusId && $(focusId)) $(focusId).focus();
+  }
+  function closeModal() {
+    if (!modalState.id) return;
+    var el = $(modalState.id);
+    el.classList.add("hidden");
+    el.removeEventListener("keydown", modalKeydown);
+    var prev = modalState.lastFocused, cb = modalState.onClose;
+    modalState.id = null; modalState.lastFocused = null; modalState.onClose = null;
+    if (prev && prev.focus) prev.focus();
+    if (cb) cb();
+  }
+
+  /* ---------- settings ---------- */
   function openSettings() {
-    lastFocused = document.activeElement;
     $("api-key").value = state.apiKey;
     $("smart-toggle").checked = state.smart;
-    $("settings-modal").classList.remove("hidden");
-    $("settings-modal").addEventListener("keydown", modalKeydown);
-    $("api-key").focus();
+    openModal("settings-modal", "api-key");
   }
-  function closeSettings() {
-    $("settings-modal").classList.add("hidden");
-    $("settings-modal").removeEventListener("keydown", modalKeydown);
-    if (lastFocused && lastFocused.focus) lastFocused.focus();
-  }
+  function closeSettings() { closeModal(); }
   function saveSettings() {
     var k = $("api-key").value.trim();
     if (k && k.indexOf("sk-ant-") !== 0) {
@@ -532,6 +563,187 @@
       b.textContent = "Smart mode"; b.className = "mode-badge mode-smart";
     } else {
       b.textContent = "Keyword mode"; b.className = "mode-badge mode-offline";
+    }
+  }
+
+  /* ---------- 7-beliefs checklist (discovery) ---------- */
+  function markBelief(b) {
+    if (BELIEFS.indexOf(b) !== -1) state.beliefsCovered[b] = true;
+  }
+  function renderBeliefTracker() {
+    var el = $("belief-tracker");
+    if (state.stage !== "discovery") { el.hidden = true; el.innerHTML = ""; return; }
+    el.hidden = false;
+    var done = 0;
+    var chips = BELIEFS.map(function (b) {
+      var on = !!state.beliefsCovered[b];
+      if (on) done++;
+      return '<button class="belief-chip' + (on ? " on" : "") + '" data-belief="' + b +
+        '" aria-pressed="' + on + '">' + (on ? "✓ " : "") + esc(BELIEF_LABEL[b]) + "</button>";
+    }).join("");
+    el.innerHTML = '<span class="belief-label">7 beliefs — ' + done + "/7</span>" +
+      chips + '<span class="belief-hint">tick each belief as you cover it</span>';
+  }
+
+  /* ---------- pre-call prep ---------- */
+  function loadProspects() {
+    try { return JSON.parse(store.get(PROSPECTS_KEY) || "{}"); } catch (e) { return {}; }
+  }
+  function setProspect(p) {
+    state.prospect = p;
+    var badge = $("prospect-badge");
+    if (p && p.name) { badge.hidden = false; badge.textContent = "◆ " + p.name; }
+    else { badge.hidden = true; }
+  }
+  function fillPrepForm(p) {
+    $("prep-name").value = p.name || "";
+    $("prep-business").value = p.business || "";
+    $("prep-situation").value = p.situation || "";
+    $("prep-source").value = p.source || "";
+    $("prep-goal").value = p.goal || "";
+    $("prep-extra").value = p.extra || "";
+  }
+  function readPrepForm() {
+    return {
+      name: $("prep-name").value.trim(),
+      business: $("prep-business").value.trim(),
+      situation: $("prep-situation").value.trim(),
+      source: $("prep-source").value.trim(),
+      goal: $("prep-goal").value.trim(),
+      extra: $("prep-extra").value.trim()
+    };
+  }
+  function openPrep() {
+    var map = loadProspects();
+    var names = Object.keys(map).sort();
+    $("prep-load").innerHTML = '<option value="">— new prospect —</option>' +
+      names.map(function (n) { return '<option value="' + esc(n) + '">' + esc(n) + "</option>"; }).join("");
+    if (state.prospect) fillPrepForm(state.prospect);
+    openModal("prep-modal", "prep-name");
+  }
+  function savePrepText(p, text) {
+    p.prep = text;
+    var map = loadProspects();
+    map[p.name] = p;
+    store.set(PROSPECTS_KEY, JSON.stringify(map));
+  }
+  function renderPrep(text, loading) {
+    var body;
+    if (loading) {
+      body = '<div class="card-sub" style="padding:4px 0 8px">Reading the prospect against ' +
+        "Cole + Ravi’s methodology…</div>";
+    } else {
+      body = '<div class="say-step"><span class="say-num">' + glyph("◆") + "</span><span>" +
+        esc(text).slice(0, 6000).replace(/\n/g, "<br>") + "</span></div>";
+    }
+    $("copilot").innerHTML = '<div class="card card-prep">' +
+      '<div class="card-head"><span class="card-kicker">' + glyph("◆") +
+      " Pre-call prep — " + esc(state.prospect ? state.prospect.name : "") + "</span></div>" +
+      '<div class="say-block"><div class="say-label">Brief</div>' + body + "</div></div>";
+    $("copilot").scrollTop = 0;
+    $("copilot").focus();
+  }
+  function offlinePrep(p) {
+    var L = [];
+    L.push("PROSPECT: " + p.name);
+    if (p.business) L.push("Business: " + p.business);
+    if (p.situation) L.push("Situation: " + p.situation);
+    if (p.source) L.push("Lead source: " + p.source);
+    if (p.goal) L.push("Goal: " + p.goal);
+    L.push("");
+    L.push("WHAT TO EXPECT");
+    L.push("Run the funnel in order: Introduction → Discovery → Transition → Pitch → Committing → Objections. Don't pitch before discovery is genuinely done.");
+    L.push("");
+    L.push("DIG DEEPER — Cole's 7 beliefs");
+    L.push("Pain: the specific, personal cost — not the surface complaint.");
+    L.push("Doubt: why a proven path beats what they've already tried.");
+    L.push("Cost: 'what's your plan if nothing changes? what if the next 5 years = the last 5?'");
+    L.push("Desire: the real why behind the number; the non-monetary payoff.");
+    L.push("Money: chunk revenue down to exact numbers; install the money belief early.");
+    L.push("Support: who else is in the decision — qualify the partner/team in discovery.");
+    L.push("Trust: why you, why this company — surface it before the close.");
+    L.push("");
+    L.push("RAVI — GET THE NUMBERS");
+    L.push("Exact revenue last month + month before; leads/calls per week; close rate; client LTV. Then run the conservative upside math before the temp check: one more client/month × 12.");
+    if (p.extra) { L.push(""); L.push("YOUR NOTES / RISKS"); L.push(p.extra); }
+    L.push("");
+    L.push("(Add an Anthropic API key in Settings for a prospect-specific prep written by Claude.)");
+    return L.join("\n");
+  }
+  function buildPrepSystemPrompt() {
+    return [
+      "You are a pre-call strategist for a Scale Systems sales rep. Scale Systems sells an AI-powered organic-social-media revenue system (front-end offer about $4k, 90-day programme; ideal client = established business owners with real revenue).",
+      "Methodology you must apply: Cole Gordon (install the 7 beliefs — pain, doubt, cost, desire, money, support, trust; funnel Introduction -> Discovery -> Transition -> Pitch -> Committing -> Objections; handle uncertainty before logistics) and Ravi Abuvala (discovery must extract exact numbers — revenue, leads, close rate, client LTV; run conservative upside math before the temp check).",
+      "The rep gives you notes on an upcoming prospect. Produce a tight pre-call brief, UNDER 280 WORDS, with these exact section headers on their own line:",
+      "WHAT TO EXPECT — 2-3 lines on the kind of call this will likely be.",
+      "HARDEST BELIEFS — which 2-3 of the 7 beliefs will need the most work for THIS prospect, and why.",
+      "DIG DEEPER — 3-5 specific discovery questions tailored to this prospect's business and situation.",
+      "LIKELY OBJECTIONS — the 2-3 objections most likely to surface, each with a one-line pre-empt.",
+      "WATCH-OUTS — 1-2 risks or red flags from the notes.",
+      "Be specific to the notes given, never generic. Where a note is missing, say what the rep should find out early on the call. Plain text, no markdown."
+    ].join("\n");
+  }
+  function runPrep(p) {
+    var notes = "Prospect: " + p.name +
+      "\nBusiness: " + (p.business || "(not given)") +
+      "\nCurrent situation: " + (p.situation || "(not given)") +
+      "\nLead source: " + (p.source || "(not given)") +
+      "\nStated goal: " + (p.goal || "(not given)") +
+      "\nOther notes / risks: " + (p.extra || "(none)");
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, 30000);
+    fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST", signal: ctrl.signal,
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": state.apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 900,
+        temperature: 0.5,
+        system: buildPrepSystemPrompt(),
+        messages: [{ role: "user", content: "Prep me for this call:\n\n" + notes }]
+      })
+    })
+      .then(function (r) {
+        if (r.ok) return r.json();
+        return r.text().then(function (t) {
+          if (window.console) console.warn("Prep HTTP " + r.status + ": " + t.slice(0, 300));
+          throw new Error(statusMessage(r.status));
+        });
+      })
+      .then(function (j) {
+        if (j && j.type === "error") throw new Error((j.error && j.error.message) || "Claude returned an error.");
+        var block = j && j.content && j.content[0];
+        var out = (block && block.text) ? block.text : "(no usable prep returned)";
+        savePrepText(p, out);
+        if (state.prospect && state.prospect.name === p.name) renderPrep(out, false);
+      })
+      .catch(function (e) {
+        var msg = e.name === "AbortError" ? "Prep timed out — try again." : (e.message || "Prep failed.");
+        var fallback = offlinePrep(p);
+        savePrepText(p, fallback);
+        if (state.prospect && state.prospect.name === p.name)
+          renderPrep("Smart prep unavailable: " + msg + "\n\n" + fallback, false);
+      })
+      .then(function () { clearTimeout(timer); }, function () { clearTimeout(timer); });
+  }
+  function generatePrep() {
+    var p = readPrepForm();
+    if (!p.name) { alert("Give the prospect a name first."); return; }
+    p.savedAt = new Date().toISOString();
+    setProspect(p);
+    closeModal();
+    if (state.smart && state.apiKey) {
+      renderPrep("", true);
+      runPrep(p);
+    } else {
+      var text = offlinePrep(p);
+      savePrepText(p, text);
+      renderPrep(text, false);
     }
   }
 
@@ -558,6 +770,7 @@
     if (state.log.length && !confirm("Start a fresh call? This clears the current log.")) return;
     state.log = [];
     state.handledObjections = [];
+    state.beliefsCovered = {};
     nextId = 1;
     reqSeq++;
     analyzing = false;
@@ -576,6 +789,7 @@
     renderStageRef();
     renderLog();
     renderSituationBar();
+    renderBeliefTracker();
     updateModeBadge();
 
     $("btn-analyze").addEventListener("click", analyze);
@@ -588,7 +802,19 @@
     $("btn-save-settings").addEventListener("click", saveSettings);
     $("btn-close-settings").addEventListener("click", closeSettings);
     $("settings-modal").addEventListener("click", function (e) {
-      if (e.target === $("settings-modal")) closeSettings();
+      if (e.target === $("settings-modal")) closeModal();
+    });
+    // pre-call prep
+    $("btn-prep").addEventListener("click", openPrep);
+    $("btn-generate-prep").addEventListener("click", generatePrep);
+    $("btn-close-prep").addEventListener("click", closeModal);
+    $("prep-modal").addEventListener("click", function (e) {
+      if (e.target === $("prep-modal")) closeModal();
+    });
+    $("prep-load").addEventListener("change", function () {
+      if (!this.value) return;
+      var map = loadProspects();
+      if (map[this.value]) fillPrepForm(map[this.value]);
     });
     // delegated log handlers — listeners don't multiply per render
     $("log").addEventListener("click", onLogActivate);
@@ -597,6 +823,14 @@
     $("stage-strip").addEventListener("click", function (e) {
       var b = e.target.closest ? e.target.closest(".stage-pill") : null;
       if (b) setStage(b.getAttribute("data-id"));
+    });
+    // delegated belief-chip handler
+    $("belief-tracker").addEventListener("click", function (e) {
+      var b = e.target.closest ? e.target.closest(".belief-chip") : null;
+      if (!b) return;
+      var k = b.getAttribute("data-belief");
+      state.beliefsCovered[k] = !state.beliefsCovered[k];
+      renderBeliefTracker();
     });
     $("input").focus();
   }

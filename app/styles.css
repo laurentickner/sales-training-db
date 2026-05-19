@@ -313,3 +313,54 @@ body {
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* ---- Prep button + prospect badge ---- */
+.btn-prep {
+  background: var(--aubergine); color: var(--text);
+  border-color: #4a2da3;
+}
+.btn-prep:hover { filter: brightness(1.2); }
+.prospect-badge {
+  font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px;
+  background: var(--bg-card); color: var(--amber);
+  border: 1px solid var(--border); white-space: nowrap;
+}
+
+/* ---- 7-beliefs checklist ---- */
+.belief-tracker {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  padding: 8px 20px;
+  background: var(--bg-panel); border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.belief-tracker[hidden] { display: none; }
+.belief-label {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.4px;
+  text-transform: uppercase; color: var(--text-dim);
+}
+.belief-chip {
+  font-size: 12px; font-weight: 700; font-family: inherit;
+  padding: 4px 11px; border-radius: 20px;
+  background: var(--bg-card); color: var(--text-dim);
+  border: 1px solid var(--border); cursor: pointer;
+  transition: all .12s ease;
+}
+.belief-chip:hover { color: var(--text); }
+.belief-chip.on {
+  background: #15402c; color: var(--green); border-color: #1e5e40;
+}
+.belief-hint { font-size: 10.5px; color: var(--text-dim); margin-left: auto; }
+
+/* ---- Prep card ---- */
+.card-prep { border-left: 4px solid var(--amber); }
+.card-prep .card-kicker { color: var(--amber); }
+
+/* ---- Wider modal + select/textarea fields ---- */
+.modal-card-wide { width: 560px; }
+.field textarea, .field select {
+  background: var(--bg-input); color: var(--text);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 9px 11px; font-size: 13.5px; font-family: inherit; line-height: 1.45;
+  resize: vertical;
+}
+.field textarea:focus, .field select:focus { outline: none; border-color: var(--cyan); }

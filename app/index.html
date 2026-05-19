@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.anthropic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Scale Systems Sales Call Copilot</title>
-<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="styles.css?v=2" />
 </head>
 <body>
 
@@ -26,7 +26,9 @@
     </div>
   </div>
   <div class="topbar-actions">
+    <span id="prospect-badge" class="prospect-badge" hidden></span>
     <span id="mode-badge" class="mode-badge mode-offline">Keyword mode</span>
+    <button id="btn-prep" class="btn btn-prep" title="Prepare for an upcoming call"><span aria-hidden="true">◆</span> Prep call</button>
     <button id="btn-settings" class="btn btn-ghost" title="Settings"><span aria-hidden="true">⚙</span> Settings</button>
     <button id="btn-newcall" class="btn btn-ghost" title="Start a fresh call"><span aria-hidden="true">↻</span> New call</button>
   </div>
@@ -34,6 +36,9 @@
 
 <!-- Funnel stage strip -->
 <nav class="stage-strip" id="stage-strip" aria-label="Funnel stage"></nav>
+
+<!-- 7-beliefs checklist (discovery only) -->
+<div class="belief-tracker" id="belief-tracker" hidden aria-label="Cole's 7 beliefs — covered in discovery"></div>
 
 <main class="layout">
 
@@ -100,7 +105,52 @@
   </div>
 </div>
 
-<script src="data/data.js"></script>
-<script src="app.js"></script>
+<!-- Pre-call prep modal -->
+<div id="prep-modal" class="modal hidden" role="dialog" aria-modal="true"
+     aria-labelledby="prep-title">
+  <div class="modal-card modal-card-wide">
+    <h3 id="prep-title">Prep an upcoming call</h3>
+    <p class="field-note">
+      Submit what you know about the prospect. The copilot reads it against Cole Gordon
+      and Ravi Abuvala's methodology and tells you what to expect, which beliefs to work
+      hardest, and where to dig deeper — before you dial in.
+    </p>
+    <label class="field">
+      <span>Saved prospects</span>
+      <select id="prep-load"><option value="">— new prospect —</option></select>
+    </label>
+    <label class="field">
+      <span>Prospect name *</span>
+      <input type="text" id="prep-name" placeholder="e.g. Jordan Reyes" />
+    </label>
+    <label class="field">
+      <span>Their business — what they sell, who for, how long running it</span>
+      <textarea id="prep-business" rows="2" placeholder="e.g. B2B lead-gen agency, 3 years, mostly local trades clients"></textarea>
+    </label>
+    <label class="field">
+      <span>Current situation — revenue, team, how they get clients now</span>
+      <textarea id="prep-situation" rows="2" placeholder="e.g. ~$30k/mo, plateaued, all clients from referrals + cold outreach, team of 2"></textarea>
+    </label>
+    <label class="field">
+      <span>Lead source — where they came from / what of yours they've consumed</span>
+      <textarea id="prep-source" rows="2" placeholder="e.g. booked from a LinkedIn post on the AI content system, watched the webinar"></textarea>
+    </label>
+    <label class="field">
+      <span>Their goal, if known</span>
+      <input type="text" id="prep-goal" placeholder="e.g. wants to hit $100k/mo and stop doing delivery" />
+    </label>
+    <label class="field">
+      <span>Anything else — risks, past attempts, red flags</span>
+      <textarea id="prep-extra" rows="2" placeholder="e.g. mentioned they got burned by an agency last year; partner involved in decisions"></textarea>
+    </label>
+    <div class="modal-actions">
+      <button id="btn-generate-prep" class="btn btn-primary">Generate prep</button>
+      <button id="btn-close-prep" class="btn btn-ghost">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="data/data.js?v=2"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>
