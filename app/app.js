@@ -92,7 +92,8 @@
     beliefsCovered: {},      // belief id -> true once touched in discovery
     prospect: null,          // { name, business, situation, source, goal, extra, prep }
     liveFacts: store.get("copilot_livefacts") || "",  // rep's running call notes
-    activeObjection: null    // last objection raised — stays live until New call
+    activeObjection: null,   // last objection raised — stays live until New call
+    committingDone: {}       // committing-phase step id -> true
   };
   var nextId = 1;            // monotonic log id (Date.now can collide)
   var reqSeq = 0;            // smart-mode request token — stale fetches no-op
@@ -617,19 +618,41 @@
   function markBelief(b) {
     if (BELIEFS.indexOf(b) !== -1) state.beliefsCovered[b] = true;
   }
+  var COMMITTING_STEPS = [
+    { id: "upside", label: "Upside math" },
+    { id: "tempcheck", label: "Temp check" },
+    { id: "scale", label: "1-10 scale" },
+    { id: "onboarding", label: "Onboarding before price" },
+    { id: "price", label: "Price drop + silence" }
+  ];
   function renderBeliefTracker() {
     var el = $("belief-tracker");
-    if (state.stage !== "discovery") { el.hidden = true; el.innerHTML = ""; return; }
-    el.hidden = false;
-    var done = 0;
-    var chips = BELIEFS.map(function (b) {
-      var on = !!state.beliefsCovered[b];
-      if (on) done++;
-      return '<button class="belief-chip' + (on ? " on" : "") + '" data-belief="' + b +
-        '" aria-pressed="' + on + '">' + (on ? "✓ " : "") + esc(BELIEF_LABEL[b]) + "</button>";
-    }).join("");
-    el.innerHTML = '<span class="belief-label">7 beliefs — ' + done + "/7</span>" +
-      chips + '<span class="belief-hint">click a belief for prompts &amp; to tick it off</span>';
+    if (state.stage === "discovery") {
+      el.hidden = false;
+      var done = 0;
+      var chips = BELIEFS.map(function (b) {
+        var on = !!state.beliefsCovered[b];
+        if (on) done++;
+        return '<button class="belief-chip' + (on ? " on" : "") + '" data-belief="' + b +
+          '" aria-pressed="' + on + '">' + (on ? "✓ " : "") + esc(BELIEF_LABEL[b]) + "</button>";
+      }).join("");
+      el.innerHTML = '<span class="belief-label">7 beliefs — ' + done + "/7</span>" +
+        chips + '<span class="belief-hint">click a belief for prompts &amp; to tick it off</span>';
+    } else if (state.stage === "committing") {
+      el.hidden = false;
+      var cdone = 0;
+      var cchips = COMMITTING_STEPS.map(function (s) {
+        var on = !!state.committingDone[s.id];
+        if (on) cdone++;
+        return '<button class="belief-chip' + (on ? " on" : "") + '" data-step="' + s.id +
+          '" aria-pressed="' + on + '">' + (on ? "✓ " : "") + esc(s.label) + "</button>";
+      }).join("");
+      el.innerHTML = '<span class="belief-label">Committing — ' + cdone + "/" +
+        COMMITTING_STEPS.length + "</span>" + cchips +
+        '<span class="belief-hint">don’t skip a step — tick each as you run it</span>';
+    } else {
+      el.hidden = true; el.innerHTML = "";
+    }
   }
   function showBeliefPrompts(b) {
     reqSeq++;   // a manual card supersedes any in-flight smart fetch
@@ -847,6 +870,7 @@
     state.log = [];
     state.handledObjections = [];
     state.beliefsCovered = {};
+    state.committingDone = {};
     state.activeObjection = null;
     nextId = 1;
     reqSeq++;
@@ -901,10 +925,17 @@
       var b = e.target.closest ? e.target.closest(".stage-pill") : null;
       if (b) setStage(b.getAttribute("data-id"));
     });
-    // belief chip -> show that belief's prompts
+    // belief chip -> show prompts; committing-step chip -> tick it off
     $("belief-tracker").addEventListener("click", function (e) {
       var b = e.target.closest ? e.target.closest(".belief-chip") : null;
-      if (b) showBeliefPrompts(b.getAttribute("data-belief"));
+      if (!b) return;
+      if (b.hasAttribute("data-belief")) {
+        showBeliefPrompts(b.getAttribute("data-belief"));
+      } else if (b.hasAttribute("data-step")) {
+        var k = b.getAttribute("data-step");
+        state.committingDone[k] = !state.committingDone[k];
+        renderBeliefTracker();
+      }
     });
     // "Mark covered" button inside a belief-prompts card
     $("copilot").addEventListener("click", function (e) {
