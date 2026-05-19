@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.anthropic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Scale Systems Sales Call Copilot</title>
-<link rel="stylesheet" href="styles.css?v=8" />
+<link rel="stylesheet" href="styles.css?v=9" />
 </head>
 <body>
 
@@ -131,6 +131,10 @@
       <input type="text" id="prep-name" placeholder="e.g. Jordan Reyes" />
     </label>
     <label class="field">
+      <span>Triage call transcript or notes (recommended)</span>
+      <textarea id="prep-triage" rows="6" placeholder="Paste the triage call transcript or your notes from it — the copilot mines this for the prep. The fields below are optional if you paste this in."></textarea>
+    </label>
+    <label class="field">
       <span>Their business — what they sell, who for, how long running it</span>
       <textarea id="prep-business" rows="2" placeholder="e.g. B2B lead-gen agency, 3 years, mostly local trades clients"></textarea>
     </label>
@@ -157,7 +161,7 @@
   </div>
 </div>
 
-<script src="data/data.js?v=8"></script>
-<script src="app.js?v=8"></script>
+<script src="data/data.js?v=9"></script>
+<script src="app.js?v=9"></script>
 </body>
 </html>

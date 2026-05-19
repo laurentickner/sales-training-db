@@ -662,6 +662,7 @@
   }
   function fillPrepForm(p) {
     $("prep-name").value = p.name || "";
+    $("prep-triage").value = p.triage || "";
     $("prep-business").value = p.business || "";
     $("prep-situation").value = p.situation || "";
     $("prep-source").value = p.source || "";
@@ -671,6 +672,7 @@
   function readPrepForm() {
     return {
       name: $("prep-name").value.trim(),
+      triage: $("prep-triage").value.trim(),
       business: $("prep-business").value.trim(),
       situation: $("prep-situation").value.trim(),
       source: $("prep-source").value.trim(),
@@ -731,14 +733,20 @@
     L.push("RAVI — GET THE NUMBERS");
     L.push("Exact revenue last month + month before; leads/calls per week; close rate; client LTV. Then run the conservative upside math before the temp check: one more client/month × 12.");
     if (p.extra) { L.push(""); L.push("YOUR NOTES / RISKS"); L.push(p.extra); }
+    if (p.triage) {
+      L.push("");
+      L.push("TRIAGE CALL — re-read before dialling in");
+      L.push("Mine it for: the stated pain, the real goal + why, their numbers, who else decides, and anything they hedged on. Those are your dig-deeper points.");
+    }
     L.push("");
-    L.push("(Add an Anthropic API key in Settings for a prospect-specific prep written by Claude.)");
+    L.push("(Add an Anthropic API key in Settings for a prospect-specific prep that reads the triage transcript for you.)");
     return L.join("\n");
   }
   function buildPrepSystemPrompt() {
     return [
       "You are a pre-call strategist for a Scale Systems sales rep. Scale Systems sells an AI-powered organic-social-media revenue system (front-end offer about $4k, 90-day programme; ideal client = established business owners with real revenue).",
       "Methodology you must apply: Cole Gordon (install the 7 beliefs — pain, doubt, cost, desire, money, support, trust; funnel Introduction -> Discovery -> Transition -> Pitch -> Committing -> Objections; handle uncertainty before logistics) and Ravi Abuvala (discovery must extract exact numbers — revenue, leads, close rate, client LTV; run conservative upside math before the temp check).",
+      "Every prospect has a triage call before this sales call. If a triage call transcript or notes are provided, mine them as the PRIMARY source — that call already surfaced the prospect's situation, pain, goal, numbers and any red flags. Pull specifics straight from it; cross-reference against the structured fields.",
       "The rep gives you notes on an upcoming prospect. Produce a tight pre-call brief, UNDER 280 WORDS, with these exact section headers on their own line:",
       "WHAT TO EXPECT — 2-3 lines on the kind of call this will likely be.",
       "HARDEST BELIEFS — which 2-3 of the 7 beliefs will need the most work for THIS prospect, and why.",
@@ -755,6 +763,9 @@
       "\nLead source: " + (p.source || "(not given)") +
       "\nStated goal: " + (p.goal || "(not given)") +
       "\nOther notes / risks: " + (p.extra || "(none)");
+    if (p.triage)
+      notes += "\n\nTRIAGE CALL TRANSCRIPT / NOTES (primary source — mine this):\n" +
+        p.triage.slice(0, 14000);
     var ctrl = new AbortController();
     var timer = setTimeout(function () { ctrl.abort(); }, 30000);
     fetch("https://api.anthropic.com/v1/messages", {
