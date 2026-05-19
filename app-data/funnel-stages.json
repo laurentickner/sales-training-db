@@ -88,11 +88,14 @@
       "goal": "Diffuse -> isolate -> handle uncertainty before logistics -> re-tie-down -> close. Loop until they're 100% in.",
       "listen_for": "Which objection. The copilot detects it and surfaces the rebuttal. Handle UNCERTAINTY before money/support/timing.",
       "say": [
-        "No problem. Not an issue at all. No problem. (Diffuse — always, as a triple. Pause.)",
-        "Just so I can stay organized — when you say [objection], are you more in a 'should I do this' place where you're not 100% certain, or a 'how can I do this' place where it's just logistics? (If 'should I' -> handle the uncertainty/belief. If 'how can I' -> it's a logistic, trade and close.)",
-        "If the tonality is off and the stated objection feels like a smokescreen: For real — I can tell there's something. So what's really going on? What's really coming up for you?",
-        "[Objection] aside — is there anything else keeping you from being less than 100% certain this is the right thing and now is the right time? ... So you're 100% in?",
-        "(Then handle the specific objection — the copilot shows the verbatim rebuttal. Trade every concession for a decision AND a commitment: 'If I'm willing to do that for you, are you willing to move forward right now?')"
+        "THE UNIVERSAL HANDLE — run all 5 steps on EVERY objection before the specific rebuttal. Handle uncertainty before any logistic; a logistic handled while uncertainty is unresolved is a smoke screen.",
+        "STEP 1 — DIFFUSE: No problem. Not an issue at all. No problem. (Always, as a triple. Pause after it — it drops the pressure.)",
+        "STEP 2 — ISOLATE: Just so I can stay organized — when you say [objection], are you more in a 'should I do this' place where you're not 100% certain this is what you want, or a 'how can I do this' place where you're certain and it's just logistics? (Should I = uncertainty, handle the belief. How can I = logistic, trade and close.)",
+        "STEP 3 — TEMP CHECK: [Objection] aside — how do you feel about the process? Do you feel this is 100% what you need to get to [outcome], and that it's 100% going to work?",
+        "STEP 4 — SCALE (if they're still not certain): On a scale of 1 to 10 — one being 'get me off the phone', ten being 'that's exactly what I need' — where do you fall exactly? ... What's keeping you from a 9 or 10? (8 or under: 'why so low?' -> handle that -> re-ask the number. We don't do 7s.)",
+        "STEP 5 — DOUBLE TIE-DOWN: So [objection] aside — is there anything else keeping you from being less than 100% certain this is the right thing AND now is the right time? ... So you're 100% in?",
+        "SMOKESCREEN PROBE: if the tonality is off and the stated objection feels like a cover — For real, I can tell there's something. So what's really going on? What's really coming up for you?",
+        "THEN handle the specific objection — the copilot shows the verbatim rebuttal. Trade every concession for a decision AND a commitment: 'If I'm willing to do that for you, are you willing to move forward right now?'"
       ],
       "advance_when": "They're 100% in and you've closed — move to Close Confirmation to button down the sale."
     },

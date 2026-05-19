@@ -185,6 +185,8 @@
     h += '<div class="card-head"><span class="card-kicker">' + glyph("▲") + ' Objection detected</span>';
     h += '<span class="card-bucket">' + esc(o.bucket) + "</span></div>";
     h += '<div class="card-title">' + esc(o.label) + "</div>";
+    h += '<div class="handle-strip">' + glyph("↳") +
+      " Run the handle first: <b>diffuse → isolate → temp-check → scale → double tie-down</b>, then:</div>";
     h += '<div class="say-block"><div class="say-label">Say this</div>';
     (o.response_steps || []).forEach(function (s, i) {
       h += '<div class="say-step"><span class="say-num">' + (i + 1) + "</span><span>" + esc(s) + "</span></div>";

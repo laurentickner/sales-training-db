@@ -330,6 +330,14 @@ body {
 #live-facts:focus { outline: none; border-color: var(--amber); }
 #live-facts::placeholder { color: var(--text-dim); }
 
+/* ---- Universal-handle reminder strip on objection cards ---- */
+.handle-strip {
+  font-size: 11.5px; color: var(--text-dim); line-height: 1.45;
+  padding: 7px 14px; background: var(--bg-input);
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.handle-strip b { color: var(--cyan); font-weight: 700; }
+
 /* ---- Still-working (call memory) card ---- */
 .card-continuing { border-left: 4px solid var(--amber); }
 .card-continuing .card-kicker { color: var(--amber); }
