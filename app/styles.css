@@ -1,19 +1,23 @@
 /* Call Copilot — Scale Systems. Dark, high-contrast, built for fast reading on a live call. */
 
 :root {
-  --bg:        #0e1117;
-  --bg-panel:  #161b24;
-  --bg-card:   #1d2430;
-  --bg-input:  #0b0e14;
-  --border:    #2a3340;
-  --text:      #e8ecf2;
-  --text-dim:  #a9b4c4;
-  --aubergine: #6d4ed6;
-  --cyan:      #00bff1;
-  --amber:     #f5c04a;
-  --red:       #ff6b6b;
-  --green:     #45d18a;
-  --radius:    10px;
+  /* Scale Systems brand — dark theme */
+  --bg:         #0E0A1F;
+  --bg-panel:   #15102B;
+  --bg-card:    #1C1640;
+  --bg-input:   #0A0717;
+  --border:     #2D2640;
+  --text:       #F4EEE2;
+  --text-dim:   #9F97B8;
+  --aubergine:  #3D1F8C;
+  --aubergine-deep: #2A0D77;
+  --cyan:       #00BFF1;
+  --cyan-deep:  #0087AB;
+  --amber:      #F5C04A;
+  --magenta:    #DB008B;
+  --red:        #ff6b6b;
+  --green:      #45d18a;
+  --radius:     10px;
   font-size: 16px;
 }
 
@@ -39,13 +43,15 @@ body {
 }
 .brand { display: flex; align-items: center; gap: 12px; }
 .brand-mark {
-  font-size: 22px; color: var(--amber);
-  background: var(--aubergine); width: 38px; height: 38px;
+  background: linear-gradient(150deg, var(--aubergine) 0%, var(--aubergine-deep) 100%);
+  width: 40px; height: 40px;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 9px;
+  border-radius: 10px; flex-shrink: 0;
+  border: 1px solid #4a2da3;
 }
-.topbar h1 { font-size: 19px; font-weight: 700; letter-spacing: -0.2px; }
-.brand-sub { font-size: 12px; color: var(--text-dim); }
+.topbar h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.2px; line-height: 1.2; }
+.brand-accent { color: var(--cyan); }
+.brand-sub { font-size: 11.5px; color: var(--text-dim); margin-top: 1px; }
 .topbar-actions { display: flex; align-items: center; gap: 8px; }
 
 .mode-badge {
