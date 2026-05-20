@@ -624,8 +624,8 @@
   }
   var COMMITTING_STEPS = [
     { id: "upside", label: "Upside math" },
-    { id: "tempcheck", label: "Temp check" },
-    { id: "scale", label: "1-10 scale" },
+    { id: "tempcheck", label: "Small temp" },
+    { id: "scale", label: "Hard temp (1-10)" },
     { id: "onboarding", label: "Onboarding before price" },
     { id: "price", label: "Price drop + silence" }
   ];

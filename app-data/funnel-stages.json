@@ -75,14 +75,14 @@
       "name": "5. Committing Phase",
       "goal": "Get them 100% bought in on the thesis BEFORE money is on the table. Temp check -> onboarding -> price drop.",
       "say": [
-        "What questions do you have about those [4] things specifically?",
-        "Quick bit of math so this isn't abstract. You told me a client is worth about [LTV] to you. If this system just gets you one more client a month from organic — content you otherwise wouldn't even have posted — that's [LTV x 12] in extra revenue over the next 12 months. And that's the conservative version, just one more client a month.",
-        "How do you feel about the process specifically? Do you feel like that's what you need to get to [outcome]?",
-        "What's really important to us is alignment — when you come and work with us, we're rolling up the sleeves, getting in the trenches with you, and our team is all in. So just to be 100% clear, on a scale of one to ten, one being 'I hate this guy, get me off the phone,' ten being 'that's exactly what I need' — where do you fall out exactly? ... What's keeping you from being a nine or a ten?",
-        "So you feel really good about the process, no questions — what's next, where do you want to go from here?",
-        "Basically, next steps — you'll process the investment with me. Once we take care of that, we set up an onboarding call, give you some homework, and lay out when we're going to meet, how often, what we'll give you and what we need from you — so you have complete clarity and certainty on exactly what's going to happen over the next 12 weeks. Does that sound good?",
-        "And the next steps are very simple — the investment is just [X].",
-        "How do you feel? ... You sure? ... Ready to get started on some homework? ... What's your billing address?"
+        "QUESTIONS: What questions do you have about those [3] things specifically?",
+        "UPSIDE MATH: Quick bit of math so this isn't abstract. You told me a client is worth about [LTV] to you. If this system just gets you one more client a month from organic — content you otherwise wouldn't even have posted — that's [LTV x 12] in extra revenue over the next 12 months. And that's the conservative version, just one more client a month.",
+        "SMALL TEMP: So based on you telling me you want to get to [outcome] — do you feel like this is what you've been looking for?",
+        "HARD TEMP (scale 1-10): What's really important to us is alignment — when you come and work with us, we're rolling up the sleeves, getting in the trenches with you, and our team is all in. So just to be 100% clear, on a scale of one to ten, one being 'I hate this guy, get me off the phone,' ten being 'that's exactly what I need' — where do you fall out exactly? ... What's keeping you from being a nine or a ten? (8 or under: 'why so low?' → handle → re-ask. No 7s.)",
+        "TRANSITION: So you feel really good about the process, no questions — what's next, where do you want to go from here?",
+        "ONBOARDING (before price): Basically, next steps — you'll process the investment with me. Once we take care of that, we set up an onboarding call, give you some homework, and lay out when we're going to meet, how often, what we'll give you and what we need from you — so you have complete clarity and certainty on exactly what's going to happen over the next 12 weeks. Does that sound good?",
+        "PRICE DROP: And the next steps are very simple — the investment is just [X].",
+        "CLOSE: How do you feel? ... You sure? ... Ready to get started on some homework? ... What's your billing address?"
       ],
       "listen_for": "Tonality on the temp check. 'Dude, absolutely' = yes. 'I think so' = no. Price drop: soft, downward inflection — the price ends the sentence on a period, then go quiet (not a Mexican standoff).",
       "advance_when": "After the price drop + close attempt, the prospect stalls or raises an objection. (If they say yes through the close, the sale is done — skip the Objections stage.)"
