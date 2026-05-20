@@ -61,7 +61,7 @@
       "say": [
         "I don't think I have any more questions — is there anything else you feel like we haven't covered that you feel like I need to know?",
         "Based on what you've told me, we can definitely help.",
-        "So where do you think we should go from here? I can walk you through exactly how we'd get you from [current] to [goal] if you want — but you tell me where you want to go."
+        "Cool — and there are 3 things that you're going to do, whether you work with me or not, to go from [where they are now] to [where they want to be]. So where do you want to go from here? I can walk you through what those 3 things are and how we'd do it together if you want — but you tell me where you want to go."
       ],
       "advance_when": "They ask you to walk them through it."
     },
