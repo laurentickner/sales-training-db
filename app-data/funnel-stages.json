@@ -10,9 +10,14 @@
       "say": [
         "[Name] — tell me about your day.",
         "(Acknowledge where they came from and their pain.) So before we get into that — what do you want to have happen by the end of this meeting? What's an ideal outcome for you?",
-        "Assuming you get all of that, what happens next in your world?"
+        "Assuming you get all of that, what happens next in your world?",
+        "— OR, if you don't have much prospect info, run this version instead —",
+        "Hello [name]! Can you hear me OK? See me OK? ... Awesome. Lovely to meet you, I'm [you]. I have your notes here, looking forward to diving into everything.",
+        "I see we have the call scheduled for 45 minutes — just wanted to see how much time you have, or if you have a set dead stop? ... OK awesome.",
+        "So FIRST let's dive deep into the specifics of your business and how you're using social media. So let's talk about what's working right now, what's not working right now, and ultimately the specific challenges or constraints that are keeping you from where you want to be. And then once we get some clarity there, if we can help, I'll dive into what we have going on over here. Sound good?",
+        "So probably our best place to start — what would you say your biggest challenge is right now? Or at least, what's not working at the level it truly feels like it could or should be? (If they don't name one: what prompted you to respond and get on this call with me?)"
       ],
-      "advance_when": "You've ticked 'Nudge confirmed' (above) and they've named the outcome they want — then move to Discovery."
+      "advance_when": "You've ticked 'Nudge confirmed' (above) and they've named the outcome they want / their biggest challenge — then move to Discovery."
     },
     {
       "id": "discovery",
@@ -22,6 +27,7 @@
       "say": [
         "What's your biggest challenge right now? Or what's not working at the level it truly could be?",
         "Tell me more — when you said [X], what do you mean exactly? Why do you say that though?",
+        "Has that put you in a tough position? ... And in what way though? (Curious tone — chase the cost, don't move on.)",
         "Tell me about the business — what do you sell, who's it for, and how long have you been running it? ... What part of running it drains you the most right now?",
         "Take me back to the moment you realised the way you'd been growing this wasn't going to get you where you want — what was going on in the business that made you decide enough is enough?",
         "Last week specifically, how many [leads / sales calls] did you generate? What about the week before? Out of those, how many fit the exact ideal client you want? ... Just for clarity — what was your exact revenue last month? What about the month before?",
@@ -53,7 +59,8 @@
       "goal": "Sell the METHOD, not the deliverables. High-level promise -> 3 pillars -> delivery. Each pillar is the simultaneous explanation of why their past attempts failed and why this is different. Tie-down after every pillar.",
       "listen_for": "Comprehension. If they say 'yeah' but clearly don't get it — stop and re-explain. Pillars 1 & 2 are paradigm shifts; 3 is the payoff.",
       "say": [
-        "Do you have a pen and pad? On your pen and pad, write out one through four. One, two, three, four.",
+        "Gotcha. Do you have your pen and pad? Great — on your pen and pad, write out one through three (or four), with a good amount of space in between.",
+        "Let me preface this by saying — everything we do for clients is all customised, based on what's best for the client. For you specifically, it's going to be three things, three things to help you go from [current state they said] to [desired state they said].",
         "Now before I go over all the details, can I just ask you for a favour? ... Great — because we believe a healthy relationship begins with healthy communication. So while I may sound direct, it's because that'll allow you to get what you need to get [outcome] working. Is that fair enough? And on the other hand, I'll ask the same of you.",
         "These calls go one of three ways. One, yes, it's amazing, I want to work with you guys. Two, no, it's not the right fit — and I want to let you know in advance it's totally okay if you say no to me, you won't hurt my feelings. But the third thing I want to stay away from is the maybe, the 'let me sleep on it', because a lot of the time that's just a polite way to say no. Does that sound fair enough?",
         "Have you been to Japan? ... So a while back I was on a trip in Japan, and I was super hungry — and I'll be honest with you, when I get hungry I do get a little hangry. So I was walking down the street with my family but I couldn't figure out what any of the restaurants were offering — even though they had tons of big, bold menus and signs outside — because Japanese is a language I don't understand. And it reminded me of this: the same thing is happening in your marketing right now. You could be spending tens of thousands more per month on ads, or posting content 10 times a day, but because your expertise isn't being communicated in a way your ideal client understands, it feels like you're speaking to them in a foreign language. So even if you put in more effort and time right now, it won't result in additional revenue. So — the first thing we're going to do for you is give you the right social media strategy, to make sure you're speaking in the right language, so your value is communicated in a way the right people understand and want. Are you following me so far?",
