@@ -368,6 +368,7 @@
       renderBeliefTracker();
       $("input").value = "";
       renderLog();
+      autosaveActiveProspect();
       var useSmart = state.smart && state.apiKey;
       var myReq = ++reqSeq;
       renderCopilot(result, useSmart, showRetie, state.activeObjection);
@@ -693,6 +694,8 @@
     $("prep-source").value = p.source || "";
     $("prep-goal").value = p.goal || "";
     $("prep-extra").value = p.extra || "";
+    $("prep-outcome").value = p.outcome || "";
+    $("prep-outcome-notes").value = p.outcomeNotes || "";
   }
   function readPrepForm() {
     return {
@@ -702,8 +705,74 @@
       situation: $("prep-situation").value.trim(),
       source: $("prep-source").value.trim(),
       goal: $("prep-goal").value.trim(),
-      extra: $("prep-extra").value.trim()
+      extra: $("prep-extra").value.trim(),
+      outcome: $("prep-outcome").value,
+      outcomeNotes: $("prep-outcome-notes").value.trim()
     };
+  }
+  function persistProspect(p) {
+    if (!p || !p.name) return;
+    var map = loadProspects();
+    var existing = map[p.name] || {};
+    map[p.name] = Object.assign({}, existing, p);
+    store.set(PROSPECTS_KEY, JSON.stringify(map));
+  }
+  function autosaveActiveProspect() {
+    if (!state.prospect || !state.prospect.name) return;
+    state.prospect.callLog = state.log.slice();
+    state.prospect.liveFacts = state.liveFacts;
+    state.prospect.lastTouchedAt = new Date().toISOString();
+    persistProspect(state.prospect);
+  }
+  var OUTCOME_LABEL = {
+    "closed-pif": "Closed (PIF)",
+    "closed-plan": "Closed (plan)",
+    "followup": "Follow-up",
+    "not-closed": "Not closed",
+    "no-show": "No-show",
+    "other": "Other"
+  };
+  function outcomeChip(o) {
+    if (!o) return '<span class="outcome-chip outcome-pending">pending</span>';
+    return '<span class="outcome-chip outcome-' + esc(o) + '">' + esc(OUTCOME_LABEL[o] || o) + "</span>";
+  }
+  function openCalls() {
+    var map = loadProspects();
+    var names = Object.keys(map);
+    names.sort(function (a, b) {
+      var ta = map[a].lastTouchedAt || map[a].savedAt || "";
+      var tb = map[b].lastTouchedAt || map[b].savedAt || "";
+      return tb < ta ? -1 : tb > ta ? 1 : 0;
+    });
+    var list = $("calls-list");
+    if (!names.length) {
+      list.innerHTML = '<p class="hint" style="padding:18px">No saved calls yet. Open Prep call to start one.</p>';
+    } else {
+      list.innerHTML = names.map(function (n) {
+        var p = map[n];
+        var when = (p.lastTouchedAt || p.savedAt || "").slice(0, 10);
+        var goal = p.goal ? " · " + esc(p.goal) : "";
+        var notes = p.outcomeNotes ? '<div class="calls-row-notes">' + esc(p.outcomeNotes).slice(0, 160) + "</div>" : "";
+        return '<button class="calls-row" data-name="' + esc(n) + '">' +
+          '<div class="calls-row-head"><span class="calls-row-name">' + esc(n) + "</span>" +
+          outcomeChip(p.outcome) + "</div>" +
+          '<div class="calls-row-meta">' + esc(when) + goal + "</div>" +
+          notes + "</button>";
+      }).join("");
+    }
+    openModal("calls-modal");
+  }
+  function loadProspectIntoApp(name) {
+    var map = loadProspects();
+    var p = map[name];
+    if (!p) return;
+    setProspect(p);
+    state.log = (p.callLog || []).slice();
+    state.liveFacts = p.liveFacts || "";
+    $("live-facts").value = state.liveFacts;
+    renderLog();
+    if (p.prep) renderPrep(p.prep, false);
+    closeModal();
   }
   function openPrep() {
     var map = loadProspects();
@@ -953,6 +1022,38 @@
     $("live-facts").addEventListener("input", function () {
       state.liveFacts = this.value;
       store.set("copilot_livefacts", state.liveFacts);
+      autosaveActiveProspect();
+    });
+    // outcome on the active prospect — save on change/blur in the Prep modal
+    $("prep-outcome").addEventListener("change", function () {
+      var name = $("prep-name").value.trim();
+      if (!name) return;
+      var map = loadProspects();
+      if (!map[name]) return;
+      map[name].outcome = this.value;
+      map[name].lastTouchedAt = new Date().toISOString();
+      store.set(PROSPECTS_KEY, JSON.stringify(map));
+      if (state.prospect && state.prospect.name === name) state.prospect.outcome = this.value;
+    });
+    $("prep-outcome-notes").addEventListener("blur", function () {
+      var name = $("prep-name").value.trim();
+      if (!name) return;
+      var map = loadProspects();
+      if (!map[name]) return;
+      map[name].outcomeNotes = this.value.trim();
+      map[name].lastTouchedAt = new Date().toISOString();
+      store.set(PROSPECTS_KEY, JSON.stringify(map));
+      if (state.prospect && state.prospect.name === name) state.prospect.outcomeNotes = map[name].outcomeNotes;
+    });
+    // past calls modal
+    $("btn-calls").addEventListener("click", openCalls);
+    $("btn-close-calls").addEventListener("click", closeModal);
+    $("calls-modal").addEventListener("click", function (e) {
+      if (e.target === $("calls-modal")) closeModal();
+    });
+    $("calls-list").addEventListener("click", function (e) {
+      var row = e.target.closest ? e.target.closest(".calls-row") : null;
+      if (row) loadProspectIntoApp(row.getAttribute("data-name"));
     });
     $("input").focus();
   }

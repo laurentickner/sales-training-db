@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.anthropic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Scale Systems Sales Call Copilot</title>
-<link rel="stylesheet" href="styles.css?v=12" />
+<link rel="stylesheet" href="styles.css?v=13" />
 </head>
 <body>
 
@@ -31,6 +31,7 @@
     <span id="prospect-badge" class="prospect-badge" hidden></span>
     <span id="mode-badge" class="mode-badge mode-offline">Keyword mode</span>
     <button id="btn-prep" class="btn btn-prep" title="Prepare for an upcoming call"><span aria-hidden="true">◆</span> Prep call</button>
+    <button id="btn-calls" class="btn btn-ghost" title="Past calls + outcomes"><span aria-hidden="true">▤</span> Calls</button>
     <button id="btn-settings" class="btn btn-ghost" title="Settings"><span aria-hidden="true">⚙</span> Settings</button>
     <button id="btn-newcall" class="btn btn-ghost" title="Start a fresh call"><span aria-hidden="true">↻</span> New call</button>
   </div>
@@ -154,6 +155,25 @@
       <span>Anything else — risks, past attempts, red flags</span>
       <textarea id="prep-extra" rows="2" placeholder="e.g. mentioned they got burned by an agency last year; partner involved in decisions"></textarea>
     </label>
+    <div class="outcome-zone">
+      <div class="outcome-title">After the call — mark the outcome</div>
+      <label class="field">
+        <span>Outcome</span>
+        <select id="prep-outcome">
+          <option value="">— pending —</option>
+          <option value="closed-pif">Closed (paid in full)</option>
+          <option value="closed-plan">Closed (payment plan)</option>
+          <option value="followup">Follow-up booked</option>
+          <option value="not-closed">Not closed</option>
+          <option value="no-show">No-show</option>
+          <option value="other">Other</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Outcome notes — what happened, what to do next</span>
+        <textarea id="prep-outcome-notes" rows="2" placeholder="e.g. closed $7,800 PIF · need to handle the spouse follow-up · onboarding call set for Friday"></textarea>
+      </label>
+    </div>
     <div class="modal-actions">
       <button id="btn-generate-prep" class="btn btn-primary">Generate prep</button>
       <button id="btn-close-prep" class="btn btn-ghost">Close</button>
@@ -161,7 +181,20 @@
   </div>
 </div>
 
-<script src="data/data.js?v=12"></script>
-<script src="app.js?v=12"></script>
+<!-- Past calls modal -->
+<div id="calls-modal" class="modal hidden" role="dialog" aria-modal="true"
+     aria-labelledby="calls-title">
+  <div class="modal-card modal-card-wide">
+    <h3 id="calls-title">Past calls</h3>
+    <p class="field-note">Every prospect you've prepped, with their outcome. Click one to load its call log + prep into the app.</p>
+    <div id="calls-list" class="calls-list"></div>
+    <div class="modal-actions">
+      <button id="btn-close-calls" class="btn btn-ghost">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="data/data.js?v=13"></script>
+<script src="app.js?v=13"></script>
 </body>
 </html>
