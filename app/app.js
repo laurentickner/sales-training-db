@@ -93,7 +93,8 @@
     prospect: null,          // { name, business, situation, source, goal, extra, prep }
     liveFacts: store.get("copilot_livefacts") || "",  // rep's running call notes
     activeObjection: null,   // last objection raised — stays live until New call
-    committingDone: {}       // committing-phase step id -> true
+    committingDone: {},      // committing-phase step id -> true
+    introDone: {}            // introduction-stage step id -> true (e.g. nudge confirmed)
   };
   var nextId = 1;            // monotonic log id (Date.now can collide)
   var reqSeq = 0;            // smart-mode request token — stale fetches no-op
@@ -628,6 +629,9 @@
     { id: "onboarding", label: "Onboarding before price" },
     { id: "price", label: "Price drop + silence" }
   ];
+  var INTRO_STEPS = [
+    { id: "nudge", label: "Nudge confirmed (they want to work with us)" }
+  ];
   function renderBeliefTracker() {
     var el = $("belief-tracker");
     if (state.stage === "discovery") {
@@ -641,6 +645,18 @@
       }).join("");
       el.innerHTML = '<span class="belief-label">7 beliefs — ' + done + "/7</span>" +
         chips + '<span class="belief-hint">click a belief for prompts &amp; to tick it off</span>';
+    } else if (state.stage === "introduction") {
+      el.hidden = false;
+      var idone = 0;
+      var ichips = INTRO_STEPS.map(function (s) {
+        var on = !!state.introDone[s.id];
+        if (on) idone++;
+        return '<button class="belief-chip' + (on ? " on" : "") + '" data-step="' + s.id +
+          '" aria-pressed="' + on + '">' + (on ? "✓ " : "") + esc(s.label) + "</button>";
+      }).join("");
+      el.innerHTML = '<span class="belief-label">Introduction — ' + idone + "/" +
+        INTRO_STEPS.length + "</span>" + ichips +
+        '<span class="belief-hint">tick once you’ve heard the nudge</span>';
     } else if (state.stage === "committing") {
       el.hidden = false;
       var cdone = 0;
@@ -942,6 +958,7 @@
     state.handledObjections = [];
     state.beliefsCovered = {};
     state.committingDone = {};
+    state.introDone = {};
     state.activeObjection = null;
     nextId = 1;
     reqSeq++;
@@ -1004,7 +1021,8 @@
         showBeliefPrompts(b.getAttribute("data-belief"));
       } else if (b.hasAttribute("data-step")) {
         var k = b.getAttribute("data-step");
-        state.committingDone[k] = !state.committingDone[k];
+        if (state.stage === "introduction") state.introDone[k] = !state.introDone[k];
+        else state.committingDone[k] = !state.committingDone[k];
         renderBeliefTracker();
       }
     });
