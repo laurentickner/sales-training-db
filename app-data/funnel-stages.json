@@ -7,17 +7,28 @@
       "name": "1. Introduction",
       "goal": "Open with rapport, acknowledge the lead source + pain from triage, surface the outcome they want from this call, confirm the nudge they want to work with us, then future-pace into discovery.",
       "listen_for": "Energy + tonality. The nudge — anything that says they want help / want to move forward. If they're flat or distracted, reposition before pushing on.",
-      "say": [
-        "[Name] — tell me about your day.",
-        "(Acknowledge where they came from and their pain.) So before we get into that — what do you want to have happen by the end of this meeting? What's an ideal outcome for you?",
-        "Assuming you get all of that, what happens next in your world?",
-        "— OR, if you don't have much prospect info, run this version instead —",
-        "Hello [name]! Can you hear me OK? See me OK? ... Awesome. Lovely to meet you, I'm [you]. I have your notes here, looking forward to diving into everything.",
-        "I see we have the call scheduled for 45 minutes — just wanted to see how much time you have, or if you have a set dead stop? ... OK awesome.",
-        "So FIRST let's dive deep into the specifics of your business and how you're using social media. So let's talk about what's working right now, what's not working right now, and ultimately the specific challenges or constraints that are keeping you from where you want to be. And then once we get some clarity there, if we can help, I'll dive into what we have going on over here. Sound good?",
-        "So probably our best place to start — what would you say your biggest challenge is right now? Or at least, what's not working at the level it truly feels like it could or should be? (If they don't name one: what prompted you to respond and get on this call with me?)"
-      ],
-      "advance_when": "You've ticked 'Nudge confirmed' (above) and they've named the outcome they want / their biggest challenge — then move to Discovery."
+      "advance_when": "You've ticked 'Nudge confirmed' (above) and they've named the outcome they want / their biggest challenge — then move to Discovery.",
+      "options": [
+        {
+          "id": "primary",
+          "title": "Option A — Conversational (you already have notes / triage info)",
+          "lines": [
+            "[Name] — tell me about your day.",
+            "(Acknowledge where they came from and their pain.) So before we get into that — what do you want to have happen by the end of this meeting? What's an ideal outcome for you?",
+            "Assuming you get all of that, what happens next in your world?"
+          ]
+        },
+        {
+          "id": "alternate",
+          "title": "Option B — Frame-first (you don't have much prospect info)",
+          "lines": [
+            "Hello [name]! Can you hear me OK? See me OK? ... Awesome. Lovely to meet you, I'm [you]. I have your notes here, looking forward to diving into everything.",
+            "I see we have the call scheduled for 45 minutes — just wanted to see how much time you have, or if you have a set dead stop? ... OK awesome.",
+            "So FIRST let's dive deep into the specifics of your business and how you're using social media. So let's talk about what's working right now, what's not working right now, and ultimately the specific challenges or constraints that are keeping you from where you want to be. And then once we get some clarity there, if we can help, I'll dive into what we have going on over here. Sound good?",
+            "So probably our best place to start — what would you say your biggest challenge is right now? Or at least, what's not working at the level it truly feels like it could or should be? (If they don't name one: what prompted you to respond and get on this call with me?)"
+          ]
+        }
+      ]
     },
     {
       "id": "discovery",
@@ -31,6 +42,7 @@
         "Tell me about the business — what do you sell, who's it for, and how long have you been running it? ... What part of running it drains you the most right now?",
         "Take me back to the moment you realised the way you'd been growing this wasn't going to get you where you want — what was going on in the business that made you decide enough is enough?",
         "Last week specifically, how many [leads / sales calls] did you generate? What about the week before? Out of those, how many fit the exact ideal client you want? ... Just for clarity — what was your exact revenue last month? What about the month before?",
+        "MATH (Ravi client value — lock these for the upside math): What's a single client worth to you over their lifetime? On average, how many clients do you close a month? (Tick the 'Math (Ravi LTV)' chip above when you've captured this.)",
         "So you're making [guess] a month right now then, correct?",
         "Begin with the end in mind — ultimately, where do you want the business to be? What's the revenue number you're driving toward, and what would the business look like at that point? Why that number specifically?",
         "Can I ask another personal question — and I really hate to ask this — but what's your plan if nothing changes? What if the last five years are like the next five years?",

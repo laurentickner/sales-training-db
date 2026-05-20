@@ -14,7 +14,8 @@ out_dir = os.path.join(base, "app", "data")
 
 REQUIRED_OBJ = {"id", "bucket", "type", "label", "triggers", "response_steps", "source"}
 REQUIRED_FLAG = {"id", "signal", "belief", "triggers", "probe", "note"}
-REQUIRED_STAGE = {"id", "name", "goal", "listen_for", "say", "advance_when"}
+REQUIRED_STAGE = {"id", "name", "goal", "listen_for", "advance_when"}
+# A stage must have either `say` (a list) or `options` (a list of {title, lines}).
 
 
 def die(msg):
@@ -70,8 +71,10 @@ def validate(objections, flags, funnel):
     for i, st in enumerate(funnel["stages"]):
         missing = REQUIRED_STAGE - st.keys()
         need(not missing, "stage #%d (%s) missing %s" % (i, st.get("id", "?"), missing))
-        need(isinstance(st["say"], list) and st["say"],
-             "stage %s: empty say array" % st["id"])
+        has_say = isinstance(st.get("say"), list) and st["say"]
+        has_options = isinstance(st.get("options"), list) and st["options"]
+        need(has_say or has_options,
+             "stage %s: needs either 'say' (list) or 'options' (list)" % st["id"])
 
 
 objections = load("objection-responses.json")

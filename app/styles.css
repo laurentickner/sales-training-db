@@ -330,6 +330,39 @@ body {
 #live-facts:focus { outline: none; border-color: var(--amber); }
 #live-facts::placeholder { color: var(--text-dim); }
 
+/* ---- Side-by-side stage options (e.g. Intro Option A / Option B) ---- */
+.sr-options { display: flex; gap: 12px; margin-top: 8px; }
+.sr-option {
+  flex: 1; padding: 12px 14px; border-radius: var(--radius);
+  border: 1px solid; min-width: 0;
+}
+.sr-option-a { background: rgba(0, 191, 241, 0.07); border-color: var(--cyan); }
+.sr-option-a .sr-option-title { color: var(--cyan); }
+.sr-option-b { background: rgba(245, 192, 74, 0.07); border-color: var(--amber); }
+.sr-option-b .sr-option-title { color: var(--amber); }
+.sr-option-title {
+  font-size: 12px; font-weight: 800; letter-spacing: 0.3px;
+  text-transform: uppercase; margin-bottom: 10px;
+}
+.sr-option ol { margin: 0; padding-left: 20px; }
+.sr-option li { font-size: 14px; line-height: 1.55; margin-bottom: 9px; color: var(--text); }
+.sr-option li::marker { color: var(--text-dim); font-weight: 700; }
+@media (max-width: 820px) {
+  .sr-options { flex-direction: column; }
+}
+
+/* ---- Math chip variant on the discovery tracker ---- */
+.math-chip { border-style: dashed; }
+.math-chip.on {
+  background: #2a1d00; color: var(--amber); border-color: #5a3f00;
+}
+
+/* ---- Larger reading text for during-call use ---- */
+.stage-ref li { font-size: 14px; line-height: 1.55; }
+.card-title { font-size: 17px; }
+.card .say-step span:last-child { font-size: 14.5px; line-height: 1.55; }
+.empty-state p { font-size: 15px; }
+
 /* ---- Outcome zone in the Prep modal ---- */
 .outcome-zone {
   margin-top: 14px; padding: 14px;

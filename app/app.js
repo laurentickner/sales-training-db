@@ -94,7 +94,8 @@
     liveFacts: store.get("copilot_livefacts") || "",  // rep's running call notes
     activeObjection: null,   // last objection raised — stays live until New call
     committingDone: {},      // committing-phase step id -> true
-    introDone: {}            // introduction-stage step id -> true (e.g. nudge confirmed)
+    introDone: {},           // introduction-stage step id -> true (e.g. nudge confirmed)
+    mathCaptured: false      // Ravi LTV / client-value math captured in discovery
   };
   var nextId = 1;            // monotonic log id (Date.now can collide)
   var reqSeq = 0;            // smart-mode request token — stale fetches no-op
@@ -539,9 +540,21 @@
     var h = "<h3>" + esc(s.name) + " — what to do</h3>";
     h += '<div class="sr-goal">' + esc(s.goal) + "</div>";
     if (s.listen_for) h += '<div class="sr-listen">' + glyph("👂") + " Listen for: " + esc(s.listen_for) + "</div>";
-    h += '<div class="sr-say-label">Say</div><ul>';
-    (s.say || []).forEach(function (line) { h += "<li>" + esc(line) + "</li>"; });
-    h += "</ul>";
+    if (s.options && s.options.length) {
+      h += '<div class="sr-options">';
+      s.options.forEach(function (opt, idx) {
+        h += '<div class="sr-option sr-option-' + (idx === 0 ? "a" : "b") + '">';
+        h += '<div class="sr-option-title">' + esc(opt.title) + "</div>";
+        h += "<ol>";
+        (opt.lines || []).forEach(function (line) { h += "<li>" + esc(line) + "</li>"; });
+        h += "</ol></div>";
+      });
+      h += "</div>";
+    } else {
+      h += '<div class="sr-say-label">Say</div><ul>';
+      (s.say || []).forEach(function (line) { h += "<li>" + esc(line) + "</li>"; });
+      h += "</ul>";
+    }
     if (s.advance_when)
       h += '<div class="sr-listen" style="margin-top:8px;color:var(--amber)">' + glyph("▸") +
            " Advance when: " + esc(s.advance_when) + "</div>";
@@ -552,6 +565,20 @@
     renderStageStrip();
     renderStageRef();
     renderBeliefTracker();
+    // Clear stage-specific "manual" cards when changing tabs (belief prompts,
+    // situations, prep, still-working) so the copilot panel doesn't carry a
+    // stale card from another stage. Analyze-driven cards (objection/flag)
+    // stay so a live call result isn't lost on a tab switch.
+    var c = $("copilot");
+    var first = c.querySelector(".card");
+    if (first && (first.classList.contains("card-belief") ||
+                  first.classList.contains("card-situation") ||
+                  first.classList.contains("card-prep") ||
+                  first.classList.contains("card-continuing"))) {
+      c.innerHTML = '<div class="empty-state"><p class="empty-big">Ready.</p>' +
+        '<p>See the reference panel below for what to do at this stage. ' +
+        'Type a prospect line on the left to analyse.</p></div>';
+    }
   }
 
   /* ---------- generic modal (focus trap + Escape) ---------- */
@@ -643,8 +670,12 @@
         return '<button class="belief-chip' + (on ? " on" : "") + '" data-belief="' + b +
           '" aria-pressed="' + on + '">' + (on ? "✓ " : "") + esc(BELIEF_LABEL[b]) + "</button>";
       }).join("");
-      el.innerHTML = '<span class="belief-label">7 beliefs — ' + done + "/7</span>" +
-        chips + '<span class="belief-hint">click a belief for prompts &amp; to tick it off</span>';
+      var mathOn = !!state.mathCaptured;
+      chips += '<button class="belief-chip math-chip' + (mathOn ? " on" : "") + '" data-math="1" aria-pressed="' + mathOn + '">' +
+        (mathOn ? "✓ " : "") + "Math (Ravi LTV)</button>";
+      el.innerHTML = '<span class="belief-label">7 beliefs + math — ' + done + "/7" +
+        (mathOn ? " · math ✓" : "") + "</span>" + chips +
+        '<span class="belief-hint">click a belief for its prompts; math is a separate capture</span>';
     } else if (state.stage === "introduction") {
       el.hidden = false;
       var idone = 0;
@@ -959,6 +990,7 @@
     state.beliefsCovered = {};
     state.committingDone = {};
     state.introDone = {};
+    state.mathCaptured = false;
     state.activeObjection = null;
     nextId = 1;
     reqSeq++;
@@ -1013,11 +1045,14 @@
       var b = e.target.closest ? e.target.closest(".stage-pill") : null;
       if (b) setStage(b.getAttribute("data-id"));
     });
-    // belief chip -> show prompts; committing-step chip -> tick it off
+    // belief chip -> show prompts; committing-step chip -> tick it off; math chip -> tick
     $("belief-tracker").addEventListener("click", function (e) {
       var b = e.target.closest ? e.target.closest(".belief-chip") : null;
       if (!b) return;
-      if (b.hasAttribute("data-belief")) {
+      if (b.hasAttribute("data-math")) {
+        state.mathCaptured = !state.mathCaptured;
+        renderBeliefTracker();
+      } else if (b.hasAttribute("data-belief")) {
         showBeliefPrompts(b.getAttribute("data-belief"));
       } else if (b.hasAttribute("data-step")) {
         var k = b.getAttribute("data-step");
