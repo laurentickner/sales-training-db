@@ -37,6 +37,7 @@
       "listen_for": "Discovery flags — vague answers, emotional words, numbers, spouse/team mentions, past attempts, hedging. The copilot will surface probes.",
       "say": [
         "What's your biggest challenge right now? Or what's not working at the level it truly could be?",
+        "CATALYST (Matt Ryder — use when there's no obvious pain, e.g. they say money isn't the issue): People don't book a call for no reason. So what shifted recently that made NOW the time to look at this? ... Have you tried anything before — and why didn't it stick? (If they give a surface answer, loop: aside from that, what about it actually spoke to you?) Then measure the gap: with your current way of doing it, how close does that realistically get you to [their goal]? — that gap is the urgency.",
         "Tell me more — when you said [X], what do you mean exactly? Why do you say that though?",
         "Has that put you in a tough position? ... And in what way though? (Curious tone — chase the cost, don't move on.)",
         "Tell me about the business — what do you sell, who's it for, and how long have you been running it? ... What part of running it drains you the most right now?",
