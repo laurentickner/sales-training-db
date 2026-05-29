@@ -540,3 +540,24 @@ body {
 /* Stage strip recoloring — slightly different so reps know which app they're in */
 .stage-pill.active { background: #c0392b; color: white; box-shadow: 0 0 0 2px rgba(192,57,43,.25); }
 
+
+/* ---- Mode switch (Triage Call vs DMs) ---- */
+.mode-switch {
+  display: inline-flex; background: var(--bg-input);
+  border: 1px solid var(--border); border-radius: 22px; padding: 2px;
+  margin-right: 4px;
+}
+.mode-switch-btn {
+  background: transparent; color: var(--text-dim); border: 0;
+  font-family: inherit; font-size: 12px; font-weight: 700;
+  padding: 5px 12px; border-radius: 18px; cursor: pointer;
+}
+.mode-switch-btn:hover { color: var(--text); }
+.mode-switch-btn.active {
+  background: var(--cyan); color: #04222b; box-shadow: 0 1px 3px rgba(0,0,0,.2);
+}
+
+/* DMs mode — slightly different stage pill colour so reps know which they're in */
+body.mode-dm .stage-pill.active {
+  background: var(--cyan); color: #04222b; box-shadow: 0 0 0 2px rgba(0,191,241,.25);
+}

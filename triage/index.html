@@ -28,14 +28,17 @@
     </div>
   </div>
   <div class="topbar-actions">
-    <span id="mode-badge" class="mode-badge mode-offline">Triage mode</span>
-    <a class="btn btn-ghost" href="../app/" title="Switch to the Sales Call Copilot">↗ Sales Call Copilot</a>
-    <button id="btn-newcall" class="btn btn-ghost" title="Start a fresh triage call"><span aria-hidden="true">↻</span> New call</button>
+    <div class="mode-switch" role="tablist" aria-label="Choose workflow">
+      <button id="mode-call" class="mode-switch-btn active" role="tab" aria-selected="true">📞 Triage Call</button>
+      <button id="mode-dm" class="mode-switch-btn" role="tab" aria-selected="false">💬 DMs</button>
+    </div>
+    <a class="btn btn-ghost" href="../app/" title="Switch to the Sales Call Copilot">↗ Sales Call</a>
+    <button id="btn-newcall" class="btn btn-ghost" title="Start a fresh session"><span aria-hidden="true">↻</span> New</button>
   </div>
 </header>
 
 <!-- Funnel stage strip -->
-<nav class="stage-strip" id="stage-strip" aria-label="Triage stage"></nav>
+<nav class="stage-strip" id="stage-strip" aria-label="Workflow stages"></nav>
 
 <!-- Tone banner — sets the voice for the current stage -->
 <div class="tone-banner" id="tone-banner" hidden></div>
@@ -44,7 +47,7 @@
 
   <!-- LEFT: input + log -->
   <section class="panel panel-left" aria-label="Call input and log">
-    <h2 class="panel-title">What the prospect just said</h2>
+    <h2 class="panel-title" id="left-title">What the prospect just said</h2>
     <div class="input-zone">
       <textarea id="input" rows="3" maxlength="2000"
         placeholder="Type what the prospect just said (or paste it) and press Enter…"></textarea>
@@ -80,7 +83,7 @@
 
 </main>
 
-<script src="data/data.js?v=1"></script>
-<script src="app.js?v=1"></script>
+<script src="data/data.js?v=2"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>

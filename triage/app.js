@@ -21,10 +21,12 @@
   var DATA = window.TRIAGE_DATA;
   if (!DATA) fail("triage/data/data.js failed to load.");
 
-  var STAGES = DATA.stages;
+  var CALL_STAGES = DATA.stages;
+  var DM_STAGES = (DATA.dm_workflow && DATA.dm_workflow.stages) || [];
   var GLOBAL_SIGNALS = (DATA.uncertainty_globals && DATA.uncertainty_globals.signals) || [];
   var GLOBAL_ALERT = (DATA.uncertainty_globals && DATA.uncertainty_globals.alert) || "";
-  if (!Array.isArray(STAGES) || !STAGES.length) fail("triage data has no stages.");
+  if (!Array.isArray(CALL_STAGES) || !CALL_STAGES.length) fail("triage data has no call stages.");
+  function STAGES() { return state.mode === "dm" ? DM_STAGES : CALL_STAGES; }
 
   /* ---------- safe localStorage ---------- */
   var store = {
@@ -34,7 +36,8 @@
 
   /* ---------- state ---------- */
   var state = {
-    stage: STAGES[0].id,
+    mode: store.get("triage_mode") || "call",  // "call" or "dm"
+    stage: CALL_STAGES[0].id,
     log: [],
     liveFacts: store.get("triage_livefacts") || "",
     greenLightDone: {}   // "stageId|index" -> true
@@ -79,9 +82,32 @@
     return new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   }
   function stageById(id) {
-    return STAGES.filter(function (s) { return s.id === id; })[0] || STAGES[0];
+    var s = STAGES();
+    return s.filter(function (x) { return x.id === id; })[0] || s[0];
   }
   function currentStage() { return stageById(state.stage); }
+  function setMode(m) {
+    if (m !== "call" && m !== "dm") return;
+    state.mode = m;
+    store.set("triage_mode", m);
+    document.body.classList.toggle("mode-dm", m === "dm");
+    $("mode-call").classList.toggle("active", m === "call");
+    $("mode-dm").classList.toggle("active", m === "dm");
+    $("mode-call").setAttribute("aria-selected", m === "call");
+    $("mode-dm").setAttribute("aria-selected", m === "dm");
+    $("left-title").textContent = m === "dm"
+      ? "What the prospect just DM'd"
+      : "What the prospect just said";
+    state.stage = STAGES()[0].id;
+    renderStageStrip();
+    renderToneBanner();
+    renderStageRef();
+    $("copilot").innerHTML = '<div class="empty-state"><p class="empty-big">Ready.</p>' +
+      "<p>" + (m === "dm"
+        ? "Paste their reply on the left. If it's vague, a red PUSH BACK card with the exact words to send will appear."
+        : "Type what the prospect just said on the left. If they give uncertainty, a big red PUSH BACK card with the exact words to use will appear.") +
+      "</p></div>";
+  }
 
   /* ---------- match: detect uncertainty in prospect's response ---------- */
   function matchTriggers(inputNorm, triggers) {
@@ -177,7 +203,7 @@
   /* ---------- render: stage strip + stage reference ---------- */
   function renderStageStrip() {
     var strip = $("stage-strip");
-    strip.innerHTML = STAGES.map(function (s) {
+    strip.innerHTML = STAGES().map(function (s) {
       var active = s.id === state.stage;
       return '<button class="stage-pill' + (active ? " active" : "") +
         '" data-id="' + esc(s.id) + '" aria-pressed="' + active + '">' +
@@ -228,12 +254,12 @@
 
   /* ---------- new call ---------- */
   function newCall() {
-    if (state.log.length && !confirm("Start a fresh triage call? This clears the log + green-lights.")) return;
+    if (state.log.length && !confirm("Start a fresh session? This clears the log + green-lights.")) return;
     state.log = [];
     state.greenLightDone = {};
     nextId = 1;
     renderLog();
-    setStage(STAGES[0].id);
+    setStage(STAGES()[0].id);
     $("copilot").innerHTML = '<div class="empty-state"><p class="empty-big">Ready.</p>' +
       '<p>Type what the prospect just said on the left.</p></div>';
     $("input").focus();
@@ -241,11 +267,24 @@
 
   /* ---------- init ---------- */
   function init() {
+    // restore mode from storage
+    if (state.mode === "dm") {
+      document.body.classList.add("mode-dm");
+      $("mode-call").classList.remove("active");
+      $("mode-dm").classList.add("active");
+      $("mode-call").setAttribute("aria-selected", "false");
+      $("mode-dm").setAttribute("aria-selected", "true");
+      $("left-title").textContent = "What the prospect just DM'd";
+    }
+    state.stage = STAGES()[0].id;
     renderStageStrip();
     renderToneBanner();
     renderStageRef();
     renderLog();
     $("live-facts").value = state.liveFacts;
+
+    $("mode-call").addEventListener("click", function () { setMode("call"); });
+    $("mode-dm").addEventListener("click", function () { setMode("dm"); });
 
     $("btn-analyze").addEventListener("click", analyze);
     $("input").addEventListener("keydown", function (e) {

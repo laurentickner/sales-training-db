@@ -329,5 +329,191 @@
       "to be determined"
     ],
     "alert": "Generic stall language. Don't move on. Push for specifics: 'Got it — but to be fair to your time, can you give me a clearer answer now so I can either get you to the right next step or save us both the time?' Then re-ask the question of the current section."
+  },
+  "dm_workflow": {
+    "goal": "Book 3 QUALIFIED sales calls per day, of which 2/week become Accelerator members and 50% of the rest become Skool paying clients.",
+    "stages": [
+      {
+        "id": "dm-opener",
+        "name": "1. Opener",
+        "tone": "Light, fast, casual.",
+        "goal": "Hook them with a low-friction email ask + position you have multiple versions based on stage. Goal is to get their email + their stage in 2 messages.",
+        "say": [
+          "MESSAGE 1: lemme get that to you. what is your best email address?",
+          "MESSAGE 2: and I have a few versions so can you tell me what stage of business you're at? 6 figures, 7+ figures, or just starting out — then I can send over the relevant one.",
+          "ADAPT — drop a quick personal line first based on their bio / what they commented. e.g. 'HipHopTV's vision is cool. Media companies are the way forward. Smart move…' then go into Message 2.",
+          "If you also connected on LinkedIn, slip in: 'Just accepted your connection request also :)'"
+        ],
+        "green_light": [
+          "You got their email",
+          "You got their stage of business"
+        ],
+        "pushback_triggers": [
+          "what document",
+          "what is it",
+          "what's the doc",
+          "what link",
+          "what video",
+          "what do you do",
+          "what do you guys do",
+          "tell me more"
+        ],
+        "pushback_script": "Don't get pulled into explaining — keep them on the hook. Just say: 'It's a doc that breaks down exactly what we do based on your stage of business. So can you tell me — 6 figures, 7+ figures, or just starting out? Then I'll send you the one that fits.' Bring them back to the email + stage ask."
+      },
+      {
+        "id": "dm-get-stage",
+        "name": "2. Get Stage (if email-only)",
+        "tone": "Friendly nudge.",
+        "goal": "If they only sent their email and didn't say their stage, loop back with one short line.",
+        "say": [
+          "cool, and what is your stage? 😊",
+          "cool and what is your stage?",
+          "and I have a few versions so can you tell me what stage of business you're at? 6 figures, 7+ figures, or just starting out — then I can send over the relevant one."
+        ],
+        "green_light": [
+          "You got their stage (just starting / pre-6 figs / 6 figs / mid 6 figs / 7+ figs)"
+        ],
+        "pushback_triggers": [
+          "i'm not sure what stage",
+          "depends what you mean",
+          "ish",
+          "kind of in between",
+          "we just started",
+          "varies"
+        ],
+        "pushback_script": "Push gently: 'No worries — just throw out a rough monthly revenue or annual range, even if it's not exact. That way I can match you to the right version.' Get a number, not a vibe."
+      },
+      {
+        "id": "dm-starting-out",
+        "name": "3a. Response — Starting out / 5 figs",
+        "tone": "Encouraging but direct.",
+        "goal": "Pivot from stage → their stuck point. Give them a list of options to anchor the reply.",
+        "say": [
+          "ok cool, in that case I probably have a bunch of other stuff that could help you seeing as we've helped 100s and 100s of others start out successfully. what part of it are you the most stuck on? getting leads, getting yourself out there, sales, automations, or something else?"
+        ],
+        "green_light": [
+          "You know which part of their business they're stuck on"
+        ],
+        "pushback_triggers": [
+          "everything",
+          "all of it",
+          "i don't know where to start",
+          "no idea",
+          "honestly i'm lost"
+        ],
+        "pushback_script": "Don't accept 'everything'. Pin one: 'I hear you — but if you HAD to pick the one that hurts the most right now, which would it be? Leads, sales, getting yourself out there, or automations?' One stuck point is enough to book."
+      },
+      {
+        "id": "dm-pre-6",
+        "name": "3b. Response — not yet at 6 figs",
+        "tone": "Validate the gap between good + traction.",
+        "goal": "Anchor the goood-but-no-traction angle, then ask about their stuck point.",
+        "say": [
+          "ok cool, in that case I probably have a bunch of other stuff that could help you seeing as we've helped 100s and 100s of others get over that hurdle of being GOOOD at what you do, but lacking the traction to hit 6 figs. what part of it are you the most stuck on? getting leads, getting yourself out there, sales, automations, or something else?"
+        ],
+        "green_light": [
+          "You know their specific traction gap (leads / visibility / sales / automations / other)"
+        ],
+        "pushback_triggers": [
+          "everything",
+          "all of it",
+          "i don't know",
+          "lots of things"
+        ],
+        "pushback_script": "Pin one: 'If you HAD to pick the single biggest thing keeping you from 6 figs, what would it be?' Then go from there."
+      },
+      {
+        "id": "dm-6-figs",
+        "name": "3c. Response — 6 figs",
+        "tone": "Peer-to-peer, scale conversation.",
+        "goal": "Position the 6→7 figs angle, ask about their specific scale lever.",
+        "say": [
+          "in that case I probably have a bunch of other stuff that could help you seeing as we've helped 100s and 100s of others start out successfully and scale from 6 to 7 figs. which part do you think you need support on to get from 6 to 7 figs so I can see what we got? client acquisition, automating more, or hiring?",
+          "MID 6 FIGS ADAPT: 'Given your business stage, plus the calibre of clientele you're working with, I probably have a bunch of other stuff that could help you. What are you currently looking to use LinkedIn for? Getting leads, sales, client retention, finding partners or something else? Then I can see what I may have which might serve you best.'"
+        ],
+        "green_light": [
+          "You know their 6→7 figs lever (acquisition / automation / hiring / other)"
+        ],
+        "pushback_triggers": [
+          "we're doing fine",
+          "not really stuck",
+          "everything's good",
+          "no specific issue"
+        ],
+        "pushback_script": "If they're 6 figs and 'doing fine', flip it: 'Got it — so if you could magically fix ONE thing that would make scaling to 7 figs easier, what would it be?' Find the lever even if they downplay."
+      },
+      {
+        "id": "dm-get-problem",
+        "name": "4. Get Problem → Book Call",
+        "tone": "Move quickly. Goal is the call.",
+        "goal": "Once they name their problem, book the call right away. If they ghost, send a voice memo.",
+        "say": [
+          "oh, well we should find a time to chat for 5 or 10 mins this week. Which day would work?",
+          "we can see how we can help with that in a way that is a no brainer for you"
+        ],
+        "green_light": [
+          "Call time confirmed and on the calendar",
+          "OR if they ghosted: voice memo sent"
+        ],
+        "pushback_triggers": [
+          "i'm busy",
+          "no time this week",
+          "let me check",
+          "i'll get back",
+          "send me more info first",
+          "what would it cost",
+          "how much",
+          "send me the link"
+        ],
+        "pushback_script": "Don't let them push you into more info-dumping. Soft re-anchor: 'totally get it — 5 or 10 mins, just to see if we can help in a way that's a no-brainer for you. would [day] or [day] this week work?' Two specific options force a yes/no. If still ghosting → voice memo."
+      },
+      {
+        "id": "dm-send-training",
+        "name": "5. Send AI Training (casual)",
+        "tone": "Casual drop, no pitch.",
+        "goal": "Alternative track — drop the AI training link if the call isn't happening yet. Soft soft.",
+        "say": [
+          "Lauren UTM: here's the link for the AI training: https://scalesystems.io/you-ai-start-org?utm_source=Facebook&utm_medium=DMs&utm_campaign=lauren",
+          "Mariana UTM: here's the link for the AI training: https://scalesystems.io/you-ai-start-org?utm_source=Facebook&utm_medium=DMs&utm_campaign=Mariana"
+        ],
+        "green_light": [
+          "Link sent with the right UTM (lauren / Mariana)"
+        ],
+        "pushback_triggers": [],
+        "pushback_script": "No pushback here — casual drop, no commentary."
+      },
+      {
+        "id": "dm-no-reply",
+        "name": "6. No-Reply Recovery",
+        "tone": "Light, no pressure.",
+        "goal": "Soft re-engage if they've gone silent. One short line.",
+        "say": [
+          "If it's easier you can find a time here: [LINK]"
+        ],
+        "green_light": [
+          "Re-engagement message sent"
+        ],
+        "pushback_triggers": [],
+        "pushback_script": "If they reply with stall language to this, jump into Follow-Up cadence."
+      },
+      {
+        "id": "dm-follow-up",
+        "name": "7. Follow Up (3x weekly hitlist)",
+        "tone": "Personal + genuine. No sales-y.",
+        "goal": "Run the 3-touch weekly hitlist process: voice memo → value-add → personal feedback.",
+        "say": [
+          "TOUCH 1 — Voice memo: Personal, casual, reference what they said before. Under 30 seconds.",
+          "TOUCH 2 — Value-add: Send them a video that will help them with their specific problem. No ask attached.",
+          "TOUCH 3 — Personal feedback: Give them one piece of feedback specifically for them — like Lauren did with Pierre. Genuinely useful, not a pitch."
+        ],
+        "green_light": [
+          "Touch 1 (voice memo) sent",
+          "Touch 2 (value video) sent",
+          "Touch 3 (personal feedback) sent"
+        ],
+        "pushback_triggers": [],
+        "pushback_script": "No pushback — these touches are value-only. If after all 3 they still don't engage, they go cold for now."
+      }
+    ]
   }
 }
