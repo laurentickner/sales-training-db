@@ -23,10 +23,15 @@
 
   var CALL_STAGES = DATA.stages;
   var DM_STAGES = (DATA.dm_workflow && DATA.dm_workflow.stages) || [];
+  var OB_STAGES = (DATA.outbound_workflow && DATA.outbound_workflow.stages) || [];
   var GLOBAL_SIGNALS = (DATA.uncertainty_globals && DATA.uncertainty_globals.signals) || [];
   var GLOBAL_ALERT = (DATA.uncertainty_globals && DATA.uncertainty_globals.alert) || "";
   if (!Array.isArray(CALL_STAGES) || !CALL_STAGES.length) fail("triage data has no call stages.");
-  function STAGES() { return state.mode === "dm" ? DM_STAGES : CALL_STAGES; }
+  function STAGES() {
+    if (state.mode === "dm") return DM_STAGES;
+    if (state.mode === "outbound") return OB_STAGES;
+    return CALL_STAGES;
+  }
 
   /* ---------- safe localStorage ---------- */
   var store = {
@@ -87,35 +92,57 @@
   }
   function currentStage() { return stageById(state.stage); }
   function setMode(m) {
-    if (m !== "call" && m !== "dm") return;
+    if (m !== "call" && m !== "dm" && m !== "outbound") return;
     state.mode = m;
     store.set("triage_mode", m);
     document.body.classList.toggle("mode-dm", m === "dm");
-    $("mode-call").classList.toggle("active", m === "call");
-    $("mode-dm").classList.toggle("active", m === "dm");
-    $("mode-call").setAttribute("aria-selected", m === "call");
-    $("mode-dm").setAttribute("aria-selected", m === "dm");
-    $("left-title").textContent = m === "dm"
-      ? "What the prospect just DM'd"
-      : "What the prospect just said";
+    document.body.classList.toggle("mode-outbound", m === "outbound");
+    ["call", "dm", "outbound"].forEach(function (k) {
+      var el = $("mode-" + k);
+      if (el) {
+        el.classList.toggle("active", m === k);
+        el.setAttribute("aria-selected", m === k);
+      }
+    });
+    $("left-title").textContent =
+      m === "dm" ? "What the prospect just DM'd" :
+      m === "outbound" ? "What the prospect just said on the dial" :
+      "What the prospect just said";
     state.stage = STAGES()[0].id;
     renderStageStrip();
     renderToneBanner();
     renderStyleBanner();
     renderStageRef();
+    var msg = m === "dm"
+      ? "Paste their reply on the left. If it's vague, a red PUSH BACK card with the exact words to send will appear."
+      : m === "outbound"
+      ? "Type what they said on the call. If they push back or stall, a red PUSH BACK card with the exact words to use will appear."
+      : "Type what the prospect just said on the left. If they give uncertainty, a big red PUSH BACK card with the exact words to use will appear.";
     $("copilot").innerHTML = '<div class="empty-state"><p class="empty-big">Ready.</p>' +
-      "<p>" + (m === "dm"
-        ? "Paste their reply on the left. If it's vague, a red PUSH BACK card with the exact words to send will appear."
-        : "Type what the prospect just said on the left. If they give uncertainty, a big red PUSH BACK card with the exact words to use will appear.") +
-      "</p></div>";
+      "<p>" + msg + "</p></div>";
   }
   function renderStyleBanner() {
     var bar = $("style-banner");
-    var rule = DATA.dm_workflow && DATA.dm_workflow.style_rule;
-    if (state.mode === "dm" && rule) {
-      bar.hidden = false;
-      bar.innerHTML = "<b>MIRROR THEIR STYLE every time.</b> " +
-        esc(rule).replace(/^MIRROR THEIR STYLE every time\. /, "");
+    if (state.mode === "dm") {
+      var styleRule = (DATA.dm_workflow && DATA.dm_workflow.style_rule) || "";
+      var crmRule = (DATA.dm_workflow && DATA.dm_workflow.crm_rule) || "";
+      var html = "";
+      if (styleRule) {
+        html += "<div><b>MIRROR THEIR STYLE every time.</b> " +
+          esc(styleRule).replace(/^MIRROR THEIR STYLE every time\. /, "") + "</div>";
+      }
+      if (crmRule) {
+        html += '<div style="margin-top:6px"><b>📒 CRM RULE.</b> ' + esc(crmRule) + "</div>";
+      }
+      bar.hidden = false; bar.innerHTML = html;
+    } else if (state.mode === "outbound") {
+      var obStyle = (DATA.outbound_workflow && DATA.outbound_workflow.style_rule) || "";
+      if (obStyle) {
+        bar.hidden = false;
+        bar.innerHTML = "<div><b>TONALITY IS EVERYTHING.</b> " + esc(obStyle) + "</div>";
+      } else {
+        bar.hidden = true; bar.innerHTML = "";
+      }
     } else {
       bar.hidden = true; bar.innerHTML = "";
     }
@@ -280,13 +307,19 @@
   /* ---------- init ---------- */
   function init() {
     // restore mode from storage
-    if (state.mode === "dm") {
-      document.body.classList.add("mode-dm");
-      $("mode-call").classList.remove("active");
-      $("mode-dm").classList.add("active");
-      $("mode-call").setAttribute("aria-selected", "false");
-      $("mode-dm").setAttribute("aria-selected", "true");
-      $("left-title").textContent = "What the prospect just DM'd";
+    if (state.mode === "dm" || state.mode === "outbound") {
+      document.body.classList.toggle("mode-dm", state.mode === "dm");
+      document.body.classList.toggle("mode-outbound", state.mode === "outbound");
+      ["call", "dm", "outbound"].forEach(function (k) {
+        var el = $("mode-" + k);
+        if (el) {
+          el.classList.toggle("active", state.mode === k);
+          el.setAttribute("aria-selected", state.mode === k);
+        }
+      });
+      $("left-title").textContent = state.mode === "dm"
+        ? "What the prospect just DM'd"
+        : "What the prospect just said on the dial";
     }
     state.stage = STAGES()[0].id;
     renderStageStrip();
@@ -298,6 +331,7 @@
 
     $("mode-call").addEventListener("click", function () { setMode("call"); });
     $("mode-dm").addEventListener("click", function () { setMode("dm"); });
+    $("mode-outbound").addEventListener("click", function () { setMode("outbound"); });
 
     $("btn-analyze").addEventListener("click", analyze);
     $("input").addEventListener("keydown", function (e) {

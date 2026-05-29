@@ -570,3 +570,12 @@ body.mode-dm .stage-pill.active {
 }
 .style-banner::before { content: "💬 "; }
 .style-banner b { color: var(--text); font-weight: 800; }
+
+/* Outbound mode — amber stage-pill accent so the rep knows they're dialing */
+body.mode-outbound .stage-pill.active {
+  background: var(--amber); color: #2a1d00; box-shadow: 0 0 0 2px rgba(245,192,74,.25);
+}
+body.mode-outbound .style-banner {
+  color: var(--amber); background: rgba(245,192,74,.08);
+}
+body.mode-outbound .style-banner::before { content: "📲 "; }
