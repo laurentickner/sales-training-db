@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Content-Security-Policy"
+  content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
+<title>Scale Systems Triage Call Copilot</title>
+<link rel="stylesheet" href="styles.css?v=1" />
+</head>
+<body>
+
+<a class="skip-link" href="#input">Skip to call input</a>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 32 32" width="22" height="22" role="img" aria-hidden="true">
+        <path d="M16 4 L28 26 H4 Z" fill="none" stroke="#F5C04A" stroke-width="3" stroke-linejoin="round"/>
+        <path d="M16 13 L22 26 H10 Z" fill="#00BFF1"/>
+      </svg>
+    </span>
+    <div>
+      <h1>Scale Systems <span class="brand-accent">Triage Call Copilot</span></h1>
+      <p class="brand-sub">Scale Session — qualify before passing to closer</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <span id="mode-badge" class="mode-badge mode-offline">Triage mode</span>
+    <a class="btn btn-ghost" href="../app/" title="Switch to the Sales Call Copilot">↗ Sales Call Copilot</a>
+    <button id="btn-newcall" class="btn btn-ghost" title="Start a fresh triage call"><span aria-hidden="true">↻</span> New call</button>
+  </div>
+</header>
+
+<!-- Funnel stage strip -->
+<nav class="stage-strip" id="stage-strip" aria-label="Triage stage"></nav>
+
+<!-- Tone banner — sets the voice for the current stage -->
+<div class="tone-banner" id="tone-banner" hidden></div>
+
+<main class="layout">
+
+  <!-- LEFT: input + log -->
+  <section class="panel panel-left" aria-label="Call input and log">
+    <h2 class="panel-title">What the prospect just said</h2>
+    <div class="input-zone">
+      <textarea id="input" rows="3" maxlength="2000"
+        placeholder="Type what the prospect just said (or paste it) and press Enter…"></textarea>
+      <div class="input-row">
+        <button id="btn-analyze" class="btn btn-primary">Analyze <span aria-hidden="true">⏎</span></button>
+      </div>
+      <p class="hint">Enter = analyze · Shift+Enter = new line</p>
+    </div>
+    <div class="facts-zone">
+      <label class="facts-label" for="live-facts">Triage notes — capture for the closer</label>
+      <textarea id="live-facts" rows="6"
+        placeholder="goal = $20k/mo  ·  current = $4k/mo&#10;platform = LinkedIn (62k followers)  ·  audience = real&#10;past attempts = tried Mariah's course, no result&#10;time/day = ~45 min  ·  urgency = wants help this month&#10;budget = 2-6k aligns  ·  decision-maker = spouse involved&#10;notes for closer: stalled on urgency, watch for that"></textarea>
+    </div>
+    <div id="log" class="log"></div>
+  </section>
+
+  <!-- RIGHT: copilot guidance -->
+  <section class="panel panel-right" aria-label="Copilot guidance">
+    <h2 class="panel-title">Copilot says…</h2>
+    <div id="copilot" class="copilot" role="region" aria-live="polite"
+         aria-label="Copilot guidance" tabindex="-1">
+      <div class="empty-state">
+        <p class="empty-big">Ready.</p>
+        <p>Type what the prospect just said on the left. If they give uncertainty,
+           a big red <strong>PUSH BACK</strong> card will appear with the exact words to use.</p>
+      </div>
+    </div>
+
+    <div class="stage-ref" id="stage-ref" tabindex="0" aria-label="Current stage reference">
+      <!-- current triage stage reference, filled by JS -->
+    </div>
+  </section>
+
+</main>
+
+<script src="data/data.js?v=1"></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>
