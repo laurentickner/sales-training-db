@@ -8,6 +8,7 @@
       "tone": "Sit back, relax, speak slowly and calmly.",
       "goal": "Make sure you know WHY they booked the call. NO PAIN = NO MORE TALKING. Don't move on until you know.",
       "say": [
+        "STANDING MOVES (apply through the WHOLE call): (1) Loop-back every answer — 'hold on, why though?' 5–7 layers, lower tone. (2) Catch hedge-words ('at least', 'hopefully', 'I'd be happy with') the moment you hear one — Jeremy's Level-3 belief flip. (3) Speak from Identity (L4), not Features (L1): 'sounds like you're the type of person who…' (4) Verbal pacing — DROP tone at end of every question. (5) Past-pain probe over future-pace whenever they mention an attempt.",
         "Hi [name]. Tell me about your day. (If they're busy: 'Oh [name], is now no longer a good time?')",
         "Fantastic over here!",
         "I'm Mariana, I oversee and direct the entire social media and content strategy for Lauren's brand. (For context: I've closed multiple 7 figures in cash for Lauren and I've been with her over the last half decade.)",
@@ -75,12 +76,17 @@
       "say": [
         "Ok, so let's jump 3 years into the future. Lauren, you and I are at your favourite dinner spot, eating your favourite meal, looking back on the last 3 years celebrating our successful collaboration. What are the top 2 or 3 wins we're celebrating together?",
         "Love it, that's worth celebrating over. And because we're all about driving revenue with social media, just like a personal trainer would need to know your ideal body shape and fitness goals so we have a target, where exactly would you like to get to revenue wise in 1 year from now, and 3 years from now?",
-        "Cool — that's clear. Thank you. So that I can understand your business better, if that's where you want to be… how far off are you right now from that monthly revenue level?"
+        "Cool — that's clear. Thank you. So that I can understand your business better, if that's where you want to be… how far off are you right now from that monthly revenue level?",
+        "HEDGE-WORD CATCH (Jeremy — Level 3 belief flip): if they say 'at least', 'hopefully', 'I'd be happy with', 'fingers crossed' — catch it now: 'Can I make a suggestion on a word I just heard you say that could be holding US back? You said [that word]. When we focus on getting the [least / just / what we'd be happy with], what do we typically get? And you don't strike me as the type of person who wants the LEAST things in life. Would I be right? ... So what do you really want?'",
+        "IDENTITY-SHIFT (set them up mentally to BUY — Jeremy NEPQ): 'Sounds like you're the type of entrepreneur who never gives up — you've kept going, you're still here trying to find a real solution. Were you born that way or did you have to learn it?' Locks the new identity. Once they own 'I'm the type of person who...', they can't object later without contradicting themselves.",
+        "HIGH-REVENUE NO-PAIN HANDLE (Cole): if they're already at a healthy run-rate and downplay pain, don't build from pain — build from unfulfilled DESIRE. 'We never have companies come to us wanting to learn how to sell less — they always want to learn how to sell more. Is that why you came to us?' Then: 'If we came in and did [X], where do you FEEL you could get in 12 months?' (Use 'feel'. Keeps them emotional.) If they lob a humble number: 'OK, 15 — is that your humble goal? You can tell me, we're not posting it on Instagram.'"
       ],
       "green_light": [
         "They've named a specific monthly revenue target",
         "The target is realistic + something we can help with (≥ +10k/mo or speaking gigs from organic)",
-        "You know the gap between current and goal"
+        "You know the gap between current and goal",
+        "Hedge word flipped if one was used",
+        "Identity-shift planted ('you're the type of person who…')"
       ],
       "pushback_triggers": [
         "i don't really know",
@@ -92,9 +98,21 @@
         "to grow",
         "more money",
         "i'd be happy with anything",
-        "see what happens"
+        "see what happens",
+        "at least",
+        "i'd be happy with",
+        "i'd settle for",
+        "hopefully",
+        "fingers crossed",
+        "just trying to",
+        "ideally",
+        "i guess i'd like",
+        "if i could just",
+        "even just",
+        "probably about",
+        "best case"
       ],
-      "pushback_script": "This goal isn't clear enough. You can't pass them to the closer with vague goals. Push: 'I hear you — but to make sure we're not wasting your time, I need a specific number. If you could click your fingers and have anything, what's the monthly revenue you'd want to be at in 12 months? Just throw a number at me — there's no wrong answer.' Do not move on until you have a number."
+      "pushback_script": "HEDGE-WORD detected — flip it NOW before it caps the rest of the call (Jeremy): 'Can I make a suggestion on a word I just heard you say that could be holding US back? You said [their hedge word]. When we focus on the [least / just / what we'd be happy with], what do we typically get? And you don't come across to me as the type of person who wants the LEAST things in life. Would I be right? ... So what do you really want?' Lower your tone, soft delivery. NEVER 'YOU back' — always 'US back'. Never accuse."
     },
     {
       "id": "revenue",
@@ -102,10 +120,12 @@
       "tone": "Curious + non-judgemental.",
       "goal": "Get clear on their current monthly revenue. Doesn't matter what it is — but important we know so the closer can pitch the right level of support.",
       "say": [
-        "Ok got it, so your monthly revenue over the last 6 months, what has it been exactly? I ask so that I can see which of our levels of support might make the most sense for you."
+        "Ok got it, so your monthly revenue over the last 6 months, what has it been exactly? I ask so that I can see which of our levels of support might make the most sense for you.",
+        "ANNUALISED-REVENUE CATCH (Cole): if they quote annually ('about $1M/yr', 'half a million annually', 'we do about'), don't accept it — verbatim follow: 'Got it — and just based on last month specifically, what did you do? And the month before?' If monthly < 1/12 of stated annual → it's a one-good-month brag, not a real run-rate. Anchor every downstream conversation off the MONTHLY, not the annual. Pass the real number to the closer."
       ],
       "green_light": [
-        "You have a specific monthly revenue figure (or a clear range)"
+        "You have a specific monthly revenue figure (or a clear range)",
+        "You have a REAL monthly figure (not just an annualised brag)"
       ],
       "pushback_triggers": [
         "varies",
@@ -115,7 +135,19 @@
         "i don't track",
         "ballpark",
         "give or take",
-        "around"
+        "around",
+        "a year",
+        "per year",
+        "annually",
+        "i do about",
+        "we do about",
+        "run rate",
+        "arr",
+        "about a million",
+        "about half a million",
+        "around a million",
+        "doing about",
+        "year we did"
       ],
       "pushback_script": "Don't accept vague here. The closer needs a real number. Push gently: 'Totally get it varies — but over the last 6 months on average, what would you say it's been per month? Doesn't have to be exact, just a real ballpark so I can match you to the right level of support.' Hold for the answer."
     },
@@ -130,12 +162,19 @@
         "What did you like or dislike about it?",
         "Thank you for sharing. What attracted you to the Scale Systems way of doing things? What did you like about our method specifically?",
         "(IF they say they have a coach OR are working with someone else now:)",
-        "Got you, seeing as you're already working with someone else — what's not working as well as it should be that means you're interested in working with us?"
+        "Got you, seeing as you're already working with someone else — what's not working as well as it should be that means you're interested in working with us?",
+        "PAST-PAIN PROBE (Jeremy — auto-generates future-fear): 'Take me back to the LAST time you tried to fix this — what SPECIFICALLY happened? What did it cost you? How did that feel?' Lower tone, slow pace. Their brain projects 'this will happen again' without you saying it. More powerful than 'what if nothing changes' — emotion is already loaded.",
+        "RE-MEANING (Jeremy — runs BEFORE the identity-shift): 'You know what's interesting about that? That bad experience didn't BREAK you — it led you HERE. Most people would have quit and gone back to their job after that, but you didn't. You're still here, looking for the right thing.'",
+        "IDENTITY-SHIFT (Jeremy — the mental-setup-to-buy lock): 'Sounds like you're the type of entrepreneur who never gives up — you tried [their attempt], it didn't work, and you're STILL here trying to find a real solution. Were you born that way or did you have to learn it?' Now they own the identity. From this point forward they can't reasonably object without contradicting who they just said they are.",
+        "PERMISSION RECOVER (Cole — after the identity-shift): '…are you OK with me saying that?' Keeps the content sharp without losing them."
       ],
       "green_light": [
         "You know if they've worked with similar companies before",
         "You know what attracted them to Scale Systems specifically",
-        "If they have a current coach: you know what's not working"
+        "If they have a current coach: you know what's not working",
+        "Re-meaning landed ('didn't break you — led you here')",
+        "Identity-shift planted ('type of entrepreneur who never gives up')",
+        "Permission re-licensed ('OK with me saying that?')"
       ],
       "pushback_triggers": [
         "no idea",
@@ -175,7 +214,7 @@
         "no specific timeline",
         "when's good for you"
       ],
-      "pushback_script": "Stalling on urgency. Push with the qualifier: 'Got it, and if you were certain this would add decent revenue to your business on a monthly basis, would that change things?' (ONLY use this if they aren't financially qualified or are giving a BS answer.) Even if they're still stalling, pass them through to the closer — closer can overcome this. But make sure the closer knows they aren't rushing to move forward now, so the closer can prepare."
+      "pushback_script": "STALLING on urgency — TWO moves:\n\n(1) Cole's INVERSION (mishear the hedge as a no): 'So it sounds like you don't think this will actually work for you?' 9/10 they snap back: 'no no, I do think it'll work.' Lower tone: 'Hold on — why do you think it'll work?' Now they're DEFENDING the buy, not stalling it.\n\n(2) Jeremy's qualifier (only if not financially qualified): 'Got it — and if you were certain this would add decent revenue to your business on a monthly basis, would that change things?'\n\nEven if still stalling, pass through to closer — but make sure the closer KNOWS they aren't rushing."
     },
     {
       "id": "budget",
@@ -206,7 +245,13 @@
         "what would you suggest",
         "tell me the price",
         "i don't have a number",
-        "hard to say"
+        "hard to say",
+        "i'd be happy with",
+        "ideally",
+        "hopefully",
+        "best case",
+        "even just",
+        "at least"
       ],
       "pushback_script": "Hhhhmmm okay OR Got it — and so we can see which of our options could be feasible, on a monthly basis, what are you willing to invest to be sure you'd get this working?\n\nIf they STILL won't give a number — push once more: 'Just throw out a real number, even if it's a rough one. There's no wrong answer — it just helps me match you to the right tier.' Don't move on without a number you can pass to the closer."
     },
@@ -219,7 +264,8 @@
         "Ok thank you. So for your social media, do you have someone on your team who helps with any of this? Like a VA or an appointment setter or something?",
         "And is there anyone else involved in making decisions when it comes to your business or is that something you have full autonomy over?",
         "(If they say 'just me' — say this half laughing:)",
-        "Ok got it, so you're not going to hit us with an objection like 'I need to speak to my partner?' or 'I have to run this by my accountant?' right?"
+        "Ok got it, so you're not going to hit us with an objection like 'I need to speak to my partner?' or 'I have to run this by my accountant?' right?",
+        "EXTERNAL-VALIDATION REFRAME (Cole — if they suddenly surface a partner / accountant / advisor they need to check with): 'Can I share something? The brain isn't built to thrive — it's built to keep us SAFE. So when we hit something new and big, the default move is to outsource the decision — talk to your spouse, your accountant, your team. That's the brain trying to protect you. So… what's the part you actually need their input on, vs. what's the part where you're just looking for someone to tell you it's OK to move forward?' Pass the answer to the closer."
       ],
       "green_light": [
         "You know who else is in the decision (spouse, partner, accountant, team)",
@@ -259,7 +305,8 @@
         "Ok great — when are you planning to watch it, so I can check in with you to make sure you've been able to go through it in full, and confirm your call with John?",
         "Ok cool — I will hold you accountable to that. So expect a call or text from me right around then!",
         "Just a note, your strategy session will take place on a google meet link, not a phone call. So please make sure you are somewhere quiet, where you can focus. Sounds ok?",
-        "It's been great chatting today — I'll be waiting for your reply to that email confirming you've been through the doc."
+        "It's been great chatting today — I'll be waiting for your reply to that email confirming you've been through the doc.",
+        "IDENTITY LOCK before hand-off (Jeremy): 'Honestly, sounds like you're the type of person who, once they see something that actually fits, they MOVE on it. Would I be right?' Get the YES. Now when John (the closer) gets them, they've already committed to the identity of 'I'm the kind of person who moves when I see fit' — much harder to stall."
       ],
       "green_light": [
         "Strategy call booked + on the calendar",
@@ -715,5 +762,17 @@
         "pushback_script": "Cadence runs regardless of replies. If they reply with a problem, jump straight to Tipping-Point Question -> Book the Triage Call."
       }
     ]
+  },
+  "universal_moves": {
+    "loop_back_rule": "After every answer the prospect gives, LOWER your tone and ask 'Hold on — why though?' / 'Why do you feel like that?' / 'Why do you agree?' Go 5–7 layers deep, not 1–2. The first 'why' gets the rehearsed answer. The fifth 'why' gets the truth. If you interject mid-sentence: 'Hold on — what caused you to say that?' (Jeremy Miner / NEPQ.)",
+    "four_levels_of_persuasion": "Jeremy's ladder. L1 Features/Benefits (where 99% of reps live — never wins big deals). L2 Behaviours ('what does the entrepreneur who makes $2M/yr actually DO?'). L3 Beliefs (catch the words they use — 'at least', 'I think' — and reframe). L4 Identity (people DO who they BELIEVE they are). Speak from L3/L4: 'sounds like you're the type of person who never gives up — were you born that way or did you have to learn it?' Locks the new identity so they can't object without contradicting themselves.",
+    "identity_frame_template": "Universal identity-shift line: 'sounds like you're the type of [entrepreneur / business owner / operator / parent] who [never gives up / always finds a way / actually moves on something when they see it]. Were you born that way, or did you have to learn it?' Use ANYWHERE in the triage — past attempts, results question, urgency stall, fit hand-off. This is the 'set them up mentally to buy' move. Cement the identity early, the rest is downstream.",
+    "hedge_word_catch": "Listen for ceiling-revealing words: 'at least', 'hopefully', 'I'd be happy with', 'I'd settle for', 'fingers crossed', 'just trying to', 'ideally', 'I guess I'd like', 'if I could just', 'even just', 'probably about', 'best case'. The MOMENT you hear one, catch it (verbatim): 'Can I make a suggestion on a word I just heard you say that could be holding US back? You said [their word] — when we focus on getting the [least / just / what we'd be happy with], what do we typically get? And you don't come across to me as the type of person who wants the LEAST things in life. Would I be right? ... So what do you really want?' (Jeremy Miner — Level 3 belief flip.)",
+    "permission_recover": "After a sharp move (identity callout, past-pain probe, consequence math), pause and re-license: 'are you OK with me saying that?' Keeps the content sharp without losing them. If they interject your hard question: 'Hold on — you interjected right when I was about to give you an answer you didn't want. Why did you do that?' (Cole — names avoidance directly instead of letting them route around it.)",
+    "open_vs_closed_gate": "Before any direct frame (the half-laughing authority close, the 'how soon are you looking to get help' question), assess: is the MASK off? Tells = emotional words, personal story, real why behind a number, conceded hidden numbers. If mask OFF → direct moves land. If still ON (surface answers, scripted-sounding) → soften FIRST: 'Sure, no problem. Just so I know — what was it you were wanting to go over in your mind?' Cole: that question extracts the real objection sideways.",
+    "verbal_pacing": "Slow down. Drop your tone at the end of every question (don't lift up — that signals uncertainty). This is HOW loop-back works — fast/lifted tone = setter, slow/dropped tone = consultant. Jeremy: 'when your voice lifts at the end they think you're selling them. When it drops, they think you're thinking with them.'",
+    "past_pain_probe": "When they mention any past attempt: 'Take me back to the LAST time you tried to fix this — what SPECIFICALLY happened? What did it cost you?' Past-pain auto-generates future-fear: their brain projects 'this will happen again' without you saying it. More powerful than 'what if nothing changes' because the emotion is already loaded. Then re-meaning: 'You know what's interesting? That didn't break you — it led you HERE.' Then identity-shift: 'sounds like you're the type of entrepreneur who never gives up...'",
+    "annualized_revenue_catch": "If they quote revenue annually ('we do about $1M/yr', 'half a million annually'), don't accept it. Verbatim follow: 'Got it — and just based on last month specifically, what did you do? And the month before?' Cole: small biz owners quote 'about $1M/yr' then concede '$40k last month' — the annual is the brag number, the monthly is the real run-rate. Anchor the math to the monthly, otherwise the closer pitches off fiction.",
+    "high_revenue_no_pain": "If they're already at a healthy run-rate and downplay pain: don't build from pain — build from UNFULFILLED DESIRE. Playful disarm first (Cole): 'We never have companies come to us wanting to learn how to sell LESS — they always want to learn how to sell MORE. Is that why you came to us?' Then the feel-forward: 'If we came in and did [X], where do you FEEL you could get in 12 months?' (Use the word FEEL — keeps them emotional.) If they lob a humble number, call it: 'OK, 15 — is that your humble goal? You can tell me, we're not posting it on Instagram.'"
   }
 }
