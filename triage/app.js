@@ -101,12 +101,24 @@
     state.stage = STAGES()[0].id;
     renderStageStrip();
     renderToneBanner();
+    renderStyleBanner();
     renderStageRef();
     $("copilot").innerHTML = '<div class="empty-state"><p class="empty-big">Ready.</p>' +
       "<p>" + (m === "dm"
         ? "Paste their reply on the left. If it's vague, a red PUSH BACK card with the exact words to send will appear."
         : "Type what the prospect just said on the left. If they give uncertainty, a big red PUSH BACK card with the exact words to use will appear.") +
       "</p></div>";
+  }
+  function renderStyleBanner() {
+    var bar = $("style-banner");
+    var rule = DATA.dm_workflow && DATA.dm_workflow.style_rule;
+    if (state.mode === "dm" && rule) {
+      bar.hidden = false;
+      bar.innerHTML = "<b>MIRROR THEIR STYLE every time.</b> " +
+        esc(rule).replace(/^MIRROR THEIR STYLE every time\. /, "");
+    } else {
+      bar.hidden = true; bar.innerHTML = "";
+    }
   }
 
   /* ---------- match: detect uncertainty in prospect's response ---------- */
@@ -279,6 +291,7 @@
     state.stage = STAGES()[0].id;
     renderStageStrip();
     renderToneBanner();
+    renderStyleBanner();
     renderStageRef();
     renderLog();
     $("live-facts").value = state.liveFacts;
