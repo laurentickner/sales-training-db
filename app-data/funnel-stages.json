@@ -112,9 +112,10 @@
         "STEP 4 — SCALE: On a scale of 1 to 10 — one being 'get me off the phone', ten being 'that's exactly what I need' — where do you fall exactly? ... What's keeping you from a 9 or 10?",
         "STEP 5 — DOUBLE TIE-DOWN: So [objection] aside — is there anything else keeping you from being less than 100% certain this is the right thing AND now is the right time? ... So you're 100% in?",
         "If the tonality is off and the stated objection feels like a cover: For real, I can tell there's something. So what's really going on? What's really coming up for you?",
-        "Then handle the specific objection. Trade every concession for a decision: 'If I'm willing to do that for you, are you willing to move forward right now?'"
+        "Then handle the specific objection. Trade every concession for a decision: 'If I'm willing to do that for you, are you willing to move forward right now?'",
+        "LOOP-BACK (Jeremy Miner — apply after EVERY answer in this stage): lower your tone and ask 'Hold on — why though?' / 'Why do you feel like that?' / 'Why do you agree?' The first answer is rarely the real one. Loop until they sell themselves."
       ],
-      "listen_for": "Which objection. Handle uncertainty before money/support/timing — a logistic handled while uncertainty is unresolved is a smoke screen. Should-I = uncertainty (handle the belief); How-can-I = logistic (trade and close). On the scale: 8 or under, ask 'why so low?', handle, re-ask. No 7s.",
+      "listen_for": "Which objection. Handle uncertainty before money/support/timing — a logistic handled while uncertainty is unresolved is a smoke screen. Should-I = uncertainty (handle the belief); How-can-I = logistic (trade and close). On the scale: 8 or under, ask 'why so low?', handle, re-ask. No 7s. TONALITY > WORDS: concerned tone, lower at the end of questions, slow pace — the same words in different tones land completely differently. Goal of every probe is to get them to take the mask off (most prospects show up wearing one).",
       "advance_when": "They're 100% in and you've closed — move to Close Confirmation to button down the sale."
     },
     {

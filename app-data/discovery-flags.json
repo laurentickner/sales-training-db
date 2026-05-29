@@ -551,6 +551,30 @@
       ],
       "probe": "Out of those leads, how many actually fit the exact ideal client you want to attract? ... Let's get specific — what was your exact revenue last month? What about the month before? Is that gross or net?",
       "note": "Chunk down to numbers. The real problem is often lead QUALITY, not volume — and stories hide it, numbers reveal it."
+    },
+    {
+      "id": "hedge-words",
+      "signal": "They used a ceiling word that reveals a low belief — catch it and reset",
+      "belief": "desire",
+      "triggers": [
+        "at least",
+        "i'd be happy with",
+        "i'd settle for",
+        "hopefully",
+        "fingers crossed",
+        "just trying to",
+        "ideally",
+        "in a perfect world",
+        "i guess i'd like",
+        "if i could just",
+        "even just",
+        "probably about",
+        "probably like",
+        "i'd love to maybe",
+        "best case"
+      ],
+      "probe": "Can I make a suggestion on a word I just heard you say that could be holding us back? You said [their word] — have you ever thought that when we focus on getting [the least / the just / what we'd be happy with], what do we typically get? And you don't come across to me as the type of person who wants the least things in life. Would I be right? ... So what do you really want? (Jeremy Miner — identity-shift via word-catch.)",
+      "note": "Jeremy Miner's word-catch move. Their first answer reveals their ceiling — flip it now before it caps the rest of the call. Use a concerned, soft tone — 'could be holding US back', never 'YOU back'. Never accuse."
     }
   ]
 }
