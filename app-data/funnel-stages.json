@@ -33,7 +33,7 @@
     {
       "id": "discovery",
       "name": "2. Discovery",
-      "goal": "Understand IF and HOW you can help. Cover the 7 beliefs (pain, doubt, cost, desire, money, support, trust). Eliminate objections before the close.",
+      "goal": "Understand IF and HOW you can help. Run the DISCOVER framework: Desire, Issue, Sum, Cost, Own, Verify, Everyone, Resources. Eliminate objections before the close.",
       "listen_for": "Discovery flags — vague answers, emotional words, numbers, spouse/team mentions, past attempts, hedging. The copilot will surface probes.",
       "say": [
         "What's your biggest challenge right now? Or what's not working at the level it truly could be?",
@@ -43,7 +43,7 @@
         "Tell me about the business — what do you sell, who's it for, and how long have you been running it? ... What part of running it drains you the most right now?",
         "Take me back to the moment you realised the way you'd been growing this wasn't going to get you where you want — what was going on in the business that made you decide enough is enough?",
         "Last week specifically, how many [leads / sales calls] did you generate? What about the week before? Out of those, how many fit the exact ideal client you want? ... Just for clarity — what was your exact revenue last month? What about the month before?",
-        "MATH (Ravi client value — lock these for the upside math): What's a single client worth to you over their lifetime? On average, how many clients do you close a month? (Tick the 'Math (Ravi LTV)' chip above when you've captured this.)",
+        "SUM (Ravi client value — lock these for the upside math): What's a single client worth to you over their lifetime? On average, how many clients do you close a month? (Tick the 'S — Sum' chip above when you've captured this.)",
         "So you're making [guess] a month right now then, correct?",
         "Begin with the end in mind — ultimately, where do you want the business to be? What's the revenue number you're driving toward, and what would the business look like at that point? Why that number specifically?",
         "Can I ask another personal question — and I really hate to ask this — but what's your plan if nothing changes? What if the last five years are like the next five years?",

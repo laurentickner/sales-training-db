@@ -36,6 +36,11 @@
       "What would make you 100% confident that we're the team to get you there?",
       "Have you looked at other options? What's drawing you to look at this now?",
       "Is there anything about working with us specifically you're unsure of — so I can clear it up now?"
+    ],
+    "math": [
+      "What's a single client worth to you over their lifetime?",
+      "On average, how many clients do you close a month?",
+      "What's your current monthly revenue? And what would you need it to be? (Lock these — they're the inputs to the conservative upside math at committing.)"
     ]
   },
   "flags": [

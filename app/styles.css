@@ -351,11 +351,12 @@ body {
   .sr-options { flex-direction: column; }
 }
 
-/* ---- Math chip variant on the discovery tracker ---- */
-.math-chip { border-style: dashed; }
-.math-chip.on {
-  background: #2a1d00; color: var(--amber); border-color: #5a3f00;
+/* ---- DISCOVER chip letter highlight ---- */
+.chip-letter {
+  font-weight: 900; color: var(--cyan); margin-right: 1px;
+  font-size: 11.5px; letter-spacing: 0.5px;
 }
+.belief-chip.on .chip-letter { color: var(--green); }
 
 /* ---- Larger reading text for during-call use ---- */
 .stage-ref li { font-size: 14px; line-height: 1.55; }

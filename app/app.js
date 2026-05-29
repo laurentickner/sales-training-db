@@ -68,11 +68,17 @@
   var MAX_INPUT = 2000;   // one spoken turn, not a pasted transcript
   var MIN_SCORE = 1.0;    // below this, a keyword match is too weak to surface
 
-  /* Cole's 7 beliefs — every objection traces to one of these going uninstalled */
-  var BELIEFS = ["pain", "doubt", "cost", "desire", "money", "support", "trust"];
+  /* DISCOVER framework — Cole's 7 beliefs + Ravi LTV math, relabelled to spell DISCOVER */
+  var BELIEFS = ["desire", "pain", "math", "cost", "doubt", "trust", "support", "money"];
   var BELIEF_LABEL = {
-    pain: "Pain", doubt: "Doubt", cost: "Cost", desire: "Desire",
-    money: "Money", support: "Support", trust: "Trust"
+    desire: "Desire", pain: "Issue", math: "Sum", cost: "Cost",
+    doubt: "Own", trust: "Verify", support: "Everyone", money: "Resources"
+  };
+  // Display order: D-I-S-C-O-V-E-R
+  var DISCOVER_ORDER = ["desire", "pain", "math", "cost", "doubt", "trust", "support", "money"];
+  var DISCOVER_LETTER = {
+    desire: "D", pain: "I", math: "S", cost: "C",
+    doubt: "O", trust: "V", support: "E", money: "R"
   };
   var PROSPECTS_KEY = "copilot_prospects";
 
@@ -94,8 +100,7 @@
     liveFacts: store.get("copilot_livefacts") || "",  // rep's running call notes
     activeObjection: null,   // last objection raised — stays live until New call
     committingDone: {},      // committing-phase step id -> true
-    introDone: {},           // introduction-stage step id -> true (e.g. nudge confirmed)
-    mathCaptured: false      // Ravi LTV / client-value math captured in discovery
+    introDone: {}            // introduction-stage step id -> true (e.g. nudge confirmed)
   };
   var nextId = 1;            // monotonic log id (Date.now can collide)
   var reqSeq = 0;            // smart-mode request token — stale fetches no-op
@@ -664,18 +669,17 @@
     if (state.stage === "discovery") {
       el.hidden = false;
       var done = 0;
-      var chips = BELIEFS.map(function (b) {
+      var chips = DISCOVER_ORDER.map(function (b) {
         var on = !!state.beliefsCovered[b];
         if (on) done++;
+        var letter = DISCOVER_LETTER[b];
         return '<button class="belief-chip' + (on ? " on" : "") + '" data-belief="' + b +
-          '" aria-pressed="' + on + '">' + (on ? "✓ " : "") + esc(BELIEF_LABEL[b]) + "</button>";
+          '" aria-pressed="' + on + '" title="' + letter + ' — ' + esc(BELIEF_LABEL[b]) + '">' +
+          (on ? "✓ " : "") + '<span class="chip-letter">' + letter + '</span> ' +
+          esc(BELIEF_LABEL[b]) + "</button>";
       }).join("");
-      var mathOn = !!state.mathCaptured;
-      chips += '<button class="belief-chip math-chip' + (mathOn ? " on" : "") + '" data-math="1" aria-pressed="' + mathOn + '">' +
-        (mathOn ? "✓ " : "") + "Math (Ravi LTV)</button>";
-      el.innerHTML = '<span class="belief-label">7 beliefs + math — ' + done + "/7" +
-        (mathOn ? " · math ✓" : "") + "</span>" + chips +
-        '<span class="belief-hint">click a belief for its prompts; math is a separate capture</span>';
+      el.innerHTML = '<span class="belief-label">DISCOVER — ' + done + "/8</span>" +
+        chips + '<span class="belief-hint">click each letter for prompts &amp; to tick it off</span>';
     } else if (state.stage === "introduction") {
       el.hidden = false;
       var idone = 0;
@@ -709,8 +713,8 @@
     var prompts = BELIEF_PROMPTS[b] || [];
     var on = !!state.beliefsCovered[b];
     var h = '<div class="card card-belief">';
-    h += '<div class="card-head"><span class="card-kicker">' + glyph("◇") + " Belief: " +
-      esc(BELIEF_LABEL[b]) + "</span>";
+    h += '<div class="card-head"><span class="card-kicker">' + glyph("◇") + " DISCOVER — " +
+      (DISCOVER_LETTER[b] || "") + " · " + esc(BELIEF_LABEL[b]) + "</span>";
     h += '<button class="belief-cover-btn' + (on ? " on" : "") + '" data-cover="' + b + '">' +
       (on ? "✓ Covered" : "Mark covered") + "</button></div>";
     h += '<div class="say-block"><div class="say-label">Ask this to surface it</div>';
@@ -990,7 +994,6 @@
     state.beliefsCovered = {};
     state.committingDone = {};
     state.introDone = {};
-    state.mathCaptured = false;
     state.activeObjection = null;
     nextId = 1;
     reqSeq++;
@@ -1045,14 +1048,11 @@
       var b = e.target.closest ? e.target.closest(".stage-pill") : null;
       if (b) setStage(b.getAttribute("data-id"));
     });
-    // belief chip -> show prompts; committing-step chip -> tick it off; math chip -> tick
+    // DISCOVER chip -> show prompts; introduction/committing-step chip -> tick it off
     $("belief-tracker").addEventListener("click", function (e) {
       var b = e.target.closest ? e.target.closest(".belief-chip") : null;
       if (!b) return;
-      if (b.hasAttribute("data-math")) {
-        state.mathCaptured = !state.mathCaptured;
-        renderBeliefTracker();
-      } else if (b.hasAttribute("data-belief")) {
+      if (b.hasAttribute("data-belief")) {
         showBeliefPrompts(b.getAttribute("data-belief"));
       } else if (b.hasAttribute("data-step")) {
         var k = b.getAttribute("data-step");
