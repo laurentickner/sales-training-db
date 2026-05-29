@@ -531,22 +531,23 @@
     "crm_rule": "EVERY prospect you message gets logged in the CRM after Message 1 (so you remember to follow up if they ghost), and again after Message 2. If they're 6 figures or above, ALSO add them to the 6-Figures+ Hitlist (see Follow Up stage for the cadence)."
   },
   "outbound_workflow": {
-    "goal": "Dial leads who opted into our freebies (YOU-AI training, etc.) within 24 hours of opt-in. Pattern-interrupt opener, get a real problem in 60 seconds, book the call or send the AI training and follow up. Verbatim-style is Matt Ryder — flag any line below for refinement once we mine his outbound-specific videos.",
-    "style_rule": "Tonality is EVERYTHING on outbound. Low-energy, conversational, almost friendly. Don't sound like a salesperson. Short sharp questions ('what do you mean?' / 'how long?' / 'why's that?') — never the long 'so what I'm hearing you say is…' robot phrasing. If you sound surprised to be on the phone with them, they'll mirror it and stay on. Smile while you dial — they hear it.",
+    "goal": "Dial leads who opted into our freebies (YOU-AI training etc.) within 24 hours. ONLY goal of the dial = book them onto the Scale Session triage call with Mariana. Do NOT try to qualify or pitch on the dial — the triage call does that. Verbatim source: Coach Cayden (Matt Ryder camp) — 'The Simple Way to Book More Calls (Outbound)' + 'Outbound Masterclass with Coach Cayden'.",
+    "style_rule": "Tonality is EVERYTHING. Low-energy, conversational, almost clerical. Whoever wants something MORE loses the frame — be detached: 'I'll take a horse to water, drink it or don't, I have plenty of water.' Short sharp questions ('what got you looking into this?' / 'what do you mean?' / 'why's that?') — never long robot phrasing. BRIDGE every question to the next so it feels like a conversation, not an interrogation. Smile while you dial. When you hear their energy shift, CALL IT OUT — don't just keep going.",
     "stages": [
       {
         "id": "ob-opener",
-        "name": "1. Pattern Interrupt",
-        "tone": "Low-energy, slightly informal — like you bumped into them at a coffee shop.",
-        "goal": "Disarm them in the first 5 seconds so they don't hang up. The 'weird' intro is the move — it breaks their 'this is a sales call' pattern.",
+        "name": "1. Pattern Interrupt + Disarm",
+        "tone": "Low-energy, conversational. Apologise BEFORE they push back — pre-empt the 'who is this' reflex. The word 'just' downgrades the stakes ('this is JUST Mariana').",
+        "goal": "Get past the first 5 seconds. Disarm them with an apology + the 'just' framing so they don't hang up. They opted into our freebie, that's the only hook you need.",
         "say": [
-          "Hey [name], it's [you] from Lauren Tickner's team — got a really quick odd question for you, you got 20 seconds?",
-          "(Alt:) Hey [name], it's [you] — this is going to sound a bit random, but you got 30 seconds?",
-          "(If they push back 'what's this about?'): Totally fair — I'll be super quick. You grabbed our [freebie] the other day, just wanted to ask you one thing about that. 20 seconds tops?"
+          "Hey, is this [name]? … Yeah, I apologise, [name] — didn't mean to offend you or anything. I know I'm calling you out of the blue.",
+          "This is just [you] over here with Lauren Tickner's team — about the [YOU-AI training / freebie] you grabbed recently. Hopefully that rings a bell.",
+          "(If they say 'I don't remember'): Oh, I apologise — yeah, it's pretty common people don't remember. Looks like it was a couple of [days / weeks] ago. My job is just to get the information out to you — don't shoot the messenger. It'll take 5 minutes here, okay?",
+          "(Source: Cayden / Matt Ryder camp — Outbound Masterclass + Simple Way to Book More Calls)"
         ],
         "green_light": [
-          "They said yes / kept the line open",
-          "You haven't been hung up on"
+          "They stayed on the line past the opening apology",
+          "They've acknowledged the opt-in (or accepted the 'don't shoot the messenger' frame)"
         ],
         "pushback_triggers": [
           "what's this about",
@@ -555,97 +556,74 @@
           "i'm busy",
           "i'm not interested",
           "take me off",
-          "not a good time"
+          "not a good time",
+          "i don't remember"
         ],
-        "pushback_script": "Stay calm, stay low energy. Don't get defensive. Just say: 'Totally fair — and I get the call out of nowhere is weird. You grabbed our [freebie] the other day, that's why I'm reaching out. I'll be 20 seconds tops — can I ask you one thing about it?' If they still say no: 'No worries — would it be easier if I sent you a quick text instead?' Then send a soft follow-up DM/text."
+        "pushback_script": "Stay calm, stay LOW energy. The 'don't shoot the messenger' line does the work: 'Yeah, totally fair — it's pretty common people don't remember. Looks like it was a few [days/weeks] ago. My job is just to get the information out to you, don't shoot the messenger. It'll take 5 minutes here, okay?' If they keep fighting (Cayden's gaslight-through principle): just repeat the same line in a different word order until they go with it. Most do."
       },
       {
-        "id": "ob-hook",
-        "name": "2. Hook to the Opt-in",
-        "tone": "Curious — you genuinely want to know.",
-        "goal": "Anchor the call to the specific freebie they grabbed, then surface what made them grab it.",
+        "id": "ob-confirm",
+        "name": "2. Confirm 2 Pieces of Personal Data",
+        "tone": "Matter-of-fact, clerical — like you're a clinic receptionist.",
+        "goal": "This is the LOAD-BEARING move (Cayden's words: 'way harder to hang up' after this). Confirm 2 specific pieces of data they put on the opt-in form. After they say 'yes' to two of your questions, the hang-up reflex is gone.",
         "say": [
-          "Just saw you grabbed our [YOU-AI training / AI freebie / whichever], a few days ago. Out of curiosity — what made you grab that one specifically? Is there something specific you're trying to figure out right now?",
-          "(Soft follow-on if they downplay): Got it — and have you actually had a chance to go through it yet, or is it still in the queue?"
+          "Just needed to get a couple of things confirmed on our system here, if that's all right with you.",
+          "First thing here, it looks like I've got [piece 1 — e.g. their email / their stage of business / what they wrote in the form]. Is that correct?",
+          "Okay great — and I've got [piece 2 — e.g. their handle / their goal / their location]. Is that right?",
+          "(The exact data depends on what was on the opt-in form — but ALWAYS pick 2 things you can verify and ask about each one separately. Don't lump them.)"
         ],
         "green_light": [
-          "They named what made them grab the freebie",
-          "You know if they've consumed it or not"
+          "They've said 'yes' to TWO of your questions"
+        ],
+        "pushback_triggers": [
+          "what is this for",
+          "why do you need",
+          "i'm not comfortable",
+          "what's this about"
+        ],
+        "pushback_script": "Keep it clerical: 'Totally fair — I'm just making sure I've got the right person matched to the right info on our end. Two quick things and we're done with that part — [piece 1], is that correct?' Then move to the surface question fast. Don't dwell."
+      },
+      {
+        "id": "ob-surface",
+        "name": "3. Tipping-Point Question",
+        "tone": "Curious, no pressure — short sharp questions only.",
+        "goal": "Get ONE thing in their own words about why they grabbed the freebie. This is the dial's ENTIRE discovery — Cayden: 'I don't care about a problem. What I want to know is what they're looking for and why.' Don't go deep — the triage call does that.",
+        "say": [
+          "Cool — so what got you looking into this in the first place? Or why did you want the [freebie] specifically? (Cayden's exact 'tipping point' question.)",
+          "(Variant): What caught your attention? What made you reach out in the first place?",
+          "(Variant for a specific freebie): I'm guessing you grabbed the YOU-AI training because you were looking to [insert obvious reason]? Or what were you hoping it would help with specifically?",
+          "(If they give a problem, great. If they give a goal, also great. Don't push for both — pick one and move on.)"
+        ],
+        "green_light": [
+          "You have ONE thing they want / one problem they're trying to fix",
+          "You DID NOT go deep into discovery — that's the triage call's job"
         ],
         "pushback_triggers": [
           "just curious",
           "just wanted to see",
           "no specific reason",
           "i grab everything",
-          "lauren's stuff is good",
-          "just for fun"
+          "lauren's stuff is good"
         ],
-        "pushback_script": "Don't accept 'just curious'. Push softly with curiosity: 'Got it — but if you had to point to one thing, what specifically caught your eye? Was it the AI angle, the revenue thing, something Lauren said? Just wondering.' There's always a reason — find it."
-      },
-      {
-        "id": "ob-problem",
-        "name": "3. Surface the Problem",
-        "tone": "Curious, no pressure — short sharp questions only.",
-        "goal": "Get one specific problem in their own words. NOT a sales pitch — just a real problem you can hook the call to.",
-        "say": [
-          "Cool. So when you say [X] — what do you mean by that?",
-          "How long has that been the case?",
-          "Has that put you in a tough position? In what way?",
-          "(If they go vague:) Tell me more.",
-          "(If they say 'I'm not sure'): What's the bit that's most frustrating right now?"
-        ],
-        "green_light": [
-          "You have one specific, named problem in their words",
-          "You know roughly how long it's been a problem",
-          "You have a sense of the cost (time / money / energy)"
-        ],
-        "pushback_triggers": [
-          "i don't know",
-          "everything",
-          "all of it",
-          "no real issue",
-          "it's not that bad",
-          "fine i guess",
-          "depends"
-        ],
-        "pushback_script": "Stay short and curious — DO NOT switch into pitch mode. Just one more probe: 'Got it — and if you HAD to pick the single biggest thing you'd want fixed, what would it be?' If they still won't name it, they're either not ready or you have to come back later. Don't force it — book a future check-in instead."
-      },
-      {
-        "id": "ob-stage",
-        "name": "4. Stage Qualifier",
-        "tone": "Light, matter-of-fact.",
-        "goal": "Get their stage of business so you know which offer to set up. Same buckets as DMs.",
-        "say": [
-          "Just so I can point you in the right direction — what stage of business are you at right now? Just starting out, 6 figs, 7+ figs?"
-        ],
-        "green_light": [
-          "Stage confirmed (starting / pre-6 / 6 figs / mid-6 / 7+)"
-        ],
-        "pushback_triggers": [
-          "depends",
-          "kind of in between",
-          "ish",
-          "we just started",
-          "varies"
-        ],
-        "pushback_script": "Pin a number: 'Cool — what's your rough monthly revenue right now? Doesn't have to be exact, just a ballpark.' Get a number, not a vibe."
+        "pushback_script": "Push softly with curiosity (Cayden's bridging move): 'Got it — but if you had to point to ONE thing, what specifically caught your eye? Was it the AI angle, the revenue thing, something Lauren said?' Then move on — even a half-answer is enough to bridge to the booking. The dial is NOT the place to dig hard."
       },
       {
         "id": "ob-book",
-        "name": "5. Book the Call",
-        "tone": "Confident — you're offering them something, not asking permission.",
-        "goal": "Book a 15-min call with the triage rep (Mariana) or the closer (John) this week. Two options force a decision.",
+        "name": "4. Book the Triage Call",
+        "tone": "Confident, light time-pressure. You're not asking permission — you're offering a fit-check.",
+        "goal": "Book the Scale Session (triage call with Mariana) NOW. Open loop on how we solve their thing — don't reveal the method. Cayden's exact mechanic: solvable + excited + time-pressure cover + cliffhanger.",
         "say": [
-          "Cool — based on what you told me, this is actually exactly the kind of thing we help [stage] businesses with. We should jump on a quick 15-min call this week with [Mariana / one of the team] to walk you through what's working for people in your spot and see if it'd fit you. What's better — Tuesday or Thursday?",
-          "(If they say yes to a day:) Cool, [morning or afternoon]? ... Alright, [time] it is. What's the best email so I can fire over the invite right now while we're on?",
-          "Just so you're set up: it's a Google Meet (not a phone call). Make sure you can be somewhere quiet with no distractions. Sound good?",
-          "Last thing — I'll send you a quick doc to watch before the call. It'll mean way more once we're on. Cool to give that 10 mins before we meet?"
+          "The good news is — that's one of the easiest things for us to solve and help with. Honestly, when it's that kind of [thing], it actually makes me really excited for you, because it's usually fairly easy once I understand a bit more.",
+          "What I can do — I actually have a call I need to run to in a sec, I only had a second to reach out to you — but I have [time A] open this week, and [time B] open. Let's just schedule a quick chat with Mariana, who runs our Scale Sessions. What works best?",
+          "(Once they pick a time): Awesome. What's your best email so I can fire over the invite right now while we're on?",
+          "Quick note — it's a Google Meet, not a phone call. So make sure you're somewhere quiet, where you can focus. Sound good?",
+          "(THE OPEN LOOP / CLIFFHANGER): Mariana's the one who'll break down exactly how we'd do [the thing] for you specifically. I don't want to ramble through it now — she'll walk you through it properly on the call. Cool?"
         ],
         "green_light": [
-          "Call booked + on the calendar (you SAW it land in the calendar)",
-          "They confirmed the email + got the invite",
-          "They committed to watching the doc before",
-          "They confirmed they can be on Google Meet (not phone)"
+          "Time confirmed",
+          "Email confirmed + invite fired",
+          "Google Meet (not phone) confirmed",
+          "Open loop set — they DON'T have the full method, only a hook"
         ],
         "pushback_triggers": [
           "let me check my calendar",
@@ -653,52 +631,88 @@
           "i'm not sure i can",
           "what's the cost",
           "how much is it",
-          "what's it going to cost",
-          "send me more info",
+          "send me more info first",
           "send me a link",
           "maybe next week",
           "i need to think"
         ],
-        "pushback_script": "DO NOT let them push you into more info. The call IS the info. Just say: 'Totally get it — and to be straight, the call is just 15 mins, no pitch. We literally just walk through your situation and see if it makes sense to keep talking. So — Tuesday or Thursday this week? Even a tentative slot is fine, you can always move it.' Two specific options force a yes/no. If still stalling: 'Cool, can I send you the AI training in the meantime and circle back in a couple of days?' Then put them on the hitlist (if 6 figs+) or the normal follow-up list."
+        "pushback_script": "FOR PRICE / COST QUESTIONS — Cayden's verbatim deflection: 'Well, there's a couple of different options. Why don't we do this — Mariana will walk you through the rest of how it works on the call, then she'll show you the options and we'll see which one makes the most sense, okay?'\n\nFOR 'SEND ME MORE INFO' — don't send anything. The call IS the info. 'Totally get it — and to be straight, the Scale Session is just 15-20 minutes, no pitch. Mariana literally walks you through your situation and we see if it makes sense to keep talking. So [time A] or [time B]? Even a tentative slot — you can always move it.'\n\nFOR 'LET ME CHECK MY CALENDAR' — flip to a soft tentative: 'No worries — let's pencil [time A] for now, tentative, and you can shift it if you need to. What's your best email so I can fire the invite over?'\n\nFOR ANY HARD STALL — book a tentative + follow up: 'Cool, can I send you the AI training in the meantime and circle back in a couple of days?' Then onto follow-up (and Hitlist if 6 figs+)."
+      },
+      {
+        "id": "ob-secure",
+        "name": "5. Downplay + Show-Up Reinforcement",
+        "tone": "Casual, friendly, low-key. You're locking it in without making it feel locked.",
+        "goal": "Make them feel relaxed about the booked time (so they actually show up) + plant a 'I might call you before' anchor so a no-show feels rude. Cayden's exact moves.",
+        "say": [
+          "Yeah it's no big deal — and hey, if I finish what I'm working on right before that, I might shoot you a quick message 15 minutes beforehand just to make sure you're set. Would that work?",
+          "Okay, and just give me a little bit of leeway the other direction too — if I'm running a couple of minutes late, no stress. Cool?",
+          "(Cayden: this gets you a SECOND yes after the booking — guilt-anchor for show-up. They've now said yes 2-3 times in a row, which makes ghosting feel rude.)"
+        ],
+        "green_light": [
+          "They said yes to the leeway / pre-call check",
+          "Calendar invite landed on their end (verify if possible)"
+        ],
+        "pushback_triggers": [],
+        "pushback_script": "No pushback — this is closing flourish only. Move to wrap-up after."
+      },
+      {
+        "id": "ob-energy-shift",
+        "name": "6. Mid-Call Energy-Shift Recovery",
+        "tone": "Warm, curious, slightly puzzled — not accusatory.",
+        "goal": "If their energy dropped or you sense them clocking you as a sales call, address it directly. Cayden: 'When you hear that shift — call it out. Don't just keep going.'",
+        "say": [
+          "Hey, I'm just curious and I apologise if I offended you or anything — I felt like we were having a really good conversation, and a second ago it feels like something shifted. What's going on?",
+          "(Then SHUT UP and let them answer. This often unlocks the real objection.)",
+          "(If they say 'I just realised this is a sales call'): Fair — and I get it. Honestly, this dial is just to see if it's even worth a deeper conversation. If it's not, that's totally fine — you tell me."
+        ],
+        "green_light": [
+          "You've named the shift",
+          "They've responded with what's actually going on"
+        ],
+        "pushback_triggers": [],
+        "pushback_script": "Not for this stage — this IS the recovery script."
       },
       {
         "id": "ob-voicemail",
-        "name": "6. Voicemail / No Answer",
-        "tone": "Quick + casual, like leaving a voice note to a friend.",
-        "goal": "Drop a short voicemail that gets a callback — under 20 seconds.",
+        "name": "7. Voicemail / No Answer",
+        "tone": "Quick + casual — like leaving a voice note to a friend. Under 20 seconds.",
+        "goal": "Drop a short voicemail that gets a callback. Then immediately follow up on the channel they opted in on (text or DM).",
         "say": [
-          "Hey [name], it's [you] from Lauren Tickner's team — just saw you grabbed our [freebie], wanted to ask you a quick question about what brought you there. Give me a quick text or call back at [number] when you've got 20 seconds. Cool, talk soon.",
-          "(Immediately after the voicemail — send a follow-up DM/text on the same channel they opted in on):",
-          "Hey [name] — just left you a quick voicemail re: the [freebie] you grabbed. Couple of seconds when you've got a sec? — [you]"
+          "Hey [name], it's [you] from Lauren Tickner's team — just saw you grabbed the [freebie], wanted to ask you a quick question about what brought you there. Give me a quick text or call back at [number] when you've got 20 seconds. Cool, talk soon.",
+          "(Then immediately on text / DM): Hey [name] — just left you a quick voicemail re: the [freebie] you grabbed. Couple of seconds when you've got a sec? — [you]",
+          "(⚠ GAP — Cayden's videos don't explicitly cover voicemail. This is a sensible draft; refine once we find his voicemail teaching.)"
         ],
         "green_light": [
-          "Voicemail left (short — under 20 sec)",
+          "Voicemail left (under 20 sec)",
           "Follow-up text/DM sent on the channel they opted in on",
           "Lead logged in CRM for retry"
         ],
         "pushback_triggers": [],
-        "pushback_script": "No pushback for voicemails — just leave a short one and move to follow-up."
+        "pushback_script": "No pushback for voicemails."
       },
       {
         "id": "ob-followup",
-        "name": "7. Outbound Follow-Up",
-        "tone": "Genuine, low pressure, value-led.",
-        "goal": "Standard outbound follow-up cadence for opt-in dialers who didn't pick up or book. If they're 6 figs+ they go on the 6-Figures+ Hitlist (same as DMs).",
+        "name": "8. Outbound Follow-Up Cadence",
+        "tone": "Persistent without nagging. Value > volume.",
+        "goal": "Run the within-hour micro-cadence (Cayden's verbatim) FIRST, then a multi-day cadence. 6 figs+ goes onto the Hitlist after the multi-day cadence ends.",
         "say": [
-          "Day 0 — Dial + voicemail + text (above).",
-          "Day 2 — Re-dial at a different time. If no answer: short text 'still keen to chat about [the thing they downloaded]? happy to send you a quick doc instead.'",
-          "Day 4 — Send the AI training link casually via text/DM (no ask, just value).",
-          "Day 7 — Final dial + voice memo: 'Hey [name] — couple of attempts to catch you, no pressure. If now's not the right time totally fine, just let me know if you'd rather we circle back in a few weeks.'",
-          "IF 6 FIGURES+ → move them onto the 6-Figures+ Hitlist after Day 7 (every 3rd day value-add for 2 weeks, then once per month indefinitely + weekly hitlist email). Goal = book the call.",
-          "ALL touches logged in CRM."
+          "WITHIN-HOUR MICRO-CADENCE (Cayden/Matt, verbatim): For each lead, dial 3 times in a 1-hour block, spaced 20 minutes apart. ('1 hour, 3 calls — 20 / 20 / 20.') Track your pickup rate by hour in a separate calendar — green = 8%+, yellow = 5-8%, red = <5%. Dial during the green hours.",
+          "MULTI-DAY CADENCE (sensible default — flag for refinement from a future Cayden video):",
+          "  Day 0 — dial + voicemail + text",
+          "  Day 2 — re-dial different time. If no answer: short text 'still keen to chat re: the [freebie]?'",
+          "  Day 4 — send the AI training link casually via text/DM (no ask)",
+          "  Day 7 — final dial + voice memo: 'Hey [name] — couple of attempts, no pressure. If now's not the right time, totally fine — just let me know if you'd rather we circle back in a few weeks.'",
+          "IF 6 FIGURES+ → after Day 7, move them onto the 6-Figures+ Hitlist (every 3rd day for 2 weeks, then once monthly indefinitely, + the weekly hitlist email). Goal = book the triage call.",
+          "EVERY touch logged in CRM."
         ],
         "green_light": [
+          "Within-hour 20/20/20 attempted on first dial day",
           "Day 0 / 2 / 4 / 7 touches completed in order",
           "All logged in CRM",
           "If 6 figs+: moved onto Hitlist after Day 7"
         ],
         "pushback_triggers": [],
-        "pushback_script": "No pushback — cadence runs regardless of replies. If they reply with a problem, jump to Surface Problem -> Book Call."
+        "pushback_script": "Cadence runs regardless of replies. If they reply with a problem, jump straight to Tipping-Point Question -> Book the Triage Call."
       }
     ]
   }
