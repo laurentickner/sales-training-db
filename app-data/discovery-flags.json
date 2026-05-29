@@ -5,7 +5,8 @@
     "pain": [
       "What's the single biggest challenge in the business right now? Or what's not working at the level it truly could be?",
       "Tell me more — when you said [that], what do you mean exactly? Why do you say that though?",
-      "Has that put you in a tough position? In what way? How's it showing up day to day?"
+      "Has that put you in a tough position? In what way? How's it showing up day to day?",
+      "Take me back to the LAST time you tried to fix this -- what specifically happened? What did it cost you? (Past-pain probe -- Jeremy Miner. Past-pain auto-generates future-fear: their brain projects 'this will happen again' without you having to say it. More powerful than 'what if nothing changes' because the emotion is already loaded.)"
     ],
     "doubt": [
       "What have you already tried to fix this? What happened?",
@@ -248,7 +249,7 @@
         "no real pain"
       ],
       "probe": "On a scale of one to ten, where's [their area] at right now? ... And what does that number mean to you? ... If pain / money clearly isn't the lever (Matt Ryder): people don't book a call for no reason — what shifted recently that made NOW the time to look at this? Have you tried anything before, and why didn't it stick? Then measure the gap: how close does your current way realistically get you to [their goal]?",
-      "note": "No problem, no sale. If the prospect downplays, run the 1-10 gap question. If they say money / pain isn't the issue, switch to the catalyst-event line — there is always a reason they got on the call; the gap between their current method and their goal IS the urgency."
+      "note": "No problem, no sale. If the prospect downplays, run the 1-10 gap question. If they say money / pain isn't the issue, switch to the catalyst-event line — there is always a reason they got on the call; the gap between their current method and their goal IS the urgency.\n\nIf they're a HIGH-REVENUE / no-pain prospect (Cole): you're not building from pain, you're building from unfulfilled desire. Playful disarm FIRST: 'we never have companies come to us wanting to learn how to sell less -- they always want to learn how to sell more. Is that why you came to us?' Then build the gap forward: 'if we came in and did [X], where do you FEEL you could get in 12 months?' (verbal pace + 'feel' to keep them emotional). If they lob a humble number, call it: 'OK, 15 -- is that your humble goal? You can tell me, we're not posting it on Instagram.'"
     },
     {
       "id": "story-not-numbers",
@@ -575,6 +576,28 @@
       ],
       "probe": "Can I make a suggestion on a word I just heard you say that could be holding us back? You said [their word] — have you ever thought that when we focus on getting [the least / the just / what we'd be happy with], what do we typically get? And you don't come across to me as the type of person who wants the least things in life. Would I be right? ... So what do you really want? (Jeremy Miner — identity-shift via word-catch.)",
       "note": "Jeremy Miner's word-catch move. Their first answer reveals their ceiling — flip it now before it caps the rest of the call. Use a concerned, soft tone — 'could be holding US back', never 'YOU back'. Never accuse."
+    },
+    {
+      "id": "revenue-annualized",
+      "signal": "They quoted revenue as an annual figure -- likely a one-good-month brag, not a real run rate",
+      "belief": "pain",
+      "triggers": [
+        "a year",
+        "per year",
+        "annually",
+        "i do about",
+        "we do about",
+        "run rate",
+        "ARR",
+        "about a million",
+        "about half a million",
+        "about 500k a year",
+        "around a million",
+        "doing about",
+        "year we did"
+      ],
+      "probe": "Got it -- and just based on last month specifically, what did you do? ... And the month before? (Cole: small biz owners quote 'about $1M/yr' then concede '$40k last month' -- the annual is the brag number, the monthly is the real one. Anchor the upside math to the monthly, not the annual.)",
+      "note": "If the monthly comes in <1/12 of the stated annual, it's the one-good-month tell. Pivot the rest of discovery off the real number. Saying nothing and accepting the annual figure means the upside math at committing is built on fiction."
     }
   ]
 }
