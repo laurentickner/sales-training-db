@@ -68,7 +68,7 @@
   var MAX_INPUT = 2000;   // one spoken turn, not a pasted transcript
   var MIN_SCORE = 1.0;    // below this, a keyword match is too weak to surface
 
-  /* DISCOVERY framework — Cole's 7 beliefs + Ravi LTV math + the catalyst/why, spelling DISCOVERY */
+  /* DISCOVERY framework — 7 core beliefs + the LTV math layer + the catalyst/why, spelling DISCOVERY */
   var BELIEFS = ["desire", "pain", "math", "cost", "doubt", "trust", "support", "money", "why"];
   var BELIEF_LABEL = {
     desire: "Desire", pain: "Issue", math: "Sum", cost: "Cost",
@@ -938,8 +938,7 @@
   function renderPrep(text, loading) {
     var body;
     if (loading) {
-      body = '<div class="card-sub" style="padding:4px 0 8px">Reading the prospect against ' +
-        "Cole + Ravi’s methodology…</div>";
+      body = '<div class="card-sub" style="padding:4px 0 8px">Reading the prospect against the methodology…</div>';
     } else {
       body = '<div class="say-step"><span class="say-num">' + glyph("◆") + "</span><span>" +
         esc(text).slice(0, 6000).replace(/\n/g, "<br>") + "</span></div>";
@@ -971,7 +970,7 @@
     L.push("Support: who else is in the decision — qualify the partner/team in discovery.");
     L.push("Trust: why you, why this company — surface it before the close.");
     L.push("");
-    L.push("RAVI — GET THE NUMBERS");
+    L.push("GET THE NUMBERS");
     L.push("Exact revenue last month + month before; leads/calls per week; close rate; client LTV. Then run the conservative upside math before the temp check: one more client/month × 12.");
     if (p.extra) { L.push(""); L.push("YOUR NOTES / RISKS"); L.push(p.extra); }
     if (p.triage) {
@@ -986,7 +985,7 @@
   function buildPrepSystemPrompt() {
     return [
       "You are a pre-call strategist for a Scale Systems sales rep. Scale Systems sells an AI-powered organic-social-media revenue system, primarily B2B (front-end offer about $4k, 90-day programme; ideal client = established business owners with real revenue, often 7-figure+).",
-      "Methodology you apply: Cole Gordon (install the 7 beliefs — pain, doubt, cost, desire, money, support, trust; funnel Introduction -> Discovery -> Transition -> Pitch -> Committing -> Objections; handle uncertainty before logistics; the DISCOVER mnemonic — Desire, Issue, Sum, Cost, Own, Verify, Everyone, Resources), Ravi Abuvala (discovery must extract exact numbers — revenue, leads, close rate, client LTV; conservative upside math before the temp check), Matt Ryder (catalyst-event move for prospects with no acute pain), and Jeremy Miner / NEPQ (loop-back 'why though?' 5-7 layers deep; verbal pacing — slow + lower tone at end of questions; identity-shift reframes; mask-off as the goal of discovery; the 4 levels of persuasion: features → behaviors → beliefs → identity).",
+      "Methodology you apply: Cole Gordon (install the 7 beliefs — pain, doubt, cost, desire, money, support, trust; funnel Introduction -> Discovery -> Transition -> Pitch -> Committing -> Objections; handle uncertainty before logistics; the DISCOVER mnemonic — Desire, Issue, Sum, Cost, Own, Verify, Everyone, Resources); discovery must extract exact numbers (revenue, leads, close rate, client LTV) and you run conservative upside math before the temp check; Matt Ryder (catalyst-event move for prospects with no acute pain); Jeremy Miner / NEPQ (loop-back 'why though?' 5-7 layers deep; verbal pacing — slow + lower tone at end of questions; identity-shift reframes; mask-off as the goal of discovery; the 4 levels of persuasion: features → behaviors → beliefs → identity).",
       "Every prospect has a triage call before this sales call. If a triage call transcript or notes are provided, mine them as the PRIMARY source. Specifically:",
       "  (a) Find every past attempt or failure in the triage notes ('tried X', 'worked with Y', 'didn't work out', 'wasn't a fit', 'we hired someone before') and propose the DRILL question: 'How do you mean that didn't work out?' / 'What was the difference between what you expected and what actually happened?' / 'When something like that doesn't work it's usually one of two things — was it the method or the execution?'",
       "  (b) Convert past behaviour into an identity frame: anywhere the prospect tried multiple things, propose the line 'sounds like you're the type of person who never gives up — were you born that way or did you have to learn it?' (re-meaning first, identity-lock second).",
