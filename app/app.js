@@ -95,8 +95,6 @@
     log: [],                 // { id, time, stageName, text, result }
     apiKey: store.get("copilot_api_key") || "",
     smart: store.get("copilot_smart") === "1",
-    ghlKey: store.get("copilot_ghl_key") || "",
-    ghlLocationId: store.get("copilot_ghl_location") || "",
     handledObjections: [],   // labels of objections surfaced earlier this call
     beliefsCovered: {},      // belief id -> true once touched in discovery
     prospect: null,          // { name, business, situation, source, goal, extra, prep }
@@ -473,22 +471,6 @@
     })[code] || ("Claude error (HTTP " + code + ") — retry, or shorten the transcript.");
   }
 
-  // E.164 normaliser for GHL contact matching. Strips formatting, prefixes the
-  // default country code if the number doesn't already start with '+', and
-  // returns null for inputs that don't look like a phone at all.
-  function normalisePhoneE164(raw, defaultCC) {
-    var s = String(raw || "").trim();
-    if (!s) return "";
-    // Already E.164-ish
-    var compact = s.replace(/[\s().\-]/g, "");
-    if (/^\+[1-9]\d{6,14}$/.test(compact)) return compact;
-    // Bare digits — prefix the default country code (US = '1' if not provided)
-    var digits = compact.replace(/\D/g, "");
-    if (!digits) return null;
-    if (digits.length < 7 || digits.length > 15) return null;
-    var cc = (defaultCC || "1").replace(/^\+/, "");
-    return "+" + cc + digits.replace(/^0+/, "");
-  }
 
   function runSmart(text, kwResult, reqId) {
     var ctx = "Current funnel stage: " + state.stage + ".\n";
@@ -712,8 +694,6 @@
   function openSettings() {
     $("api-key").value = state.apiKey;
     $("smart-toggle").checked = state.smart;
-    var gk = $("ghl-key"); if (gk) gk.value = state.ghlKey;
-    var gl = $("ghl-location"); if (gl) gl.value = state.ghlLocationId;
     openModal("settings-modal", "api-key");
   }
   function closeSettings() { closeModal(); }
@@ -725,12 +705,8 @@
     }
     state.apiKey = k;
     state.smart = $("smart-toggle").checked;
-    var gk = $("ghl-key"); state.ghlKey = gk ? gk.value.trim() : state.ghlKey;
-    var gl = $("ghl-location"); state.ghlLocationId = gl ? gl.value.trim() : state.ghlLocationId;
     var ok = store.set("copilot_api_key", state.apiKey) &
-             store.set("copilot_smart", state.smart ? "1" : "0") &
-             store.set("copilot_ghl_key", state.ghlKey) &
-             store.set("copilot_ghl_location", state.ghlLocationId);
+             store.set("copilot_smart", state.smart ? "1" : "0");
     if (!ok) alert("Couldn't save to browser storage — settings will work for this session only.");
     updateModeBadge();
     closeSettings();
@@ -1109,12 +1085,11 @@
   }
 
   /* ---------- post-call review (paste-transcript MVP) ----------
-     Lauren / a rep pastes a finished-call transcript. Claude reads it against
-     the full methodology, scores per stage + beliefs covered + objection
-     handling + voice-level moves, returns a tight markdown brief modelled on
-     the canonical Jason Rosado review at app-data/_review/. The review is
-     saved to the prospect's record AND (if GHL is configured in Settings)
-     auto-pushed as a Note on the GHL Contact + outcome tag. */
+     A rep pastes a finished-call transcript. Claude reads it against the full
+     methodology, scores per stage + beliefs covered + objection handling +
+     voice-level moves, returns a tight markdown brief. Result is saved to the
+     prospect's record AND surfaced inline in the modal with a Copy button so
+     the rep can drop the markdown into their own CRM, Notion, Slack, etc. */
 
   var REVIEW_KEY_LASTID = "copilot_review_last";
 
@@ -1232,25 +1207,14 @@
     $("review-outcome").value = p.outcome || "";
     $("review-outcome-notes").value = p.outcomeNotes || "";
     var out = $("review-output");
-    var push = $("btn-push-review");
     if (p.review) {
       out.hidden = false;
       out.innerHTML = renderReviewMarkdown(p.review);
-      if (push) push.hidden = false;
     } else {
       out.hidden = true; out.innerHTML = "";
-      if (push) push.hidden = true;
     }
     var st = $("review-status");
-    if (st) {
-      if (p.ghlPushedAt) {
-        st.hidden = false;
-        st.className = "review-status review-status-ok";
-        st.textContent = "✓ Pushed to GoHighLevel at " + new Date(p.ghlPushedAt).toLocaleString();
-      } else {
-        st.hidden = true; st.textContent = "";
-      }
-    }
+    if (st) { st.hidden = true; st.textContent = ""; }
   }
   function renderReviewMarkdown(md) {
     // Cheap markdown → HTML: just escape, preserve line breaks, bold headings.
@@ -1288,9 +1252,6 @@
       reviewedAt: new Date().toISOString(),
       lastTouchedAt: new Date().toISOString()
     });
-    if (opts.ghlPushedAt) merged.ghlPushedAt = opts.ghlPushedAt;
-    if (opts.ghlContactId) merged.ghlContactId = opts.ghlContactId;
-    if (opts.ghlError) merged.ghlError = opts.ghlError;
     map[p.name] = merged;
     store.set(PROSPECTS_KEY, JSON.stringify(map));
     return merged;
@@ -1370,28 +1331,10 @@
         var block = j && j.content && j.content[0];
         var review = (block && block.text) ? block.text : "(no usable review returned)";
         if (j && j.stop_reason === "max_tokens") review += "\n\n⚠ Output was truncated — re-run with a shorter transcript or split the call.";
-        var saved = persistReview(form, review);
-        // Surface the review immediately.
+        persistReview(form, review);
+        // Surface the review immediately, with the Copy button now usable.
         out.innerHTML = renderReviewMarkdown(review);
-        var push = $("btn-push-review"); if (push) push.hidden = false;
-        showReviewStatus("✓ Review saved locally for <strong>" + esc(form.name) + "</strong>.", "ok");
-        // Auto-push to GHL if configured. Don't block the UI on it.
-        if (state.ghlKey && state.ghlLocationId) {
-          ghlPush(saved, review).then(function (res) {
-            if (res && res.ok) {
-              persistReview(form, review, { ghlPushedAt: new Date().toISOString(), ghlContactId: res.contactId });
-              showReviewStatus("✓ Review saved + pushed to GoHighLevel (contact " + esc(res.contactId) + ").", "ok");
-            } else {
-              persistReview(form, review, { ghlError: (res && res.reason) || "unknown error" });
-              showReviewStatus("⚠ Saved locally but GHL push failed: " + esc((res && res.reason) || "unknown") + ". Hit 'Push to GHL' to retry.", "warn");
-            }
-          }, function (err) {
-            persistReview(form, review, { ghlError: err && err.message });
-            showReviewStatus("⚠ Saved locally but GHL push failed: " + esc(err.message || "network error") + ". Hit 'Push to GHL' to retry.", "warn");
-          });
-        } else {
-          showReviewStatus("✓ Review saved locally. (Add a GHL token in Settings to auto-push to your CRM.)", "ok");
-        }
+        showReviewStatus("✓ Review saved for <strong>" + esc(form.name) + "</strong>. Hit <strong>Copy review</strong> to drop the markdown into your CRM / notes / Slack.", "ok");
       })
       .catch(function (e) {
         var msg = e.name === "AbortError" ? "Claude timed out (90s) — try shortening the transcript." : (e.message || "Review failed.");
@@ -1405,143 +1348,6 @@
         clearTimeout(timer);
         if (generateBtn) { generateBtn.disabled = false; generateBtn.textContent = "Generate review"; }
       });
-  }
-
-  /* ---------- GoHighLevel push ----------
-     Best-effort: upsert the contact (match by email OR phone), then POST the
-     review as a Note on that contact, then tag the contact with the outcome.
-     Uses the v2 (LeadConnector) API with a sub-account Private Integration
-     Token. CSP allow-lists services.leadconnectorhq.com in index.html. */
-
-  function ghlNameSplit(full) {
-    var parts = (full || "").trim().split(/\s+/);
-    return { first: parts[0] || "", last: parts.slice(1).join(" ") || "" };
-  }
-  function ghlHeaders() {
-    return {
-      "Authorization": "Bearer " + state.ghlKey,
-      "Version": "2021-07-28",
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    };
-  }
-  function ghlPush(prospect, review) {
-    if (!state.ghlKey || !state.ghlLocationId) {
-      return Promise.resolve({ ok: false, reason: "GHL not configured in Settings" });
-    }
-    if (!prospect.email && !prospect.phone) {
-      return Promise.resolve({ ok: false, reason: "Need an email or phone on the prospect for GHL contact matching" });
-    }
-    // GHL v2 contacts.upsert requires phone in E.164. Normalise (default to US)
-    // before sending, so a rep pasting (555) 123-4567 doesn't get a silent 422.
-    var phoneE164 = "";
-    if (prospect.phone) {
-      phoneE164 = normalisePhoneE164(prospect.phone, "1");
-      if (phoneE164 === null) {
-        return Promise.resolve({ ok: false, reason: "Phone number looks invalid (need 7–15 digits, optionally with country code)" });
-      }
-    }
-    var n = ghlNameSplit(prospect.name);
-    var upsertBody = {
-      locationId: state.ghlLocationId,
-      firstName: n.first,
-      lastName: n.last,
-      tags: ["sales-call-review"].concat(prospect.outcome ? ["outcome:" + prospect.outcome] : [])
-    };
-    if (prospect.email) upsertBody.email = prospect.email;
-    if (phoneE164) upsertBody.phone = phoneE164;
-
-    return fetch("https://services.leadconnectorhq.com/contacts/upsert", {
-      method: "POST", headers: ghlHeaders(),
-      body: JSON.stringify(upsertBody)
-    })
-      .then(function (r) {
-        return r.text().then(function (t) {
-          if (!r.ok) throw new Error("GHL upsert " + r.status + ": " + t.slice(0, 200));
-          try { return JSON.parse(t); } catch (e) { throw new Error("GHL returned non-JSON on upsert"); }
-        });
-      })
-      .then(function (j) {
-        var contact = j.contact || j;
-        var contactId = contact && contact.id;
-        if (!contactId) throw new Error("GHL upsert returned no contact id");
-        var noteBody = "Call review — " + new Date().toLocaleString() + "\n\n" + review;
-        return fetch("https://services.leadconnectorhq.com/contacts/" + contactId + "/notes", {
-          method: "POST", headers: ghlHeaders(),
-          body: JSON.stringify({ body: noteBody })
-        }).then(function (r) {
-          return r.text().then(function (t) {
-            if (!r.ok) throw new Error("GHL note " + r.status + ": " + t.slice(0, 200));
-            return { ok: true, contactId: contactId };
-          });
-        });
-      })
-      .catch(function (err) {
-        return { ok: false, reason: err.message || String(err) };
-      });
-  }
-
-  // Pre-flight: validates the saved GHL token + Location ID against the LC API.
-  // Surfaces the most common misconfig errors with human copy so the rep
-  // doesn't discover them 60s into their first review push.
-  function testGhlConnection() {
-    var statusEl = $("ghl-test-status");
-    var setStatus = function (cls, msg) {
-      if (!statusEl) return;
-      statusEl.className = "ghl-test-status " + cls;
-      statusEl.textContent = msg;
-    };
-    var key = ($("ghl-key") || {}).value || state.ghlKey || "";
-    var loc = ($("ghl-location") || {}).value || state.ghlLocationId || "";
-    key = String(key).trim();
-    loc = String(loc).trim();
-    if (!key || !loc) {
-      setStatus("warn", "Add both the token and the Location ID first, then test.");
-      return;
-    }
-    setStatus("info", "Testing…");
-    fetch("https://services.leadconnectorhq.com/locations/" + encodeURIComponent(loc), {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + key,
-        "Version": "2021-07-28",
-        "Accept": "application/json"
-      }
-    }).then(function (r) {
-      if (r.status === 200) { setStatus("ok", "✓ Connected. Token + Location ID look valid."); return; }
-      if (r.status === 401) { setStatus("warn", "401 — token is invalid or expired. Regenerate it in GHL → Sub-account → Settings → Private Integrations."); return; }
-      if (r.status === 403) { setStatus("warn", "403 — token is missing scopes. Needs at minimum: contacts.write + contacts.readonly + locations.readonly."); return; }
-      if (r.status === 404) { setStatus("warn", "404 — Location ID is wrong. Get it from GHL → Sub-account → Settings → Business Profile."); return; }
-      setStatus("warn", "HTTP " + r.status + " — see browser DevTools network tab for details.");
-    }, function (err) {
-      setStatus("warn", "Network error: " + (err && err.message ? err.message : String(err)));
-    });
-  }
-
-  function manualPushReview() {
-    var form = readReviewForm();
-    if (!form.name) { alert("Pick or name a prospect first."); return; }
-    var map = loadProspects();
-    var p = map[form.name];
-    if (!p || !p.review) { alert("No saved review for this prospect yet — generate one first."); return; }
-    if (!state.ghlKey || !state.ghlLocationId) {
-      alert("Add your GHL token + Location ID in Settings before pushing.");
-      return;
-    }
-    showReviewStatus("Pushing to GoHighLevel…", "info");
-    ghlPush({
-      name: form.name,
-      email: form.email || p.email,
-      phone: form.phone || p.phone,
-      outcome: form.outcome || p.outcome
-    }, p.review).then(function (res) {
-      if (res && res.ok) {
-        persistReview(form, p.review, { ghlPushedAt: new Date().toISOString(), ghlContactId: res.contactId });
-        showReviewStatus("✓ Pushed to GHL (contact " + esc(res.contactId) + ").", "ok");
-      } else {
-        showReviewStatus("⚠ GHL push failed: " + esc((res && res.reason) || "unknown") + ".", "warn");
-      }
-    });
   }
 
   /* ---------- export + new call ---------- */
@@ -1624,10 +1430,9 @@
       var map = loadProspects();
       if (map[this.value]) fillPrepForm(map[this.value]);
     });
-    // post-call review (paste transcript -> Claude scoring -> optional GHL push)
+    // post-call review (paste transcript -> Claude scoring -> copy to clipboard)
     $("btn-review").addEventListener("click", openReview);
     $("btn-generate-review").addEventListener("click", runReview);
-    $("btn-push-review").addEventListener("click", manualPushReview);
     $("btn-close-review").addEventListener("click", closeModal);
     $("review-modal").addEventListener("click", function (e) {
       if (e.target === $("review-modal")) closeModal();
@@ -1671,9 +1476,6 @@
         showReviewStatus("⚠ Browser doesn't expose the clipboard API — select + Cmd/Ctrl+C the review text.", "warn");
       }
     });
-    // Test GHL connection from Settings.
-    var testBtn = $("btn-test-ghl");
-    if (testBtn) testBtn.addEventListener("click", testGhlConnection);
     // delegated log handlers — listeners don't multiply per render
     $("log").addEventListener("click", onLogActivate);
     $("log").addEventListener("keydown", onLogActivate);

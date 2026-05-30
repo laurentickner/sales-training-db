@@ -516,16 +516,6 @@ body {
   margin-top: 8px; font-size: 11.5px; color: var(--text-dim); font-style: italic;
 }
 
-/* ---- Settings: divider + sub-section heading for the GHL block ---- */
-.settings-divider {
-  border: none; border-top: 1px solid var(--border);
-  margin: 18px 0 14px;
-}
-.settings-subhead {
-  font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--text-dim); margin: 0 0 8px;
-}
-
 /* ---- Post-call review modal output ---- */
 .review-status {
   margin-top: 10px; padding: 9px 12px; border-radius: 8px;
@@ -536,25 +526,13 @@ body {
 .review-status-warn { border-color: #5a3f00; color: var(--amber); background: rgba(245, 192, 74, 0.08); }
 .review-status-info { border-color: var(--border); }
 
-/* ---- Transcript char counter + "Test GHL connection" inline status ---- */
+/* ---- Transcript char counter under the Review textarea ---- */
 .review-charcount {
   font-size: 11px; color: var(--text-dim);
   margin-top: 4px; text-align: right; font-variant-numeric: tabular-nums;
 }
 .review-charcount-warn { color: var(--amber); }
 .review-charcount-over { color: var(--red); font-weight: 600; }
-
-.ghl-test-row {
-  display: flex; align-items: center; gap: 10px; margin: 6px 0 14px;
-  flex-wrap: wrap;
-}
-.ghl-test-status {
-  font-size: 12px; line-height: 1.5; color: var(--text-dim);
-  padding: 4px 0;
-}
-.ghl-test-status.ok   { color: var(--green); }
-.ghl-test-status.warn { color: var(--amber); }
-.ghl-test-status.info { color: var(--text-dim); font-style: italic; }
 
 .review-output {
   margin-top: 12px; max-height: 480px; overflow-y: auto;
