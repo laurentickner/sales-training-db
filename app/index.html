@@ -6,32 +6,13 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Content-Security-Policy"
-  content="default-src 'self'; script-src 'self' https://identity.netlify.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://api.anthropic.com https://*.netlify.com https://*.netlify.app; img-src 'self' data: https://www.gravatar.com https://secure.gravatar.com; font-src 'self' data:; base-uri 'none'; form-action 'none'" />
+  content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.anthropic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Scale Systems Sales Call Copilot</title>
-<link rel="stylesheet" href="styles.css?v=32" />
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<link rel="stylesheet" href="styles.css?v=33" />
 </head>
 <body>
 
 <a class="skip-link" href="#input">Skip to call input</a>
-
-<!-- Auth gate — full-screen overlay shown until Netlify Identity confirms the visitor.
-     Starts VISIBLE so a slow / failed Identity init can't leave the visitor on a
-     blank shell. JS hides it once auth resolves (login success) or on localhost. -->
-<div id="auth-gate" class="auth-gate" role="dialog" aria-modal="true" aria-labelledby="auth-gate-title">
-  <div class="auth-gate-card">
-    <span class="brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 32 32" width="34" height="34" role="img" aria-hidden="true">
-        <path d="M16 4 L28 26 H4 Z" fill="none" stroke="#F5C04A" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M16 13 L22 26 H10 Z" fill="#00BFF1"/>
-      </svg>
-    </span>
-    <h2 id="auth-gate-title">Sales Call Copilot</h2>
-    <p>This tool is invite-only for active Scale Systems clients.</p>
-    <button id="btn-auth-login" class="btn btn-primary">Sign in</button>
-    <p class="auth-gate-hint">Don't have access? Email <a href="mailto:support@scalesystems.io">support@scalesystems.io</a> and we'll send you an invite.</p>
-  </div>
-</div>
 
 <header class="topbar">
   <div class="brand">
@@ -54,8 +35,6 @@
     <button id="btn-offer" class="btn btn-ghost" title="Customise your pillars, upside math, and price"><span aria-hidden="true">◆</span> My offer</button>
     <button id="btn-settings" class="btn btn-ghost" title="Settings"><span aria-hidden="true">⚙</span> Settings</button>
     <button id="btn-newcall" class="btn btn-ghost" title="Start a fresh call"><span aria-hidden="true">↻</span> New call</button>
-    <span id="auth-chip" class="auth-chip" hidden></span>
-    <button id="btn-auth-logout" class="btn btn-ghost btn-sm" hidden title="Sign out"><span aria-hidden="true">⎋</span> Sign out</button>
   </div>
 </header>
 
@@ -275,7 +254,7 @@
   </div>
 </div>
 
-<script src="data/data.js?v=32"></script>
-<script src="app.js?v=32"></script>
+<script src="data/data.js?v=33"></script>
+<script src="app.js?v=33"></script>
 </body>
 </html>
