@@ -536,6 +536,26 @@ body {
 .review-status-warn { border-color: #5a3f00; color: var(--amber); background: rgba(245, 192, 74, 0.08); }
 .review-status-info { border-color: var(--border); }
 
+/* ---- Transcript char counter + "Test GHL connection" inline status ---- */
+.review-charcount {
+  font-size: 11px; color: var(--text-dim);
+  margin-top: 4px; text-align: right; font-variant-numeric: tabular-nums;
+}
+.review-charcount-warn { color: var(--amber); }
+.review-charcount-over { color: var(--red); font-weight: 600; }
+
+.ghl-test-row {
+  display: flex; align-items: center; gap: 10px; margin: 6px 0 14px;
+  flex-wrap: wrap;
+}
+.ghl-test-status {
+  font-size: 12px; line-height: 1.5; color: var(--text-dim);
+  padding: 4px 0;
+}
+.ghl-test-status.ok   { color: var(--green); }
+.ghl-test-status.warn { color: var(--amber); }
+.ghl-test-status.info { color: var(--text-dim); font-style: italic; }
+
 .review-output {
   margin-top: 12px; max-height: 480px; overflow-y: auto;
   border: 1px solid var(--border); border-radius: 10px;

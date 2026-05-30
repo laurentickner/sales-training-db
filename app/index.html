@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.anthropic.com https://services.leadconnectorhq.com; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Scale Systems Sales Call Copilot</title>
-<link rel="stylesheet" href="styles.css?v=39" />
+<link rel="stylesheet" href="styles.css?v=40" />
 </head>
 <body>
 
@@ -115,7 +115,14 @@
       When set, every generated call review auto-pushes to your GHL sub-account
       as a Note on the prospect's Contact (matched by email or phone, or created
       fresh) plus tags the contact with the outcome. Leave blank to keep reviews
-      local-only. Get a token in GHL: Sub-account → Settings → Private Integrations.
+      local-only. Get a token in GHL: <strong>Sub-account → Settings → Private
+      Integrations</strong>. <strong>Required scopes:</strong>
+      <code>contacts.write</code>, <code>contacts.readonly</code>,
+      <code>locations.readonly</code>. <strong>Security:</strong> the token is
+      stored in this browser's localStorage and grants sub-account-wide write
+      access to contacts, opportunities, calendars and conversations — anyone
+      with access to this device can recover it, so scope the token down to
+      contacts only and clear it on shared machines.
     </p>
     <label class="field">
       <span>GHL Private Integration Token</span>
@@ -127,6 +134,10 @@
       <input type="text" id="ghl-location" autocomplete="off" spellcheck="false"
         placeholder="Sub-account → Settings → Business Profile" />
     </label>
+    <div class="ghl-test-row">
+      <button id="btn-test-ghl" type="button" class="btn btn-ghost btn-sm" title="Pings GHL with these credentials so you find out NOW if the token or Location ID is wrong">Test connection</button>
+      <div id="ghl-test-status" class="ghl-test-status" aria-live="polite"></div>
+    </div>
 
     <div class="modal-actions">
       <button id="btn-save-settings" class="btn btn-primary">Save</button>
@@ -166,6 +177,7 @@
       <span>Call transcript *</span>
       <textarea id="review-transcript" rows="12"
         placeholder="Paste the full call transcript here. Speaker labels (Rep:, Prospect:) help but aren't required."></textarea>
+      <div id="review-transcript-count" class="review-charcount">0 chars</div>
     </label>
     <label class="field">
       <span>Outcome</span>
@@ -182,12 +194,13 @@
     <label class="field">
       <span>Outcome notes — what happened, what to do next</span>
       <textarea id="review-outcome-notes" rows="2"
-        placeholder="e.g. closed $7,800 PIF · need to handle spouse follow-up · onboarding set for Friday"></textarea>
+        placeholder="e.g. closed PIF · book onboarding for Friday · partner concern came up, handle in follow-up"></textarea>
     </label>
     <div id="review-status" class="review-status" hidden></div>
     <div id="review-output" class="review-output" hidden></div>
     <div class="modal-actions">
       <button id="btn-generate-review" class="btn btn-primary">Generate review</button>
+      <button id="btn-copy-review" class="btn btn-ghost btn-sm" title="Copy the saved review's markdown to your clipboard">Copy review</button>
       <button id="btn-push-review" class="btn btn-ghost" hidden title="Re-push the saved review to GoHighLevel">Push to GHL</button>
       <button id="btn-close-review" class="btn btn-ghost">Close</button>
     </div>
@@ -252,7 +265,7 @@
       </label>
       <label class="field">
         <span>Outcome notes — what happened, what to do next</span>
-        <textarea id="prep-outcome-notes" rows="2" placeholder="e.g. closed $7,800 PIF · need to handle the spouse follow-up · onboarding call set for Friday"></textarea>
+        <textarea id="prep-outcome-notes" rows="2" placeholder="e.g. closed PIF · partner follow-up needed · onboarding call set for Friday"></textarea>
       </label>
     </div>
     <div class="modal-actions">
@@ -324,7 +337,7 @@
     </label>
     <label class="field">
       <span>Price drop line — the exact words you say at the price reveal</span>
-      <textarea id="offer-price" rows="2" placeholder="e.g. 'And the next steps are very simple — the investment is just $5,000.' or 'just $7,800 paid in full, or 3 x $2,800.'"></textarea>
+      <textarea id="offer-price" rows="2" placeholder="e.g. 'And the next steps are very simple — the investment is just $X.' or '$X paid in full, or 3 x $Y.'"></textarea>
     </label>
     <div class="modal-actions">
       <button id="btn-save-offer" class="btn btn-primary">Save</button>
@@ -334,7 +347,7 @@
   </div>
 </div>
 
-<script src="data/data.js?v=39"></script>
-<script src="app.js?v=39"></script>
+<script src="data/data.js?v=40"></script>
+<script src="app.js?v=40"></script>
 </body>
 </html>
