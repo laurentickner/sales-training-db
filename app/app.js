@@ -1272,15 +1272,34 @@
       } else { init(); }
       return;
     }
-    // Wire the gate sign-in button right away so it works the moment the gate shows
+    // Wire the gate sign-in button. Hide our gate FIRST so the widget modal
+    // (z-index 99) isn't covered by our overlay (z-index 200).
     var loginBtn = $("btn-auth-login");
-    if (loginBtn) loginBtn.addEventListener("click", function () { netlifyIdentity.open("login"); });
+    if (loginBtn) loginBtn.addEventListener("click", function () {
+      hideGate();
+      netlifyIdentity.open("login");
+    });
     var logoutBtn = $("btn-auth-logout");
     if (logoutBtn) logoutBtn.addEventListener("click", function () { netlifyIdentity.logout(); });
 
+    // URL with #invite_token / #recovery_token / #confirmation_token means the
+    // user is coming from an email link — let the widget auto-open its modal.
+    var TOKEN_RE = /^#(invite_token|recovery_token|confirmation_token|email_change_token)=/;
+
     netlifyIdentity.on("init", function (user) {
-      if (user) { bootWithUser(user); }
-      else { showGate("no-user"); netlifyIdentity.open("login"); }
+      if (user) { bootWithUser(user); return; }
+      if (TOKEN_RE.test(location.hash || "")) {
+        // widget will auto-open its own modal to handle the token
+        hideGate();
+      } else {
+        showGate("no-user");
+      }
+    });
+    // Whenever the widget opens its modal, hide our overlay so it's visible.
+    netlifyIdentity.on("open", function () { hideGate(); });
+    // If the user closes the widget without signing in, bring our gate back.
+    netlifyIdentity.on("close", function () {
+      if (!netlifyIdentity.currentUser()) showGate("closed-no-user");
     });
     netlifyIdentity.on("login", function (user) {
       netlifyIdentity.close();
