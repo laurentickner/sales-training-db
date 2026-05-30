@@ -547,43 +547,47 @@
     if (activeEl && activeEl.scrollIntoView)
       activeEl.scrollIntoView({ inline: "center", block: "nearest" });
   }
-  /* My Offer — render the per-client template card above stage-ref on pitch/committing.
-     The funnel JSON stays untouched; this only ADDS the rep's custom lines on top. */
-  function offerHasContent(stageId) {
+  /* My Offer — token substitution.
+     Pitch and Committing say lines contain [[OFFER_*]] tokens. At render time
+     we swap them for the rep's saved values, or for a friendly coaching prompt
+     when empty so an un-customised app still tells the rep what to put there. */
+  var OFFER_TOKENS = {
+    "[[OFFER_PREFRAME]]":   { field: "preframeIs",
+      empty: "⚠ Fill in via ◆ My offer (top right). Set the frame for what this IS vs what this is NOT — kill 'modules + good luck' / 'group calls', then describe how you actually deliver." },
+    "[[OFFER_PILLAR_1]]":   { field: "pillar1",
+      empty: "⚠ Fill in via ◆ My offer (top right). Your first paradigm shift + analogy + tie-down ('Are you following me so far?'). Explains WHY their past attempts failed." },
+    "[[OFFER_PILLAR_2]]":   { field: "pillar2",
+      empty: "⚠ Fill in via ◆ My offer (top right). Your second paradigm shift + proof (case study / your own story / data). End with a tie-down." },
+    "[[OFFER_PILLAR_3]]":   { field: "pillar3",
+      empty: "⚠ Fill in via ◆ My offer (top right). The payoff — what they walk away with (the outcome / system / asset). End with a tie-down." },
+    "[[OFFER_UPSIDE]]":     { field: "upsideLine",
+      empty: "⚠ Fill in via ◆ My offer (top right). Make the math concrete. For business offers: client LTV × 12. For health / coaching: cost of staying stuck. For info / digital: time saved × hourly rate. Always conservative." },
+    "[[OFFER_ONBOARDING]]": { field: "onboardingLine",
+      empty: "⚠ Fill in via ◆ My offer (top right). Who delivers, in what format, over what timeframe. Give them complete clarity on what happens in week 1 → end of engagement." },
+    "[[OFFER_PRICE]]":      { field: "priceLine",
+      empty: "⚠ Fill in via ◆ My offer (top right). The exact words you say at the price reveal. e.g. 'the investment is just $X.' Soft downward inflection, then silence." }
+  };
+  function applyOfferTokens(line) {
     var m = state.myOffer || {};
-    if (stageId === "pitch") {
-      return !!(m.preframeIs || m.pillar1 || m.pillar2 || m.pillar3 || m.onboardingLine);
-    }
-    if (stageId === "committing") {
-      return !!(m.upsideLine || m.priceLine);
-    }
-    return false;
+    var out = line;
+    Object.keys(OFFER_TOKENS).forEach(function (token) {
+      if (out.indexOf(token) === -1) return;
+      var slot = OFFER_TOKENS[token];
+      var value = (m[slot.field] || "").trim();
+      out = out.split(token).join(value || slot.empty);
+    });
+    return out;
   }
-  function offerRow(label, body) {
-    if (!body) return "";
-    return '<div class="offer-row">' +
-      '<div class="offer-label">' + esc(label) + "</div>" +
-      '<div class="offer-body">' + esc(body) + "</div></div>";
+  function lineHasOfferToken(line) {
+    return Object.keys(OFFER_TOKENS).some(function (t) { return line.indexOf(t) !== -1; });
   }
-  function renderOfferCard(stageId) {
-    if (!offerHasContent(stageId)) return "";
+  function lineIsOfferFilled(line) {
+    if (!lineHasOfferToken(line)) return true;
     var m = state.myOffer || {};
-    var title = (m.offerName || "My offer").trim();
-    var h = '<div class="offer-card">';
-    h += '<div class="offer-head">' + glyph("◆") + " " + esc(title) + " — your custom lines</div>";
-    if (stageId === "pitch") {
-      h += offerRow("Pre-frame · what this IS", m.preframeIs);
-      h += offerRow("Pillar 1", m.pillar1);
-      h += offerRow("Pillar 2", m.pillar2);
-      h += offerRow("Pillar 3", m.pillar3);
-      h += offerRow("Onboarding (before price)", m.onboardingLine);
-    } else if (stageId === "committing") {
-      h += offerRow("Upside math", m.upsideLine);
-      h += offerRow("Price drop", m.priceLine);
-    }
-    h += '<div class="offer-foot">edit in <strong>◆ My offer</strong> (top right). The default Scale Systems script still shows below for structure + tonality reference.</div>';
-    h += "</div>";
-    return h;
+    return Object.keys(OFFER_TOKENS).every(function (token) {
+      if (line.indexOf(token) === -1) return true;
+      return !!(m[OFFER_TOKENS[token].field] || "").trim();
+    });
   }
 
   function renderStageRef() {
@@ -591,7 +595,6 @@
     var h = "<h3>" + esc(s.name) + " — what to do</h3>";
     h += '<div class="sr-goal">' + esc(s.goal) + "</div>";
     if (s.listen_for) h += '<div class="sr-listen">' + glyph("👂") + " Listen for: " + esc(s.listen_for) + "</div>";
-    h += renderOfferCard(s.id);
     if (s.options && s.options.length) {
       h += '<div class="sr-options">';
       s.options.forEach(function (opt, idx) {
@@ -604,7 +607,12 @@
       h += "</div>";
     } else {
       h += '<div class="sr-say-label">Say</div><ul>';
-      (s.say || []).forEach(function (line) { h += "<li>" + esc(line) + "</li>"; });
+      (s.say || []).forEach(function (line) {
+        var resolved = applyOfferTokens(line);
+        var filled = lineIsOfferFilled(line);
+        var cls = !filled ? ' class="say-empty-offer"' : '';
+        h += "<li" + cls + ">" + esc(resolved) + "</li>";
+      });
       h += "</ul>";
     }
     if (s.advance_when)

@@ -483,7 +483,18 @@ body {
   outline: none; border-color: var(--cyan);
 }
 
-/* ---- My Offer custom-pitch card (renders in stage-ref on pitch + committing) ---- */
+/* ---- Empty-offer say-line warning (when a [[OFFER_*]] token has no value
+   in My Offer, the line renders as a coaching prompt — highlight it so the
+   rep is nudged to fill it in before running a real call). ---- */
+.sr-say-label + ul li.say-empty-offer {
+  background: rgba(245, 192, 74, 0.08);
+  border-left: 3px solid var(--amber);
+  padding-left: 9px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* ---- My Offer custom-pitch card (DEPRECATED — tokens now substitute inline) ---- */
 .offer-card {
   border: 1px solid var(--amber); border-radius: 10px; padding: 12px 14px;
   background: rgba(245, 192, 74, 0.06); margin-bottom: 14px;
