@@ -1,0 +1,38 @@
+name = "sales-coach"
+main = "worker.ts"
+compatibility_date = "2025-04-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Bundle HTML + JS for the phone view as text via wrangler's rules system.
+# Importing them in worker.ts gives a string at runtime.
+rules = [
+  { type = "Text", globs = ["**/*.html"], fallthrough = true },
+  { type = "Text", globs = ["**/coach-view/coach.js"], fallthrough = true },
+]
+
+# Methodology JSON (in ../app-data) is imported directly by engine/keyword.ts
+# — wrangler bundles JSON imports natively, no extra rule needed.
+
+[[durable_objects.bindings]]
+name = "CALL_STATE"
+class_name = "CallState"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["CallState"]
+
+# Logs visible via `wrangler tail`. Enable Logpush for production retention.
+[observability]
+enabled = true
+
+# ─── Secrets (set via `wrangler secret put NAME`, never committed) ──────
+# RECALL_API_KEY          — Recall.ai API token (Token-scheme auth)
+# RECALL_WEBHOOK_TOKEN    — random string the bot's WS must present back to us
+# ANTHROPIC_API_KEY       — sk-ant-… (powers smart mode + the end-of-call review)
+# GHL_API_KEY             — GoHighLevel sub-account Private Integration Token
+# GHL_LOCATION_ID         — GoHighLevel sub-account Location ID
+
+# Custom domain (uncomment after pointing DNS):
+# routes = [
+#   { pattern = "coach.scalesystems.io/*", custom_domain = true }
+# ]
