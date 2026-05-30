@@ -624,12 +624,31 @@
           "who is this",
           "is this a sales call",
           "i'm busy",
+          "im busy",
           "i'm not interested",
+          "im not interested",
+          "not interested",
           "take me off",
+          "remove me",
           "not a good time",
-          "i don't remember"
+          "i don't remember",
+          "dont remember",
+          "no money",
+          "got no money",
+          "have no money",
+          "no budget",
+          "cant afford",
+          "cant afford it",
+          "dont have the money",
+          "dont have money",
+          "not buying",
+          "im not buying",
+          "not buying anything",
+          "im broke",
+          "broke right now",
+          "tight on cash"
         ],
-        "pushback_script": "Stay calm, stay LOW energy. The 'don't shoot the messenger' line does the work: 'Yeah, totally fair — it's pretty common people don't remember. Looks like it was a few [days/weeks] ago. My job is just to get the information out to you, don't shoot the messenger. It'll take 5 minutes here, okay?' If they keep fighting: just repeat the same line in a different word order until they go with it. Most do."
+        "pushback_script": "DEFENSIVE DISARM — they're trying to end the call before it starts. Stay LOW energy. Do NOT push. Whoever wants something MORE loses the frame — so you want LESS.\n\n— MONEY DISARM (if they blurt 'no money' / 'can't afford' / 'no budget' / 'not buying'): 'Oh no problem at all — honestly I don't even know if I can help you yet, this isn't a sales call. They opted into [YOU-AI training / freebie] and my job is just to make sure you got it. Can I take 30 seconds to ask what made you grab it in the first place?'\n\n— 'I DON'T REMEMBER' / 'WHAT IS THIS': 'Yeah, totally fair — it's pretty common people don't remember. Looks like it was a few [days/weeks] ago. My job is just to get the information out to you, don't shoot the messenger. It'll take 5 minutes here, okay?'\n\n— 'I'M BUSY' / 'NOT A GOOD TIME' / 'NOT INTERESTED': 'Totally — I'll keep it to 5 minutes. Quick question — what made you grab the [freebie] when you did? Then I can point you to the right thing.'\n\n— 'TAKE ME OFF' / 'REMOVE ME': 'For sure, no problem — I'll make sure that happens. Before I do, can I ask — what made you opt in originally? Just so I can flag whatever wasn't useful so we don't send the same thing to anyone else.'\n\nKEY PRINCIPLE: the 'just' framing downgrades the stakes ('just 5 minutes', 'I don't even know if I can help'). Stay genuinely relaxed about them hanging up — that's what disarms them. If they keep fighting: repeat the same line in a different word order until they soften."
       },
       {
         "id": "ob-confirm",
