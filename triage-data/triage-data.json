@@ -8,7 +8,7 @@
       "tone": "Sit back, relax, speak slowly and calmly.",
       "goal": "Make sure you know WHY they booked the call. NO PAIN = NO MORE TALKING. Don't move on until you know.",
       "say": [
-        "STANDING MOVES (apply through the WHOLE call): (1) Loop-back every answer — 'hold on, why though?' 5–7 layers, lower tone. (2) Catch hedge-words ('at least', 'hopefully', 'I'd be happy with') the moment you hear one — Jeremy's Level-3 belief flip. (3) Speak from Identity (L4), not Features (L1): 'sounds like you're the type of person who…' (4) Verbal pacing — DROP tone at end of every question. (5) Past-pain probe over future-pace whenever they mention an attempt.",
+        "STANDING MOVES (apply through the WHOLE call): (1) Loop-back every answer — 'hold on, why though?' 5–7 layers, lower tone. (2) Catch hedge-words ('at least', 'hopefully', 'I'd be happy with') the moment you hear one — Level-3 belief flip. (3) Speak from Identity (L4), not Features (L1): 'sounds like you're the type of person who…' (4) Verbal pacing — DROP tone at end of every question. (5) Past-pain probe over future-pace whenever they mention an attempt.",
         "Hi [name]. Tell me about your day. (If they're busy: 'Oh [name], is now no longer a good time?')",
         "Fantastic over here!",
         "I'm Mariana, I oversee and direct the entire social media and content strategy for Lauren's brand. (For context: I've closed multiple 7 figures in cash for Lauren and I've been with her over the last half decade.)",
@@ -84,9 +84,9 @@
         "Ok, so let's jump 3 years into the future. Lauren, you and I are at your favourite dinner spot, eating your favourite meal, looking back on the last 3 years celebrating our successful collaboration. What are the top 2 or 3 wins we're celebrating together?",
         "Love it, that's worth celebrating over. And because we're all about driving revenue with social media, just like a personal trainer would need to know your ideal body shape and fitness goals so we have a target, where exactly would you like to get to revenue wise in 1 year from now, and 3 years from now?",
         "Cool — that's clear. Thank you. So that I can understand your business better, if that's where you want to be… how far off are you right now from that monthly revenue level?",
-        "HEDGE-WORD CATCH (Jeremy — Level 3 belief flip): if they say 'at least', 'hopefully', 'I'd be happy with', 'fingers crossed' — catch it now: 'Can I make a suggestion on a word I just heard you say that could be holding US back? You said [that word]. When we focus on getting the [least / just / what we'd be happy with], what do we typically get? And you don't strike me as the type of person who wants the LEAST things in life. Would I be right? ... So what do you really want?'",
-        "IDENTITY-SHIFT (set them up mentally to BUY — Jeremy NEPQ): 'Sounds like you're the type of entrepreneur who never gives up — you've kept going, you're still here trying to find a real solution. Were you born that way or did you have to learn it?' Locks the new identity. Once they own 'I'm the type of person who...', they can't object later without contradicting themselves.",
-        "HIGH-REVENUE NO-PAIN HANDLE (Cole): if they're already at a healthy run-rate and downplay pain, don't build from pain — build from unfulfilled DESIRE. 'We never have companies come to us wanting to learn how to sell less — they always want to learn how to sell more. Is that why you came to us?' Then: 'If we came in and did [X], where do you FEEL you could get in 12 months?' (Use 'feel'. Keeps them emotional.) If they lob a humble number: 'OK, 15 — is that your humble goal? You can tell me, we're not posting it on Instagram.'"
+        "HEDGE-WORD CATCH: if they say 'at least', 'hopefully', 'I'd be happy with', 'fingers crossed' — catch it now: 'Can I make a suggestion on a word I just heard you say that could be holding US back? You said [that word]. When we focus on getting the [least / just / what we'd be happy with], what do we typically get? And you don't strike me as the type of person who wants the LEAST things in life. Would I be right?... So what do you really want?'",
+        "IDENTITY-SHIFT (set them up mentally to BUY): 'Sounds like you're the type of entrepreneur who never gives up — you've kept going, you're still here trying to find a real solution. Were you born that way or did you have to learn it?' Locks the new identity. Once they own 'I'm the type of person who...', they can't object later without contradicting themselves.",
+        "HIGH-REVENUE NO-PAIN HANDLE: if they're already at a healthy run-rate and downplay pain, don't build from pain — build from unfulfilled DESIRE. 'We never have companies come to us wanting to learn how to sell less — they always want to learn how to sell more. Is that why you came to us?' Then: 'If we came in and did [X], where do you FEEL you could get in 12 months?' (Use 'feel'. Keeps them emotional.) If they lob a humble number: 'OK, 15 — is that your humble goal? You can tell me, we're not posting it on Instagram.'"
       ],
       "green_light": [
         "They've named a specific monthly revenue target",
@@ -119,7 +119,7 @@
         "probably about",
         "best case"
       ],
-      "pushback_script": "HEDGE-WORD detected — flip it NOW before it caps the rest of the call (Jeremy): 'Can I make a suggestion on a word I just heard you say that could be holding US back? You said [their hedge word]. When we focus on the [least / just / what we'd be happy with], what do we typically get? And you don't come across to me as the type of person who wants the LEAST things in life. Would I be right? ... So what do you really want?' Lower your tone, soft delivery. NEVER 'YOU back' — always 'US back'. Never accuse."
+      "pushback_script": "HEDGE-WORD detected — flip it NOW before it caps the rest of the call: 'Can I make a suggestion on a word I just heard you say that could be holding US back? You said [their hedge word]. When we focus on the [least / just / what we'd be happy with], what do we typically get? And you don't come across to me as the type of person who wants the LEAST things in life. Would I be right?... So what do you really want?' Lower your tone, soft delivery. NEVER 'YOU back' — always 'US back'. Never accuse."
     },
     {
       "id": "revenue",
@@ -128,7 +128,7 @@
       "goal": "Get clear on their current monthly revenue. Doesn't matter what it is — but important we know so the closer can pitch the right level of support.",
       "say": [
         "Ok got it, so your monthly revenue over the last 6 months, what has it been exactly? I ask so that I can see which of our levels of support might make the most sense for you.",
-        "ANNUALISED-REVENUE CATCH (Cole): if they quote annually ('about $1M/yr', 'half a million annually', 'we do about'), don't accept it — verbatim follow: 'Got it — and just based on last month specifically, what did you do? And the month before?' If monthly < 1/12 of stated annual → it's a one-good-month brag, not a real run-rate. Anchor every downstream conversation off the MONTHLY, not the annual. Pass the real number to the closer."
+        "ANNUALISED-REVENUE CATCH: if they quote annually ('about $1M/yr', 'half a million annually', 'we do about'), don't accept it — verbatim follow: 'Got it — and just based on last month specifically, what did you do? And the month before?' If monthly < 1/12 of stated annual → it's a one-good-month brag, not a real run-rate. Anchor every downstream conversation off the MONTHLY, not the annual. Pass the real number to the closer."
       ],
       "green_light": [
         "You have a specific monthly revenue figure (or a clear range)",
@@ -170,10 +170,10 @@
         "Thank you for sharing. What attracted you to the Scale Systems way of doing things? What did you like about our method specifically?",
         "(IF they say they have a coach OR are working with someone else now:)",
         "Got you, seeing as you're already working with someone else — what's not working as well as it should be that means you're interested in working with us?",
-        "PAST-PAIN PROBE (Jeremy — auto-generates future-fear): 'Take me back to the LAST time you tried to fix this — what SPECIFICALLY happened? What did it cost you? How did that feel?' Lower tone, slow pace. Their brain projects 'this will happen again' without you saying it. More powerful than 'what if nothing changes' — emotion is already loaded.",
-        "RE-MEANING (Jeremy — runs BEFORE the identity-shift): 'You know what's interesting about that? That bad experience didn't BREAK you — it led you HERE. Most people would have quit and gone back to their job after that, but you didn't. You're still here, looking for the right thing.'",
-        "IDENTITY-SHIFT (Jeremy — the mental-setup-to-buy lock): 'Sounds like you're the type of entrepreneur who never gives up — you tried [their attempt], it didn't work, and you're STILL here trying to find a real solution. Were you born that way or did you have to learn it?' Now they own the identity. From this point forward they can't reasonably object without contradicting who they just said they are.",
-        "PERMISSION RECOVER (Cole — after the identity-shift): '…are you OK with me saying that?' Keeps the content sharp without losing them."
+        "PAST-PAIN PROBE: 'Take me back to the LAST time you tried to fix this — what SPECIFICALLY happened? What did it cost you? How did that feel?' Lower tone, slow pace. Their brain projects 'this will happen again' without you saying it. More powerful than 'what if nothing changes' — emotion is already loaded.",
+        "RE-MEANING: 'You know what's interesting about that? That bad experience didn't BREAK you — it led you HERE. Most people would have quit and gone back to their job after that, but you didn't. You're still here, looking for the right thing.'",
+        "IDENTITY-SHIFT: 'Sounds like you're the type of entrepreneur who never gives up — you tried [their attempt], it didn't work, and you're STILL here trying to find a real solution. Were you born that way or did you have to learn it?' Now they own the identity. From this point forward they can't reasonably object without contradicting who they just said they are.",
+        "PERMISSION RECOVER: '…are you OK with me saying that?' Keeps the content sharp without losing them."
       ],
       "green_light": [
         "You know if they've worked with similar companies before",
@@ -221,7 +221,7 @@
         "no specific timeline",
         "when's good for you"
       ],
-      "pushback_script": "STALLING on urgency — TWO moves:\n\n(1) Cole's INVERSION (mishear the hedge as a no): 'So it sounds like you don't think this will actually work for you?' 9/10 they snap back: 'no no, I do think it'll work.' Lower tone: 'Hold on — why do you think it'll work?' Now they're DEFENDING the buy, not stalling it.\n\n(2) Jeremy's qualifier (only if not financially qualified): 'Got it — and if you were certain this would add decent revenue to your business on a monthly basis, would that change things?'\n\nEven if still stalling, pass through to closer — but make sure the closer KNOWS they aren't rushing."
+      "pushback_script": "STALLING on urgency — TWO moves:\n\n(1) INVERSION (mishear the hedge as a no): 'So it sounds like you don't think this will actually work for you?' 9/10 they snap back: 'no no, I do think it'll work.' Lower tone: 'Hold on — why do you think it'll work?' Now they're DEFENDING the buy, not stalling it.\n\n(2) qualifier (only if not financially qualified): 'Got it — and if you were certain this would add decent revenue to your business on a monthly basis, would that change things?'\n\nEven if still stalling, pass through to closer — but make sure the closer KNOWS they aren't rushing."
     },
     {
       "id": "budget",
@@ -272,7 +272,7 @@
         "And is there anyone else involved in making decisions when it comes to your business or is that something you have full autonomy over?",
         "(If they say 'just me' — say this half laughing:)",
         "Ok got it, so you're not going to hit us with an objection like 'I need to speak to my partner?' or 'I have to run this by my accountant?' right?",
-        "EXTERNAL-VALIDATION REFRAME (Cole — if they suddenly surface a partner / accountant / advisor they need to check with): 'Can I share something? The brain isn't built to thrive — it's built to keep us SAFE. So when we hit something new and big, the default move is to outsource the decision — talk to your spouse, your accountant, your team. That's the brain trying to protect you. So… what's the part you actually need their input on, vs. what's the part where you're just looking for someone to tell you it's OK to move forward?' Pass the answer to the closer."
+        "EXTERNAL-VALIDATION REFRAME: 'Can I share something? The brain isn't built to thrive — it's built to keep us SAFE. So when we hit something new and big, the default move is to outsource the decision — talk to your spouse, your accountant, your team. That's the brain trying to protect you. So… what's the part you actually need their input on, vs. what's the part where you're just looking for someone to tell you it's OK to move forward?' Pass the answer to the closer."
       ],
       "green_light": [
         "You know who else is in the decision (spouse, partner, accountant, team)",
@@ -313,7 +313,7 @@
         "Ok cool — I will hold you accountable to that. So expect a call or text from me right around then!",
         "Just a note, your strategy session will take place on a google meet link, not a phone call. So please make sure you are somewhere quiet, where you can focus. Sounds ok?",
         "It's been great chatting today — I'll be waiting for your reply to that email confirming you've been through the doc.",
-        "IDENTITY LOCK before hand-off (Jeremy): 'Honestly, sounds like you're the type of person who, once they see something that actually fits, they MOVE on it. Would I be right?' Get the YES. Now when John (the closer) gets them, they've already committed to the identity of 'I'm the kind of person who moves when I see fit' — much harder to stall."
+        "IDENTITY LOCK before hand-off: 'Honestly, sounds like you're the type of person who, once they see something that actually fits, they MOVE on it. Would I be right?' Get the YES. Now when John (the closer) gets them, they've already committed to the identity of 'I'm the kind of person who moves when I see fit' — much harder to stall."
       ],
       "green_light": [
         "Strategy call booked + on the calendar",
@@ -412,7 +412,7 @@
           "MESSAGE 1: lemme get that to you. what is your best email address?",
           "MESSAGE 2: and I have a few versions so can you tell me what stage of business you're at? 6 figures, 7+ figures, or just starting out — then I can send over the relevant one.",
           "ADAPT — drop a quick personal line first based on their bio / what they commented. e.g. 'HipHopTV's vision is cool. Media companies are the way forward. Smart move…' then go into Message 2.",
-          "If you also connected on LinkedIn, slip in: 'Just accepted your connection request also :)'"
+          "If you also connected on LinkedIn, slip in: 'Just accepted your connection request also:)'"
         ],
         "green_light": [
           "You got their email",
@@ -577,13 +577,13 @@
         "goal": "Two parallel cadences. NORMAL list: run the 3-touch weekly hitlist (voice memo -> value-add -> personal feedback). 6-FIGURES+ HITLIST: every 3rd day for 2 weeks with 1:1 value-add follow-up, then once per month indefinitely, PLUS a weekly broadcast email to the separate Hitlist email list. Goal of the hitlist = book a call.",
         "say": [
           "NORMAL list — 3-touch weekly hitlist for prospects who DM'd but didn't convert:",
-          "  Touch 1 — Voice memo: personal + casual, reference what they said before. Under 30 seconds.",
-          "  Touch 2 — Value-add: a video that helps with their specific problem. No ask attached.",
-          "  Touch 3 — Personal feedback: one piece of feedback specifically for them (like Lauren did with Pierre). Genuinely useful, not pitchy.",
+          "Touch 1 — Voice memo: personal + casual, reference what they said before. Under 30 seconds.",
+          "Touch 2 — Value-add: a video that helps with their specific problem. No ask attached.",
+          "Touch 3 — Personal feedback: one piece of feedback specifically for them (like Lauren did with Pierre). Genuinely useful, not pitchy.",
           "6-FIGURES+ HITLIST — separate, prioritised list. Goal = book a call.",
-          "  1:1 cadence: send a value-add follow-up every 3rd day for the first 2 weeks, then once per month indefinitely until they book or ask to be removed.",
-          "  Broadcast cadence: they also go on a SEPARATE weekly email list — one tailored email per week, specific to the hitlist (not the main newsletter).",
-          "  Log every touch in the CRM. If they reply with a problem, book the call right away (jump to Get Problem -> Book Call)."
+          "1:1 cadence: send a value-add follow-up every 3rd day for the first 2 weeks, then once per month indefinitely until they book or ask to be removed.",
+          "Broadcast cadence: they also go on a SEPARATE weekly email list — one tailored email per week, specific to the hitlist (not the main newsletter).",
+          "Log every touch in the CRM. If they reply with a problem, book the call right away (jump to Get Problem -> Book Call)."
         ],
         "green_light": [
           "NORMAL: Touch 1 (voice memo) sent",
@@ -601,7 +601,7 @@
     "crm_rule": "EVERY prospect you message gets logged in the CRM after Message 1 (so you remember to follow up if they ghost), and again after Message 2. If they're 6 figures or above, ALSO add them to the 6-Figures+ Hitlist (see Follow Up stage for the cadence)."
   },
   "outbound_workflow": {
-    "goal": "Dial leads who opted into our freebies (YOU-AI training etc.) within 24 hours. ONLY goal of the dial = book them onto the Scale Session triage call with Mariana. Do NOT try to qualify or pitch on the dial — the triage call does that. Verbatim source: Coach Cayden (Matt Ryder camp) — 'The Simple Way to Book More Calls (Outbound)' + 'Outbound Masterclass with Coach Cayden'.",
+    "goal": "Dial leads who opted into our freebies (YOU-AI training etc.) within 24 hours. ONLY goal of the dial = book them onto the Scale Session triage call with Mariana. Do NOT try to qualify or pitch on the dial — the triage call does that.",
     "style_rule": "Tonality is EVERYTHING. Low-energy, conversational, almost clerical. Whoever wants something MORE loses the frame — be detached: 'I'll take a horse to water, drink it or don't, I have plenty of water.' Short sharp questions ('what got you looking into this?' / 'what do you mean?' / 'why's that?') — never long robot phrasing. BRIDGE every question to the next so it feels like a conversation, not an interrogation. Smile while you dial. When you hear their energy shift, CALL IT OUT — don't just keep going.",
     "stages": [
       {
@@ -613,7 +613,7 @@
           "Hey, is this [name]? … Yeah, I apologise, [name] — didn't mean to offend you or anything. I know I'm calling you out of the blue.",
           "This is just [you] over here with Lauren Tickner's team — about the [YOU-AI training / freebie] you grabbed recently. Hopefully that rings a bell.",
           "(If they say 'I don't remember'): Oh, I apologise — yeah, it's pretty common people don't remember. Looks like it was a couple of [days / weeks] ago. My job is just to get the information out to you — don't shoot the messenger. It'll take 5 minutes here, okay?",
-          "(Source: Cayden / Matt Ryder camp — Outbound Masterclass + Simple Way to Book More Calls)"
+          ""
         ],
         "green_light": [
           "They stayed on the line past the opening apology",
@@ -629,13 +629,13 @@
           "not a good time",
           "i don't remember"
         ],
-        "pushback_script": "Stay calm, stay LOW energy. The 'don't shoot the messenger' line does the work: 'Yeah, totally fair — it's pretty common people don't remember. Looks like it was a few [days/weeks] ago. My job is just to get the information out to you, don't shoot the messenger. It'll take 5 minutes here, okay?' If they keep fighting (Cayden's gaslight-through principle): just repeat the same line in a different word order until they go with it. Most do."
+        "pushback_script": "Stay calm, stay LOW energy. The 'don't shoot the messenger' line does the work: 'Yeah, totally fair — it's pretty common people don't remember. Looks like it was a few [days/weeks] ago. My job is just to get the information out to you, don't shoot the messenger. It'll take 5 minutes here, okay?' If they keep fighting: just repeat the same line in a different word order until they go with it. Most do."
       },
       {
         "id": "ob-confirm",
         "name": "2. Confirm 2 Pieces of Personal Data",
         "tone": "Matter-of-fact, clerical — like you're a clinic receptionist.",
-        "goal": "This is the LOAD-BEARING move (Cayden's words: 'way harder to hang up' after this). Confirm 2 specific pieces of data they put on the opt-in form. After they say 'yes' to two of your questions, the hang-up reflex is gone.",
+        "goal": "This is the LOAD-BEARING move. Confirm 2 specific pieces of data they put on the opt-in form. After they say 'yes' to two of your questions, the hang-up reflex is gone.",
         "say": [
           "Just needed to get a couple of things confirmed on our system here, if that's all right with you.",
           "First thing here, it looks like I've got [piece 1 — e.g. their email / their stage of business / what they wrote in the form]. Is that correct?",
@@ -657,9 +657,9 @@
         "id": "ob-surface",
         "name": "3. Tipping-Point Question",
         "tone": "Curious, no pressure — short sharp questions only.",
-        "goal": "Get ONE thing in their own words about why they grabbed the freebie. This is the dial's ENTIRE discovery — Cayden: 'I don't care about a problem. What I want to know is what they're looking for and why.' Don't go deep — the triage call does that.",
+        "goal": "Get ONE thing in their own words about why they grabbed the freebie. This is the dial's ENTIRE discovery: 'I don't care about a problem. What I want to know is what they're looking for and why.' Don't go deep — the triage call does that.",
         "say": [
-          "Cool — so what got you looking into this in the first place? Or why did you want the [freebie] specifically? (Cayden's exact 'tipping point' question.)",
+          "Cool — so what got you looking into this in the first place? Or why did you want the [freebie] specifically?",
           "(Variant): What caught your attention? What made you reach out in the first place?",
           "(Variant for a specific freebie): I'm guessing you grabbed the YOU-AI training because you were looking to [insert obvious reason]? Or what were you hoping it would help with specifically?",
           "(If they give a problem, great. If they give a goal, also great. Don't push for both — pick one and move on.)"
@@ -675,13 +675,13 @@
           "i grab everything",
           "lauren's stuff is good"
         ],
-        "pushback_script": "Push softly with curiosity (Cayden's bridging move): 'Got it — but if you had to point to ONE thing, what specifically caught your eye? Was it the AI angle, the revenue thing, something Lauren said?' Then move on — even a half-answer is enough to bridge to the booking. The dial is NOT the place to dig hard."
+        "pushback_script": "Push softly with curiosity: 'Got it — but if you had to point to ONE thing, what specifically caught your eye? Was it the AI angle, the revenue thing, something Lauren said?' Then move on — even a half-answer is enough to bridge to the booking. The dial is NOT the place to dig hard."
       },
       {
         "id": "ob-book",
         "name": "4. Book the Triage Call",
         "tone": "Confident, light time-pressure. You're not asking permission — you're offering a fit-check.",
-        "goal": "Book the Scale Session (triage call with Mariana) NOW. Open loop on how we solve their thing — don't reveal the method. Cayden's exact mechanic: solvable + excited + time-pressure cover + cliffhanger.",
+        "goal": "Book the Scale Session (triage call with Mariana) NOW. Open loop on how we solve their thing — don't reveal the method. exact mechanic: solvable + excited + time-pressure cover + cliffhanger.",
         "say": [
           "The good news is — that's one of the easiest things for us to solve and help with. Honestly, when it's that kind of [thing], it actually makes me really excited for you, because it's usually fairly easy once I understand a bit more.",
           "What I can do — I actually have a call I need to run to in a sec, I only had a second to reach out to you — but I have [time A] open this week, and [time B] open. Let's just schedule a quick chat with Mariana, who runs our Scale Sessions. What works best?",
@@ -706,17 +706,17 @@
           "maybe next week",
           "i need to think"
         ],
-        "pushback_script": "FOR PRICE / COST QUESTIONS — Cayden's verbatim deflection: 'Well, there's a couple of different options. Why don't we do this — Mariana will walk you through the rest of how it works on the call, then she'll show you the options and we'll see which one makes the most sense, okay?'\n\nFOR 'SEND ME MORE INFO' — don't send anything. The call IS the info. 'Totally get it — and to be straight, the Scale Session is just 15-20 minutes, no pitch. Mariana literally walks you through your situation and we see if it makes sense to keep talking. So [time A] or [time B]? Even a tentative slot — you can always move it.'\n\nFOR 'LET ME CHECK MY CALENDAR' — flip to a soft tentative: 'No worries — let's pencil [time A] for now, tentative, and you can shift it if you need to. What's your best email so I can fire the invite over?'\n\nFOR ANY HARD STALL — book a tentative + follow up: 'Cool, can I send you the AI training in the meantime and circle back in a couple of days?' Then onto follow-up (and Hitlist if 6 figs+)."
+        "pushback_script": "FOR PRICE / COST QUESTIONS — verbatim deflection: 'Well, there's a couple of different options. Why don't we do this — Mariana will walk you through the rest of how it works on the call, then she'll show you the options and we'll see which one makes the most sense, okay?'\n\nFOR 'SEND ME MORE INFO' — don't send anything. The call IS the info. 'Totally get it — and to be straight, the Scale Session is just 15-20 minutes, no pitch. Mariana literally walks you through your situation and we see if it makes sense to keep talking. So [time A] or [time B]? Even a tentative slot — you can always move it.'\n\nFOR 'LET ME CHECK MY CALENDAR' — flip to a soft tentative: 'No worries — let's pencil [time A] for now, tentative, and you can shift it if you need to. What's your best email so I can fire the invite over?'\n\nFOR ANY HARD STALL — book a tentative + follow up: 'Cool, can I send you the AI training in the meantime and circle back in a couple of days?' Then onto follow-up (and Hitlist if 6 figs+)."
       },
       {
         "id": "ob-secure",
         "name": "5. Downplay + Show-Up Reinforcement",
         "tone": "Casual, friendly, low-key. You're locking it in without making it feel locked.",
-        "goal": "Make them feel relaxed about the booked time (so they actually show up) + plant a 'I might call you before' anchor so a no-show feels rude. Cayden's exact moves.",
+        "goal": "Make them feel relaxed about the booked time (so they actually show up) + plant a 'I might call you before' anchor so a no-show feels rude. exact moves.",
         "say": [
           "Yeah it's no big deal — and hey, if I finish what I'm working on right before that, I might shoot you a quick message 15 minutes beforehand just to make sure you're set. Would that work?",
           "Okay, and just give me a little bit of leeway the other direction too — if I'm running a couple of minutes late, no stress. Cool?",
-          "(Cayden: this gets you a SECOND yes after the booking — guilt-anchor for show-up. They've now said yes 2-3 times in a row, which makes ghosting feel rude.)"
+          ""
         ],
         "green_light": [
           "They said yes to the leeway / pre-call check",
@@ -729,7 +729,7 @@
         "id": "ob-energy-shift",
         "name": "6. Mid-Call Energy-Shift Recovery",
         "tone": "Warm, curious, slightly puzzled — not accusatory.",
-        "goal": "If their energy dropped or you sense them clocking you as a sales call, address it directly. Cayden: 'When you hear that shift — call it out. Don't just keep going.'",
+        "goal": "If their energy dropped or you sense them clocking you as a sales call, address it directly. 'When you hear that shift — call it out. Don't just keep going.'",
         "say": [
           "Hey, I'm just curious and I apologise if I offended you or anything — I felt like we were having a really good conversation, and a second ago it feels like something shifted. What's going on?",
           "(Then SHUT UP and let them answer. This often unlocks the real objection.)",
@@ -750,7 +750,7 @@
         "say": [
           "Hey [name], it's [you] from Lauren Tickner's team — just saw you grabbed the [freebie], wanted to ask you a quick question about what brought you there. Give me a quick text or call back at [number] when you've got 20 seconds. Cool, talk soon.",
           "(Then immediately on text / DM): Hey [name] — just left you a quick voicemail re: the [freebie] you grabbed. Couple of seconds when you've got a sec? — [you]",
-          "(⚠ GAP — Cayden's videos don't explicitly cover voicemail. This is a sensible draft; refine once we find his voicemail teaching.)"
+          ""
         ],
         "green_light": [
           "Voicemail left (under 20 sec)",
@@ -764,14 +764,14 @@
         "id": "ob-followup",
         "name": "8. Outbound Follow-Up Cadence",
         "tone": "Persistent without nagging. Value > volume.",
-        "goal": "Run the within-hour micro-cadence (Cayden's verbatim) FIRST, then a multi-day cadence. 6 figs+ goes onto the Hitlist after the multi-day cadence ends.",
+        "goal": "Run the within-hour micro-cadence FIRST, then a multi-day cadence. 6 figs+ goes onto the Hitlist after the multi-day cadence ends.",
         "say": [
-          "WITHIN-HOUR MICRO-CADENCE (Cayden/Matt, verbatim): For each lead, dial 3 times in a 1-hour block, spaced 20 minutes apart. ('1 hour, 3 calls — 20 / 20 / 20.') Track your pickup rate by hour in a separate calendar — green = 8%+, yellow = 5-8%, red = <5%. Dial during the green hours.",
-          "MULTI-DAY CADENCE (sensible default — flag for refinement from a future Cayden video):",
-          "  Day 0 — dial + voicemail + text",
-          "  Day 2 — re-dial different time. If no answer: short text 'still keen to chat re: the [freebie]?'",
-          "  Day 4 — send the AI training link casually via text/DM (no ask)",
-          "  Day 7 — final dial + voice memo: 'Hey [name] — couple of attempts, no pressure. If now's not the right time, totally fine — just let me know if you'd rather we circle back in a few weeks.'",
+          "WITHIN-HOUR MICRO-CADENCE: For each lead, dial 3 times in a 1-hour block, spaced 20 minutes apart. ('1 hour, 3 calls — 20 / 20 / 20.') Track your pickup rate by hour in a separate calendar — green = 8%+, yellow = 5-8%, red = <5%. Dial during the green hours.",
+          "MULTI-DAY CADENCE:",
+          "Day 0 — dial + voicemail + text",
+          "Day 2 — re-dial different time. If no answer: short text 'still keen to chat re: the [freebie]?'",
+          "Day 4 — send the AI training link casually via text/DM (no ask)",
+          "Day 7 — final dial + voice memo: 'Hey [name] — couple of attempts, no pressure. If now's not the right time, totally fine — just let me know if you'd rather we circle back in a few weeks.'",
           "IF 6 FIGURES+ → after Day 7, move them onto the 6-Figures+ Hitlist (every 3rd day for 2 weeks, then once monthly indefinitely, + the weekly hitlist email). Goal = book the triage call.",
           "EVERY touch logged in CRM."
         ],
@@ -787,15 +787,15 @@
     ]
   },
   "universal_moves": {
-    "loop_back_rule": "After every answer the prospect gives, LOWER your tone and ask 'Hold on — why though?' / 'Why do you feel like that?' / 'Why do you agree?' Go 5–7 layers deep, not 1–2. The first 'why' gets the rehearsed answer. The fifth 'why' gets the truth. If you interject mid-sentence: 'Hold on — what caused you to say that?' (Jeremy Miner / NEPQ.)",
-    "four_levels_of_persuasion": "Jeremy's ladder. L1 Features/Benefits (where 99% of reps live — never wins big deals). L2 Behaviours ('what does the entrepreneur who makes $2M/yr actually DO?'). L3 Beliefs (catch the words they use — 'at least', 'I think' — and reframe). L4 Identity (people DO who they BELIEVE they are). Speak from L3/L4: 'sounds like you're the type of person who never gives up — were you born that way or did you have to learn it?' Locks the new identity so they can't object without contradicting themselves.",
+    "loop_back_rule": "After every answer the prospect gives, LOWER your tone and ask 'Hold on — why though?' / 'Why do you feel like that?' / 'Why do you agree?' Go 5–7 layers deep, not 1–2. The first 'why' gets the rehearsed answer. The fifth 'why' gets the truth. If you interject mid-sentence: 'Hold on — what caused you to say that?'",
+    "four_levels_of_persuasion": "ladder. L1 Features/Benefits (where 99% of reps live — never wins big deals). L2 Behaviours ('what does the entrepreneur who makes $2M/yr actually DO?'). L3 Beliefs (catch the words they use — 'at least', 'I think' — and reframe). L4 Identity (people DO who they BELIEVE they are). Speak from L3/L4: 'sounds like you're the type of person who never gives up — were you born that way or did you have to learn it?' Locks the new identity so they can't object without contradicting themselves.",
     "identity_frame_template": "Universal identity-shift line: 'sounds like you're the type of [entrepreneur / business owner / operator / parent] who [never gives up / always finds a way / actually moves on something when they see it]. Were you born that way, or did you have to learn it?' Use ANYWHERE in the triage — past attempts, results question, urgency stall, fit hand-off. This is the 'set them up mentally to buy' move. Cement the identity early, the rest is downstream.",
-    "hedge_word_catch": "Listen for ceiling-revealing words: 'at least', 'hopefully', 'I'd be happy with', 'I'd settle for', 'fingers crossed', 'just trying to', 'ideally', 'I guess I'd like', 'if I could just', 'even just', 'probably about', 'best case'. The MOMENT you hear one, catch it (verbatim): 'Can I make a suggestion on a word I just heard you say that could be holding US back? You said [their word] — when we focus on getting the [least / just / what we'd be happy with], what do we typically get? And you don't come across to me as the type of person who wants the LEAST things in life. Would I be right? ... So what do you really want?' (Jeremy Miner — Level 3 belief flip.)",
-    "permission_recover": "After a sharp move (identity callout, past-pain probe, consequence math), pause and re-license: 'are you OK with me saying that?' Keeps the content sharp without losing them. If they interject your hard question: 'Hold on — you interjected right when I was about to give you an answer you didn't want. Why did you do that?' (Cole — names avoidance directly instead of letting them route around it.)",
-    "open_vs_closed_gate": "Before any direct frame (the half-laughing authority close, the 'how soon are you looking to get help' question), assess: is the MASK off? Tells = emotional words, personal story, real why behind a number, conceded hidden numbers. If mask OFF → direct moves land. If still ON (surface answers, scripted-sounding) → soften FIRST: 'Sure, no problem. Just so I know — what was it you were wanting to go over in your mind?' Cole: that question extracts the real objection sideways.",
-    "verbal_pacing": "Slow down. Drop your tone at the end of every question (don't lift up — that signals uncertainty). This is HOW loop-back works — fast/lifted tone = setter, slow/dropped tone = consultant. Jeremy: 'when your voice lifts at the end they think you're selling them. When it drops, they think you're thinking with them.'",
+    "hedge_word_catch": "Listen for ceiling-revealing words: 'at least', 'hopefully', 'I'd be happy with', 'I'd settle for', 'fingers crossed', 'just trying to', 'ideally', 'I guess I'd like', 'if I could just', 'even just', 'probably about', 'best case'. The MOMENT you hear one, catch it (verbatim): 'Can I make a suggestion on a word I just heard you say that could be holding US back? You said [their word] — when we focus on getting the [least / just / what we'd be happy with], what do we typically get? And you don't come across to me as the type of person who wants the LEAST things in life. Would I be right?... So what do you really want?'",
+    "permission_recover": "After a sharp move (identity callout, past-pain probe, consequence math), pause and re-license: 'are you OK with me saying that?' Keeps the content sharp without losing them. If they interject your hard question: 'Hold on — you interjected right when I was about to give you an answer you didn't want. Why did you do that?'",
+    "open_vs_closed_gate": "Before any direct frame (the half-laughing authority close, the 'how soon are you looking to get help' question), assess: is the MASK off? Tells = emotional words, personal story, real why behind a number, conceded hidden numbers. If mask OFF → direct moves land. If still ON (surface answers, scripted-sounding) → soften FIRST: 'Sure, no problem. Just so I know — what was it you were wanting to go over in your mind?' that question extracts the real objection sideways.",
+    "verbal_pacing": "Slow down. Drop your tone at the end of every question (don't lift up — that signals uncertainty). This is HOW loop-back works — fast/lifted tone = setter, slow/dropped tone = consultant. 'when your voice lifts at the end they think you're selling them. When it drops, they think you're thinking with them.'",
     "past_pain_probe": "When they mention any past attempt: 'Take me back to the LAST time you tried to fix this — what SPECIFICALLY happened? What did it cost you?' Past-pain auto-generates future-fear: their brain projects 'this will happen again' without you saying it. More powerful than 'what if nothing changes' because the emotion is already loaded. Then re-meaning: 'You know what's interesting? That didn't break you — it led you HERE.' Then identity-shift: 'sounds like you're the type of entrepreneur who never gives up...'",
-    "annualized_revenue_catch": "If they quote revenue annually ('we do about $1M/yr', 'half a million annually'), don't accept it. Verbatim follow: 'Got it — and just based on last month specifically, what did you do? And the month before?' Cole: small biz owners quote 'about $1M/yr' then concede '$40k last month' — the annual is the brag number, the monthly is the real run-rate. Anchor the math to the monthly, otherwise the closer pitches off fiction.",
-    "high_revenue_no_pain": "If they're already at a healthy run-rate and downplay pain: don't build from pain — build from UNFULFILLED DESIRE. Playful disarm first (Cole): 'We never have companies come to us wanting to learn how to sell LESS — they always want to learn how to sell MORE. Is that why you came to us?' Then the feel-forward: 'If we came in and did [X], where do you FEEL you could get in 12 months?' (Use the word FEEL — keeps them emotional.) If they lob a humble number, call it: 'OK, 15 — is that your humble goal? You can tell me, we're not posting it on Instagram.'"
+    "annualized_revenue_catch": "If they quote revenue annually ('we do about $1M/yr', 'half a million annually'), don't accept it. Verbatim follow: 'Got it — and just based on last month specifically, what did you do? And the month before?' small biz owners quote 'about $1M/yr' then concede '$40k last month' — the annual is the brag number, the monthly is the real run-rate. Anchor the math to the monthly, otherwise the closer pitches off fiction.",
+    "high_revenue_no_pain": "If they're already at a healthy run-rate and downplay pain: don't build from pain — build from UNFULFILLED DESIRE. Playful disarm first: 'We never have companies come to us wanting to learn how to sell LESS — they always want to learn how to sell MORE. Is that why you came to us?' Then the feel-forward: 'If we came in and did [X], where do you FEEL you could get in 12 months?' (Use the word FEEL — keeps them emotional.) If they lob a humble number, call it: 'OK, 15 — is that your humble goal? You can tell me, we're not posting it on Instagram.'"
   }
 }

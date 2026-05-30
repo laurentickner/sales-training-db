@@ -108,10 +108,10 @@
       "button": "Too-easy yes",
       "label": "'This sounds great' / 'I really want to do this' — enthusiastic tone but the BUT is loaded",
       "response_steps": [
-        "Don't celebrate — Cole: 'You know the but's coming.' Enthusiasm + no payment question = pre-objection setup.",
+        "Don't celebrate: 'You know the but's coming.' Enthusiasm + no payment question = pre-objection setup.",
         "Interject BEFORE the but lands: 'Hold on — why do you feel like you really want to do this?' Forces them to sell themselves on the program in their own words before the objection forms.",
         "Listen to the TONE of THAT answer. Certainty ('man, I have to do this') → closer to a real yes. Soft ('well, I mean, it sounds good...') → the BUT is still coming, handle it now.",
-        "Cole tell: 'I really want to do this. Where do I pay?' = real. 'This sounds great, I really want to do this...' (trailing) = BUT incoming. Catch it BEFORE they speak the objection into existence — once spoken they have to defend it."
+        "tell: 'I really want to do this. Where do I pay?' = real. 'This sounds great, I really want to do this...' (trailing) = BUT incoming. Catch it BEFORE they speak the objection into existence — once spoken they have to defend it."
       ],
       "do_not": "Don't treat enthusiastic-sounding language as a buy signal — the tone tells you whether the next sentence has a BUT. Run the why-loop first."
     }
@@ -150,15 +150,35 @@
         "that's steep",
         "almost as much as a new car",
         "got to find the money",
-        "got to see if I can afford it"
+        "got to see if I can afford it",
+        "no money",
+        "have no money",
+        "no money to",
+        "no money right now",
+        "no budget",
+        "no budget for",
+        "zero budget",
+        "cant afford",
+        "cant afford it",
+        "dont have the money",
+        "dont have money",
+        "dont have it",
+        "dont have the cash",
+        "broke right now",
+        "im broke",
+        "tight on cash",
+        "cash poor",
+        "money is tight",
+        "cant swing it",
+        "cant swing that"
       ],
       "response_steps": [
         "No problem. Now, just to stay organized on my end — when you say you can't afford it, are you more in a 'should I do this?' kinda place where you're not even sure this is what you want to do? Or more of a 'how can I do this?' place where you're 100% certain you want to do this, it's just a matter of making it work financially? (This isolates uncertainty smoke-screen vs genuine financial logistic.)",
         "Gotcha. So if I'm hearing you correctly — money aside, you're 100% in? (Only do the rest of this AFTER you have the double tie-down.)",
         "Look — most of my clients do the investment up front. But for certain clients in situations where they really want to do it, it's just the money — we break it up. So given you're 100% in and it's really just about finding a way to make it work financially — are you open to exploring the option of that? (This gets permission to go into payment plans. It's why we don't offer payment plans straight away.)",
         "[They say 'sure, what does it look like?'] Well, that depends — everything is customised based on what you need. So are you open to having an honest conversation financially and putting everything out on the table, so we can see if there's any possibility of doing this now — or at the very least we can create a game plan to work towards this in the future? (Frames the open wallet in their best interest, with permission. Removes sales pressure.)",
-        "OK great. So, in the next 30 days, how much cash flow coming in do you have total? ... Gotcha. And after all expenses, how much do you have left coming in in total? (Cash flow — pacing question, less invasive.)",
-        "Sure, cool. And what's your cash on hand exactly right now? ... And that's the exact number you have available? (If they give a round number like 12k, real. If they give a specific number like $500, 99% of the time that's a smoke screen — they're telling you what they can spend in this moment, not what they have.)",
+        "OK great. So, in the next 30 days, how much cash flow coming in do you have total?... Gotcha. And after all expenses, how much do you have left coming in in total? (Cash flow — pacing question, less invasive.)",
+        "Sure, cool. And what's your cash on hand exactly right now?... And that's the exact number you have available? (If they give a round number like 12k, real. If they give a specific number like $500, 99% of the time that's a smoke screen — they're telling you what they can spend in this moment, not what they have.)",
         "And in terms of credit — not saying we have to use it, but just so I have full understanding of how things are looking — what's available to you right now?",
         "And you really wanna do this, right?",
         "OK because look — I don't think the best thing for you to do right now is drop [the full price] and invest all your savings on this or go into credit card debt. But I also know that your business is really important to you, and if you don't do something in the next 6-12 months, I also don't think the best thing to do is nothing. And plus, for you, it's what — [N] clients to break even? So because of that, I'd be willing to let you in for [$X] down — get lead gen going, get clients in. Is that fair? So if that's something I'm willing to do for you — is that something you're willing to move forward with right now?"
@@ -207,11 +227,11 @@
       "response_steps": [
         "No problem. Before we get into any of that — let me ask you this, just because we've been through a lot today. How do you actually feel? Money and everything aside, do you feel like this is 100% what you need to get to [their goal], and that it's 100% going to work?",
         "If they waffle ('I think so'): Got it — but what I'm really trying to understand is, do you think this is 100% going to work, and do you 100% want to do this? It doesn't sound 100% certain — so let's just be honest with each other, what's really going on?",
-        "COLE INVERSION: Deliberately mishear the hedge as a no -- 'so it sounds like you don't think it's going to work?' 9/10 they snap back: 'no no, I do think it's going to work.' Lower your tone: 'hold on -- why do you feel like it's going to work?' Now they're selling you on the program in their own words -- closest thing to a self-close. Loop 'why though' on each answer until the real concern surfaces.",
+        "INVERSION: Deliberately mishear the hedge as a no -- 'so it sounds like you don't think it's going to work?' 9/10 they snap back: 'no no, I do think it's going to work.' Lower your tone: 'hold on -- why do you feel like it's going to work?' Now they're selling you on the program in their own words -- closest thing to a self-close. Loop 'why though' on each answer until the real concern surfaces.",
         "If a real concern surfaces, that's the true objection — handle it (route to the matching entry).",
         "If it IS a genuine sleep-on-it: No issue at all, I'd sleep on it too if I were you. So just to clarify — if we schedule a time tomorrow and you wake up feeling the exact same way you feel right now, then what you're telling me is we're 100% processing the payment and moving forward, yes?",
         "Why don't you come in now and draw the line in the sand today — and if you wake up tomorrow and at the bottom of your gut you know it was a terrible decision, we'll just refund you.",
-        "JEREMY INVERSION CLOSE (after 3-4 layers of 'why though?'): 'Tell me why you getting [their stated outcome] would be the WRONG thing for you.' They literally cannot answer — they'd have to argue against their own goal. Usually they say 'wait, say that again?' Repeat it slow: 'is [outcome] the right thing or the wrong thing?' Either way they concede → 'why?' They sell themselves."
+        "INVERSION CLOSE (after 3-4 layers of 'why though?'): 'Tell me why you getting [their stated outcome] would be the WRONG thing for you.' They literally cannot answer — they'd have to argue against their own goal. Usually they say 'wait, say that again?' Repeat it slow: 'is [outcome] the right thing or the wrong thing?' Either way they concede → 'why?' They sell themselves."
       ],
       "do_not": "Don't accept a vague 'I'll get back to you' and book a loose follow-up. Desire fades. Isolate now, or lock a next-day call with a definitive tie-down.",
       "source": "objections/think-about-it.md",
@@ -265,7 +285,7 @@
         "Got it — let's cover that in a second. But just for clarity, aside from that, how do you feel? Do you feel like this is 100% what you need to get to [outcome], and you 100% want to do it?",
         "So theoretically — if you spoke to one of our clients and they validated everything I've told you so far, you're basically good to go, we're processing payment?",
         "Here's our policy: we have 100+ people reaching out every month wanting to become clients. It wouldn't be appropriate or realistic to fill our clients' calendars with people who are still just thinking about joining — especially when our clients are wealthy business owners who charge for their time. That's the exact reason we have 500+ case studies. Is there a specific type of case study you were looking for?",
-        "Alternative: If I connect you with a client right after this call, are you 100% okay keeping the exchange to text out of respect for their time? ... And once they echo everything I told you and we talk in 48 hours, what do you think the next step is from there?"
+        "Alternative: If I connect you with a client right after this call, are you 100% okay keeping the exchange to text out of respect for their time?... And once they echo everything I told you and we talk in 48 hours, what do you think the next step is from there?"
       ],
       "source": "objections/more-objections-from-webinar.md"
     },
@@ -305,9 +325,9 @@
         "Just for clarity's sake — is this a respect thing where you've basically decided and you're just letting them know, or do you genuinely need to sit down, collaborate, and get their permission to move forward?",
         "What do you think they're going to think about this? What will they say when they hear the investment? Are they supportive of you fixing [the problem]? Do they know you're on this call?",
         "There are two ways you can bring this up. One — 'Honey, that business I spent a ton on, I met a guy on the internet, it's 10k, what do you think?' Or two — you sit them down and confidently say 'I've decided and committed to growing this where it should be, and I found someone to help. I'm not asking permission, I'm asking for your emotional support and buy-in.' Which of those two guys do you think convinces his wife? You're right — and if you're not certain, neither will they be, nor should they be.",
-        "FUTURE-PACE (Jeremy Miner alternative angle): How does your spouse feel about you losing $[N] a month right now? Is she more stressed about you losing $[N]/month — or about you investing $[X] to fix it? ... How many months are we going to keep pushing this off while you keep losing $[N] a month? (Reframes the spouse from blocker to ally via consequence math.)",
+        "FUTURE-PACE: How does your spouse feel about you losing $[N] a month right now? Is she more stressed about you losing $[N]/month — or about you investing $[X] to fix it?... How many months are we going to keep pushing this off while you keep losing $[N] a month? (Reframes the spouse from blocker to ally via consequence math.)",
         "Let's put down a refundable deposit now, I'll onboard you, and schedule a call with you, your spouse and me so they can see exactly what you'd be investing in. If they hate it, we refund it. So if I was willing to do that for you, would you be willing to move forward right now?",
-        "EXTERNAL-VALIDATION REFRAME (Cole): 'Can I share something? The brain isn't built to thrive, it's built to keep us safe. So when we hit something new, the default is to outsource the decision -- talk to the spouse, the advisor -- so if it doesn't work out, it wasn't our fault. That's not actually about your spouse. That's your brain looking for a way to push this down the road. Real question -- if you take the spouse out of it: do YOU think this works, and do YOU 100% want to do it?'"
+        "EXTERNAL-VALIDATION REFRAME: 'Can I share something? The brain isn't built to thrive, it's built to keep us safe. So when we hit something new, the default is to outsource the decision -- talk to the spouse, the advisor -- so if it doesn't work out, it wasn't our fault. That's not actually about your spouse. That's your brain looking for a way to push this down the road. Real question -- if you take the spouse out of it: do YOU think this works, and do YOU 100% want to do it?'"
       ],
       "do_not": "Never chase the spouse objection before the prospect themselves is 100% sold. If they're not sold, they cannot sell someone who wasn't on the call.",
       "source": "objections/support-spouse-partner-team.md"
@@ -329,7 +349,7 @@
         "talk it over together"
       ],
       "response_steps": [
-        "Go person by person on the temp check: 'Jim, where are you out of 10? ... Mark, where are you out of 10? ... Alex, looks like you're the only one not certain — it's a two-to-three vote, looks like we're good to go.' You're just closing three people instead of one.",
+        "Go person by person on the temp check: 'Jim, where are you out of 10?... Mark, where are you out of 10?... Alex, looks like you're the only one not certain — it's a two-to-three vote, looks like we're good to go.' You're just closing three people instead of one.",
         "If you can't close on the call: Your partners weren't on this call, so they won't have all the information, and it's a lot for you to relay. Let's schedule a 30-minute call with all of us where I recap everything and re-show them exactly what it looks like to work with us, and all of us decide together.",
         "Lock the tie-down: So when we talk tomorrow, after you've spoken — if you feel the same way you told me you feel right now, then we're 100% moving forward, yes or no?"
       ],
@@ -393,10 +413,10 @@
         "What we've found, doing this with thousands of clients, is it comes down to one of three things: number one, the process they implemented just didn't work; number two, the strategy was good but the service wasn't — slow, no support; or number three, both were fine and you just didn't show up the way you should have. Which one of those do you think it was?",
         "[They name it — usually method or service] So given the service quality is the same, if the method is right, wouldn't it make sense you wouldn't get the same result as before? So with that out of the way — do you really think this is going to work?",
         "You learned the lesson 'don't work with a beginner' — don't learn the wrong lesson and make it 'this type of thing never works.' That one bad decision is just the tuition you paid to make a better, more informed decision this time. Let's not let one bad decision sabotage a great one.",
-        "RE-MEANING (Jeremy Miner -- runs BEFORE the identity-shift): 'You know what's interesting about that? That bad experience didn't break you -- it led you here. Most people would have quit and gone back to a job. You didn't.' Changing the MEANING of the failure from 'evidence this never works' to 'evidence you're built for this.' Re-meaning FIRST, identity-shift SECOND -- doing identity without re-meaning sounds like a glib compliment.",
-        "IDENTITY-SHIFT (Jeremy Miner alternative reframe): Sounds like you're the type of entrepreneur who never gives up — you tried [X], it didn't work, and you're still here trying to find a real solution. So why is this so important to you? ... Were you born that way, or did you have to learn it? (Locks the new identity — they can't object without contradicting their new self-image.)",
+        "RE-MEANING: 'You know what's interesting about that? That bad experience didn't break you -- it led you here. Most people would have quit and gone back to a job. You didn't.' Changing the MEANING of the failure from 'evidence this never works' to 'evidence you're built for this.' Re-meaning FIRST, identity-shift SECOND -- doing identity without re-meaning sounds like a glib compliment.",
+        "IDENTITY-SHIFT: Sounds like you're the type of entrepreneur who never gives up — you tried [X], it didn't work, and you're still here trying to find a real solution. So why is this so important to you?... Were you born that way, or did you have to learn it? (Locks the new identity — they can't object without contradicting their new self-image.)",
         "If comparing to a small past provider: You're comparing a 3-person shop with 5 clients and no sales team to a category leader with 3,000+ clients and an 8-figure sales team. How does that comparison even make sense?",
-        "EGO-STATE TIE (Jeremy — gender-aware, after the identity affirmation): To a male prospect: 'and your spouse — she's lucky to have a provider like you, someone forward-thinking who makes the hard decisions for the family.' To a female prospect: 'and your spouse — he's lucky to have an independent woman like you who [their move].' Plays to ego state (provider for males, independence for females). Locks the new identity through a witness they care about. ADAPT to what the prospect actually values — some male prospects value being seen as an equal partner over provider; read the signal, don't default-stereotype."
+        "EGO-STATE TIE: To a male prospect: 'and your spouse — she's lucky to have a provider like you, someone forward-thinking who makes the hard decisions for the family.' To a female prospect: 'and your spouse — he's lucky to have an independent woman like you who [their move].' Plays to ego state (provider for males, independence for females). Locks the new identity through a witness they care about. ADAPT to what the prospect actually values — some male prospects value being seen as an equal partner over provider; read the signal, don't default-stereotype."
       ],
       "do_not": "Don't argue them out of the feeling with a glib analogy ('would you never date again?'). Diagnose what actually happened, then separate it from your offer.",
       "source": "objections/been-burned-before.md"
@@ -430,13 +450,13 @@
       "response_steps": [
         "Quick question before anything else — are you looking for the cheapest option, or are you looking for the team that's most likely to get you there?",
         "Curious — how are you thinking about this? What held you back from going with the other ones?",
-        "Ultimately, how would you know if you'd found the right team to help you? ... So it's really just about who's going to get you where you want to go, right? Aside from evaluating which option to go with, it sounds like you're going to do something — it's just a matter of who. So let's take price aside for a moment: out of the two options, which are you more certain can actually get you there?",
+        "Ultimately, how would you know if you'd found the right team to help you?... So it's really just about who's going to get you where you want to go, right? Aside from evaluating which option to go with, it sounds like you're going to do something — it's just a matter of who. So let's take price aside for a moment: out of the two options, which are you more certain can actually get you there?",
         "Can I just be your bro for a sec? You're doing [X], you want to get to [Y]. Whether the investment is five grand or fifty relative to that goal — who gives a damn? Go with the team that's done what you want to do the most amount of times and that you're most sure can get you there.",
         "If the other option is genuinely solid, sequence it instead of trashing it: come work with us first to get the foundation right, and if you still want to, go work with that guy in three months. And just so you know what to watch for — a team that won't even let you go talk to other programs first, that's a red flag.",
-        "WHAT THEY'LL SAY (Jeremy Miner): What are you hoping that other company is going to say? ... Do you think they're going to say they're worse than us? Of course not — every salesperson says they're the best. So what's that really telling you?",
-        "INTUITION CLOSE (Jeremy Miner): Let's say their proposal looks similar to ours and the price is similar. How would you actually decide who to go with? ... Your intuition? OK — what does your intuition say right now? ... Why?",
-        "DELIVERY (Cole/Jeremy): As you contrast their option vs yours, physically separate your hands -- their option here, your option there. Even on audio the gesture changes your tone enough for the prospect to feel the split. Sitting still flattens the frame. 'Selling from stage they point to the doors -- same thing on a phone.'",
-        "BINARY FORCE (Cole, role-play 2): 'Is the cheapest price the most important thing to you, or actually like scaling your company to $[goal]?' Force the binary — they can't logically pick 'cheapest.' Then anchor the ROI ratio: 'Because whether it's 10K or 20K, the result is 10x that either way if it works.' Collapses 'shopping' from price-comparison frame into outcome-comparison."
+        "WHAT THEY'LL SAY: What are you hoping that other company is going to say?... Do you think they're going to say they're worse than us? Of course not — every salesperson says they're the best. So what's that really telling you?",
+        "INTUITION CLOSE: Let's say their proposal looks similar to ours and the price is similar. How would you actually decide who to go with?... Your intuition? OK — what does your intuition say right now?... Why?",
+        "DELIVERY: As you contrast their option vs yours, physically separate your hands -- their option here, your option there. Even on audio the gesture changes your tone enough for the prospect to feel the split. Sitting still flattens the frame. 'Selling from stage they point to the doors -- same thing on a phone.'",
+        "BINARY FORCE: 'Is the cheapest price the most important thing to you, or actually like scaling your company to $[goal]?' Force the binary — they can't logically pick 'cheapest.' Then anchor the ROI ratio: 'Because whether it's 10K or 20K, the result is 10x that either way if it works.' Collapses 'shopping' from price-comparison frame into outcome-comparison."
       ],
       "do_not": "Don't trash the competitor — bulldozing makes you look like 'just a closer.' Educate on the options instead. If a competitor is genuinely solid, sequence it: 'come work with us first, then go work with that guy in 3 months.'",
       "source": "objections/competitor-cheaper.md"
@@ -528,7 +548,7 @@
       ],
       "response_steps": [
         "Release the pressure: Can I ask you a personal question? There's probably something else going through your head. We've been talking a while, and from my end everything about this makes sense for you. Will you just open up and tell me what you're thinking — what's really going on?",
-        "Name it: It just seems like it's a little bit of nerves. Is it? ... Good — the nerves are good. That means there's weight to this, there's meaning to it. I'd think you were an alien if you weren't a little nervous. Nothing great in the world was ever built by someone who wasn't a little nervous at first.",
+        "Name it: It just seems like it's a little bit of nerves. Is it?... Good — the nerves are good. That means there's weight to this, there's meaning to it. I'd think you were an alien if you weren't a little nervous. Nothing great in the world was ever built by someone who wasn't a little nervous at first.",
         "Identity: So the nerves are really irrelevant here. The real question is — who do you want to be? The type of person who feels the fear and does it anyway, or the type who lets nervousness make the decision? Which is it?",
         "Can I ask you a weird question — does it feel like your head and your heart are playing tug-of-war? Your brain is trying to keep you safe, it's yelling at you not to do it — but your heart is the thing that lit up when you told me what [outcome] would mean. Which one do you think will take you farther?",
         "There are two parts to your brain — the monkey brain that keeps you safe, and the part that wants you to succeed. How many people do you know who knew about Bitcoin in 2010 and did nothing? They listened to the monkey brain. Listen to the part that's going to make you successful."
@@ -575,7 +595,7 @@
       "response_steps": [
         "We can definitely talk about that. Just curious — is there a specific reason you're asking? (This sniffs out the hidden objection behind it — usually 'I've been burned.')",
         "Honestly, there's a lot that's out of our control — like, are you going to put in the work? Me guaranteeing a specific result would be illegal, immoral and unethical anyway. What I CAN guarantee is that we'll give you every tool and resource you need to get [the outcome], and that we have an impeccable track record.",
-        "What really matters is two things: are you going to 100% show up and do the work, and when you hit a problem — which you will — are you going to raise your hand for help? ... Great question, what else?"
+        "What really matters is two things: are you going to 100% show up and do the work, and when you hit a problem — which you will — are you going to raise your hand for help?... Great question, what else?"
       ],
       "source": "objections/more-objections-from-webinar.md"
     },
@@ -596,7 +616,7 @@
         "big leap"
       ],
       "response_steps": [
-        "I hear you on that. Can I give you a little coaching on it? ... Your goal is to make [X] a year — that would put you in the top 1%. Have you ever wondered why so few people make that kind of money despite wanting it? It's the fear of risk.",
+        "I hear you on that. Can I give you a little coaching on it?... Your goal is to make [X] a year — that would put you in the top 1%. Have you ever wondered why so few people make that kind of money despite wanting it? It's the fear of risk.",
         "So the real question isn't 'is this too risky' — the real question is who do you want to be? When 99% of people bump into that glass wall of fear and risk, they contract and retreat to their comfort zone — which is exactly what keeps them where they are. The 1% feel the fear and break through.",
         "So which of those two people do you want to be?"
       ],
@@ -712,7 +732,7 @@
         "finance it"
       ],
       "response_steps": [
-        "Don't just give it. First confirm: 'When you're on a call and a client has the money, needs it, and knows they need it — do you think they should break it into two? ... So money aside, you're 100% in?'",
+        "Don't just give it. First confirm: 'When you're on a call and a client has the money, needs it, and knows they need it — do you think they should break it into two?... So money aside, you're 100% in?'",
         "Run the open wallet (30-day cash → cash on hand exactly → credit) to find the biggest plan they can comfortably and ethically do.",
         "Then trade the concession for a decision: 'I don't think the best thing for you is to drain your savings, but I also don't think the best thing is to do nothing. So what I'd be willing to do is let you in for [half] down — and if I'm willing to do that for you, are you willing to move forward right now?'",
         "If you have to go lower again, ask for more back: 'If I'm willing to do that for you, will you move forward right now AND give me a case study when you get amazing results?'"
@@ -743,7 +763,7 @@
       ],
       "response_steps": [
         "Okay, walk me through it real fast so I can stay organized. When you say you're moving money around — what does that look like? Where's it coming from? Selling stocks, a 401k, a brokerage account?",
-        "And when is that going to be finished? ... And once it's done, you're 100% moving forward that day?",
+        "And when is that going to be finished?... And once it's done, you're 100% moving forward that day?",
         "Then let's do the bulk of it now — say seven-and-a-half of the ten — that way we still get you onboarded, get the assessment, get the forms and the onboarding call out of the way, and we just take care of the rest in a week when you're done moving the money around. (You're already 100% in and the money is real — take most of it now, not half.)",
         "Gentleman's agreement: Let's get this done now so you get access to everything and knock out the onboarding forms — just make me a gentleman's agreement that you'll have the rest down before your onboarding call."
       ],
