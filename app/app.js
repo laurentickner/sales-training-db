@@ -81,6 +81,7 @@
     doubt: "O", trust: "V", support: "E", money: "R", why: "Y"
   };
   var PROSPECTS_KEY = "copilot_prospects";
+  var MY_OFFER_KEY  = "copilot_my_offer";
 
   /* ---------- safe localStorage ---------- */
   var store = {
@@ -100,7 +101,13 @@
     liveFacts: store.get("copilot_livefacts") || "",  // rep's running call notes
     activeObjection: null,   // last objection raised — stays live until New call
     committingDone: {},      // committing-phase step id -> true
-    introDone: {}            // introduction-stage step id -> true (e.g. nudge confirmed)
+    introDone: {},           // introduction-stage step id -> true (e.g. nudge confirmed)
+    myOffer: (function () {
+      try {
+        var raw = store.get(MY_OFFER_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) { return {}; }
+    })()                     // per-client template overrides (pillars, upside, price)
   };
   var nextId = 1;            // monotonic log id (Date.now can collide)
   var reqSeq = 0;            // smart-mode request token — stale fetches no-op
@@ -540,11 +547,51 @@
     if (activeEl && activeEl.scrollIntoView)
       activeEl.scrollIntoView({ inline: "center", block: "nearest" });
   }
+  /* My Offer — render the per-client template card above stage-ref on pitch/committing.
+     The funnel JSON stays untouched; this only ADDS the rep's custom lines on top. */
+  function offerHasContent(stageId) {
+    var m = state.myOffer || {};
+    if (stageId === "pitch") {
+      return !!(m.preframeIs || m.pillar1 || m.pillar2 || m.pillar3 || m.onboardingLine);
+    }
+    if (stageId === "committing") {
+      return !!(m.upsideLine || m.priceLine);
+    }
+    return false;
+  }
+  function offerRow(label, body) {
+    if (!body) return "";
+    return '<div class="offer-row">' +
+      '<div class="offer-label">' + esc(label) + "</div>" +
+      '<div class="offer-body">' + esc(body) + "</div></div>";
+  }
+  function renderOfferCard(stageId) {
+    if (!offerHasContent(stageId)) return "";
+    var m = state.myOffer || {};
+    var title = (m.offerName || "My offer").trim();
+    var h = '<div class="offer-card">';
+    h += '<div class="offer-head">' + glyph("◆") + " " + esc(title) + " — your custom lines</div>";
+    if (stageId === "pitch") {
+      h += offerRow("Pre-frame · what this IS", m.preframeIs);
+      h += offerRow("Pillar 1", m.pillar1);
+      h += offerRow("Pillar 2", m.pillar2);
+      h += offerRow("Pillar 3", m.pillar3);
+      h += offerRow("Onboarding (before price)", m.onboardingLine);
+    } else if (stageId === "committing") {
+      h += offerRow("Upside math", m.upsideLine);
+      h += offerRow("Price drop", m.priceLine);
+    }
+    h += '<div class="offer-foot">edit in <strong>◆ My offer</strong> (top right). The default Scale Systems script still shows below for structure + tonality reference.</div>';
+    h += "</div>";
+    return h;
+  }
+
   function renderStageRef() {
     var s = currentStage();
     var h = "<h3>" + esc(s.name) + " — what to do</h3>";
     h += '<div class="sr-goal">' + esc(s.goal) + "</div>";
     if (s.listen_for) h += '<div class="sr-listen">' + glyph("👂") + " Listen for: " + esc(s.listen_for) + "</div>";
+    h += renderOfferCard(s.id);
     if (s.options && s.options.length) {
       h += '<div class="sr-options">';
       s.options.forEach(function (opt, idx) {
@@ -641,6 +688,47 @@
     updateModeBadge();
     closeSettings();
   }
+  /* ---------- my offer (per-client template fields) ---------- */
+  var OFFER_FIELDS = [
+    ["offer-name",       "offerName"],
+    ["offer-preframe",   "preframeIs"],
+    ["offer-pillar1",    "pillar1"],
+    ["offer-pillar2",    "pillar2"],
+    ["offer-pillar3",    "pillar3"],
+    ["offer-onboarding", "onboardingLine"],
+    ["offer-upside-mode","upsideMode"],
+    ["offer-upside",     "upsideLine"],
+    ["offer-price",      "priceLine"]
+  ];
+  function openOffer() {
+    var m = state.myOffer || {};
+    OFFER_FIELDS.forEach(function (pair) {
+      var el = $(pair[0]); if (el) el.value = m[pair[1]] || "";
+    });
+    openModal("offer-modal", "offer-name");
+  }
+  function saveOffer() {
+    var next = {};
+    OFFER_FIELDS.forEach(function (pair) {
+      var el = $(pair[0]); if (!el) return;
+      var v = (el.value || "").trim();
+      if (v) next[pair[1]] = v;
+    });
+    state.myOffer = next;
+    store.set(MY_OFFER_KEY, JSON.stringify(next));
+    renderStageRef();
+    closeModal();
+  }
+  function clearOffer() {
+    if (!confirm("Clear all My Offer fields? The default Scale Systems script will show again.")) return;
+    OFFER_FIELDS.forEach(function (pair) {
+      var el = $(pair[0]); if (el) el.value = "";
+    });
+    state.myOffer = {};
+    store.set(MY_OFFER_KEY, JSON.stringify({}));
+    renderStageRef();
+  }
+
   function updateModeBadge() {
     var b = $("mode-badge");
     if (state.smart && state.apiKey) {
@@ -1033,6 +1121,14 @@
     $("btn-close-settings").addEventListener("click", closeSettings);
     $("settings-modal").addEventListener("click", function (e) {
       if (e.target === $("settings-modal")) closeModal();
+    });
+    // my offer — per-client template fields (pillars, upside math, price)
+    $("btn-offer").addEventListener("click", openOffer);
+    $("btn-save-offer").addEventListener("click", saveOffer);
+    $("btn-clear-offer").addEventListener("click", clearOffer);
+    $("btn-close-offer").addEventListener("click", closeModal);
+    $("offer-modal").addEventListener("click", function (e) {
+      if (e.target === $("offer-modal")) closeModal();
     });
     // pre-call prep
     $("btn-prep").addEventListener("click", openPrep);

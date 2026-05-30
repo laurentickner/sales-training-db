@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.anthropic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Scale Systems Sales Call Copilot</title>
-<link rel="stylesheet" href="styles.css?v=27" />
+<link rel="stylesheet" href="styles.css?v=28" />
 </head>
 <body>
 
@@ -32,6 +32,7 @@
     <span id="mode-badge" class="mode-badge mode-offline">Keyword mode</span>
     <button id="btn-prep" class="btn btn-prep" title="Prepare for an upcoming call"><span aria-hidden="true">◆</span> Prep call</button>
     <button id="btn-calls" class="btn btn-ghost" title="Past calls + outcomes"><span aria-hidden="true">▤</span> Calls</button>
+    <button id="btn-offer" class="btn btn-ghost" title="Customise your pillars, upside math, and price"><span aria-hidden="true">◆</span> My offer</button>
     <button id="btn-settings" class="btn btn-ghost" title="Settings"><span aria-hidden="true">⚙</span> Settings</button>
     <button id="btn-newcall" class="btn btn-ghost" title="Start a fresh call"><span aria-hidden="true">↻</span> New call</button>
   </div>
@@ -194,7 +195,66 @@
   </div>
 </div>
 
-<script src="data/data.js?v=27"></script>
-<script src="app.js?v=27"></script>
+<!-- My Offer modal — per-client template fields (pillars, upside math, price) -->
+<div id="offer-modal" class="modal hidden" role="dialog" aria-modal="true"
+     aria-labelledby="offer-title">
+  <div class="modal-card modal-card-wide">
+    <h3 id="offer-title">My offer — template fields</h3>
+    <p class="field-note">
+      The discovery framework + objection handling are universal. Your pillars, upside math
+      and price are the parts that change per offer. Fill these in once — they save in this
+      browser only and show up on the Pitch + Committing tabs whenever you run a call.
+      Leave a field empty to fall back to the default Scale Systems script.
+    </p>
+    <label class="field">
+      <span>Offer name (e.g. "AI Content System", "Lean Body Method")</span>
+      <input type="text" id="offer-name" placeholder="What you call your offer" />
+    </label>
+    <label class="field">
+      <span>Pre-frame "what this IS" — what the client is buying (vs not buying)</span>
+      <textarea id="offer-preframe" rows="3" placeholder="e.g. 'What this IS is a step-by-step system where we roll up the sleeves, get in the trenches with you, and build [your offer] into your business with you — and drag you across the finish line.'"></textarea>
+    </label>
+    <label class="field">
+      <span>Pillar 1 — paradigm shift (why their past attempts failed) + your solution</span>
+      <textarea id="offer-pillar1" rows="4" placeholder="The first thing we'll do for you is… Use an analogy + tie to their state. End with a tie-down: 'Are you following me so far?'"></textarea>
+    </label>
+    <label class="field">
+      <span>Pillar 2 — paradigm shift #2 + proof</span>
+      <textarea id="offer-pillar2" rows="4" placeholder="The second thing… Use an analogy + your proof (case study / data / story). End with a tie-down."></textarea>
+    </label>
+    <label class="field">
+      <span>Pillar 3 — the payoff (what they're left with)</span>
+      <textarea id="offer-pillar3" rows="4" placeholder="The last thing we'll do… What's the outcome / system / asset they walk away with? End with a tie-down."></textarea>
+    </label>
+    <label class="field">
+      <span>Onboarding line (before price) — who delivers, in what format, over what timeframe</span>
+      <textarea id="offer-onboarding" rows="3" placeholder="e.g. 'next steps — you'll process the investment, then we set up an onboarding call, give you some homework, and lay out when we meet and what we'll give you, so you have clarity on the next 12 weeks.'"></textarea>
+    </label>
+    <label class="field">
+      <span>Upside-math framing</span>
+      <select id="offer-upside-mode">
+        <option value="ltv">Business — client LTV × 12 (Ravi conservative math)</option>
+        <option value="stuck">Fat loss / health — cost of staying stuck</option>
+        <option value="custom">Custom framing</option>
+      </select>
+    </label>
+    <label class="field">
+      <span>Upside-math line — what you say to make the math concrete</span>
+      <textarea id="offer-upside" rows="4" placeholder="Business default: 'You told me a client is worth about [LTV]. One more client a month from organic = [LTV × 12] over the next 12 months. Conservative version.' · Fat loss: 'You told me staying stuck has cost you [emotional + financial cost]. Every month you don't fix this = another month of [cost]. The math isn't what this costs — it's what NOT doing it costs.'"></textarea>
+    </label>
+    <label class="field">
+      <span>Price drop line — the exact words you say at the price reveal</span>
+      <textarea id="offer-price" rows="2" placeholder="e.g. 'And the next steps are very simple — the investment is just $5,000.' or 'just $7,800 paid in full, or 3 x $2,800.'"></textarea>
+    </label>
+    <div class="modal-actions">
+      <button id="btn-save-offer" class="btn btn-primary">Save</button>
+      <button id="btn-clear-offer" class="btn btn-ghost" title="Reset all fields to empty (falls back to default Lauren script)">Clear all</button>
+      <button id="btn-close-offer" class="btn btn-ghost">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="data/data.js?v=28"></script>
+<script src="app.js?v=28"></script>
 </body>
 </html>

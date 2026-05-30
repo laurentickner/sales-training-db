@@ -472,11 +472,35 @@ body {
 .card-prep .card-kicker { color: var(--amber); }
 
 /* ---- Wider modal + select/textarea fields ---- */
-.modal-card-wide { width: 560px; }
-.field textarea, .field select {
+.modal-card-wide { width: 560px; max-height: 88vh; overflow-y: auto; }
+.field textarea, .field select, .field input[type=text] {
   background: var(--bg-input); color: var(--text);
   border: 1px solid var(--border); border-radius: 8px;
   padding: 9px 11px; font-size: 13.5px; font-family: inherit; line-height: 1.45;
   resize: vertical;
 }
-.field textarea:focus, .field select:focus { outline: none; border-color: var(--cyan); }
+.field textarea:focus, .field select:focus, .field input[type=text]:focus {
+  outline: none; border-color: var(--cyan);
+}
+
+/* ---- My Offer custom-pitch card (renders in stage-ref on pitch + committing) ---- */
+.offer-card {
+  border: 1px solid var(--amber); border-radius: 10px; padding: 12px 14px;
+  background: rgba(245, 192, 74, 0.06); margin-bottom: 14px;
+}
+.offer-card .offer-head {
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--amber); margin-bottom: 8px;
+}
+.offer-card .offer-row { margin-bottom: 10px; }
+.offer-card .offer-row:last-child { margin-bottom: 0; }
+.offer-card .offer-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 3px;
+}
+.offer-card .offer-body {
+  font-size: 14px; line-height: 1.55; color: var(--text); white-space: pre-wrap;
+}
+.offer-card .offer-foot {
+  margin-top: 8px; font-size: 11.5px; color: var(--text-dim); font-style: italic;
+}

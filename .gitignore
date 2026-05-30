@@ -2,3 +2,6 @@
 
 # Local Netlify folder
 .netlify
+
+# Local preview server config (not needed in production)
+.claude/
