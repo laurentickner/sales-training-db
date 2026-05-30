@@ -1255,13 +1255,23 @@
       btn.hidden = true;
     }
   }
+  var __bootDone = false;
   function bootWithUser(user) {
+    if (__bootDone) { setAuthChip(user); return; }   // idempotent — don't re-init
+    __bootDone = true;
     setAuthChip(user);
     hideGate();
+    function safeInit() {
+      try { init(); }
+      catch (e) {
+        __bootDone = false;
+        showErrorBanner("App failed to start: " + (e.message || String(e)));
+      }
+    }
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", init);
+      document.addEventListener("DOMContentLoaded", safeInit);
     } else {
-      init();
+      safeInit();
     }
   }
   function bootAuthThenInit() {
@@ -1318,6 +1328,23 @@
         ". If you're the site owner, enable Netlify Identity on this site and set Registration → Invite only.");
     });
     netlifyIdentity.init();
+
+    // Belt-and-braces: poll currentUser() for ~15s after init. If the widget
+    // silently establishes a session (some invite / recovery / external-provider
+    // flows don't fire 'login') we still bootstrap the app instead of leaving
+    // the user on a partially-rendered shell with dead topbar buttons.
+    var pollTries = 0;
+    var pollTimer = setInterval(function () {
+      pollTries++;
+      var u = null;
+      try { u = netlifyIdentity.currentUser(); } catch (e) {}
+      if (u) {
+        clearInterval(pollTimer);
+        bootWithUser(u);                       // idempotent — __bootDone guards
+      } else if (pollTries > 30) {             // 30 × 500ms = 15s cap
+        clearInterval(pollTimer);
+      }
+    }, 500);
   }
 
   // Defer the auth boot until the body is parsed so #auth-gate + #btn-auth-login exist
