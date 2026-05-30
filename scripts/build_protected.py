@@ -38,6 +38,17 @@ def inline_html(tool_dir):
     data_js = read(f"{tool_dir}/data/data.js")
     app_js = read(f"{tool_dir}/app.js")
 
+    # Strip the Content-Security-Policy meta tag entirely. The dev version
+    # uses `script-src 'self'` which BLOCKS inline scripts — after we inline
+    # data.js + app.js, that policy would silently kill them. The encrypted
+    # bundle is fully self-contained (no external requests), so CSP is
+    # giving us nothing here. Just remove it.
+    html = re.sub(
+        r'<meta\s+http-equiv="Content-Security-Policy"[^>]*/?>\s*',
+        "",
+        html,
+    )
+
     # Use lambdas so re.sub treats the replacement literally — the source
     # files contain backslashes (e.g. \n inside JSON strings) which would
     # otherwise be interpreted as escape sequences.
