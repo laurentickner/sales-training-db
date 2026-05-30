@@ -1213,6 +1213,95 @@
     $("input").focus();
   }
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
-  else init();
+  /* ---------- auth gate (Netlify Identity) ----------
+     Invite-only access for active Scale Systems clients. Lauren manages the
+     user list from the Netlify dashboard (Site → Identity → Invite users).
+     Deleting a user revokes their access immediately.
+     Local dev (localhost / 127.0.0.1) bypasses the gate so the app keeps
+     working before Identity is enabled on the deployed site. */
+  function shouldEnforceGate() {
+    if (!window.netlifyIdentity) return false;       // widget didn't load
+    var h = (location.hostname || "").toLowerCase();
+    if (!h) return false;
+    if (h === "localhost" || h === "127.0.0.1") return false;
+    if (h.indexOf("192.168.") === 0 || h.indexOf("10.") === 0) return false;
+    return true;
+  }
+  function showGate(reason) {
+    var gate = $("auth-gate");
+    if (!gate) return;
+    gate.classList.remove("hidden");
+    // hide the app shell so a partially-rendered UI isn't visible behind
+    document.body.style.overflow = "hidden";
+  }
+  function hideGate() {
+    var gate = $("auth-gate");
+    if (gate) gate.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+  function setAuthChip(user) {
+    var chip = $("auth-chip");
+    var btn  = $("btn-auth-logout");
+    if (!chip || !btn) return;
+    if (user) {
+      var email = (user.email || "").trim();
+      var name  = ((user.user_metadata && user.user_metadata.full_name) || email || "Signed in").trim();
+      chip.hidden = false;
+      chip.textContent = "● " + name;
+      chip.title = email;
+      btn.hidden = false;
+    } else {
+      chip.hidden = true; chip.textContent = "";
+      btn.hidden = true;
+    }
+  }
+  function bootWithUser(user) {
+    setAuthChip(user);
+    hideGate();
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+    } else {
+      init();
+    }
+  }
+  function bootAuthThenInit() {
+    if (!shouldEnforceGate()) {
+      // Local dev or widget unavailable → skip gate
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+      } else { init(); }
+      return;
+    }
+    // Wire the gate sign-in button right away so it works the moment the gate shows
+    var loginBtn = $("btn-auth-login");
+    if (loginBtn) loginBtn.addEventListener("click", function () { netlifyIdentity.open("login"); });
+    var logoutBtn = $("btn-auth-logout");
+    if (logoutBtn) logoutBtn.addEventListener("click", function () { netlifyIdentity.logout(); });
+
+    netlifyIdentity.on("init", function (user) {
+      if (user) { bootWithUser(user); }
+      else { showGate("no-user"); netlifyIdentity.open("login"); }
+    });
+    netlifyIdentity.on("login", function (user) {
+      netlifyIdentity.close();
+      bootWithUser(user);
+    });
+    netlifyIdentity.on("logout", function () {
+      // Hard reset — wipe in-memory state and force a fresh sign-in
+      try { location.reload(); } catch (e) { showGate("logged-out"); }
+    });
+    netlifyIdentity.on("error", function (err) {
+      // If Identity isn't enabled on this site, fail open to a clear message
+      showErrorBanner("Auth error: " + ((err && err.message) || String(err)) +
+        ". If you're the site owner, enable Netlify Identity on this site and set Registration → Invite only.");
+    });
+    netlifyIdentity.init();
+  }
+
+  // Defer the auth boot until the body is parsed so #auth-gate + #btn-auth-login exist
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootAuthThenInit);
+  } else {
+    bootAuthThenInit();
+  }
 })();
