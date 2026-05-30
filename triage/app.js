@@ -26,6 +26,10 @@
   var OB_STAGES = (DATA.outbound_workflow && DATA.outbound_workflow.stages) || [];
   var GLOBAL_SIGNALS = (DATA.uncertainty_globals && DATA.uncertainty_globals.signals) || [];
   var GLOBAL_ALERT = (DATA.uncertainty_globals && DATA.uncertainty_globals.alert) || "";
+  // Closer's 29 objection handlers — wired in so triage catches the same
+  // patterns (think-about-it, spouse, been-burned, price, etc.). Source:
+  // app-data/objection-responses.json, bundled by build_triage_data.py.
+  var OBJECTIONS = (DATA.objections && DATA.objections.objections) || [];
   if (!Array.isArray(CALL_STAGES) || !CALL_STAGES.length) fail("triage data has no call stages.");
   function STAGES() {
     if (state.mode === "dm") return DM_STAGES;
@@ -95,6 +99,7 @@
     if (m !== "call" && m !== "dm" && m !== "outbound") return;
     state.mode = m;
     store.set("triage_mode", m);
+    document.body.classList.toggle("mode-call", m === "call");
     document.body.classList.toggle("mode-dm", m === "dm");
     document.body.classList.toggle("mode-outbound", m === "outbound");
     ["call", "dm", "outbound"].forEach(function (k) {
@@ -163,11 +168,29 @@
     var stage = currentStage();
     var stageHits = matchTriggers(n, stage.pushback_triggers || []);
     var globalHits = matchTriggers(n, GLOBAL_SIGNALS);
+    // Also score against the closer's 29 objection handlers. Only used on
+    // call mode (DM + Outbound have their own stage triggers + don't carry
+    // the closer's full objection bank).
+    var objectionHits = [];
+    if (state.mode === "call") {
+      OBJECTIONS.forEach(function (o) {
+        var hits = matchTriggers(n, o.triggers || []);
+        if (hits.length) objectionHits.push({ item: o, hits: hits });
+      });
+      // sort: uncertainty bucket first (Cole's funnel), then by hit count
+      objectionHits.sort(function (a, b) {
+        var ra = a.item.bucket === "uncertainty" ? 0 : 1;
+        var rb = b.item.bucket === "uncertainty" ? 0 : 1;
+        return ra !== rb ? ra - rb : b.hits.length - a.hits.length;
+      });
+      objectionHits = objectionHits.slice(0, 3);
+    }
     return {
       stage: stage,
       stageHits: stageHits,
       globalHits: globalHits,
-      anyHit: stageHits.length > 0 || globalHits.length > 0
+      objectionHits: objectionHits,
+      anyHit: stageHits.length > 0 || globalHits.length > 0 || objectionHits.length > 0
     };
   }
 
@@ -203,6 +226,25 @@
       "</div>";
   }
 
+  /* ---------- render: objection card (from closer's 29-objection bank) ---------- */
+  function objectionCard(m) {
+    var o = m.item, h = "";
+    h += '<div class="card card-obj">';
+    h += '<div class="card-head"><span class="card-kicker">▲ Objection detected</span>';
+    h += '<span class="card-bucket">' + esc(o.bucket || "") + "</span></div>";
+    h += '<div class="card-title">' + esc(o.label) + "</div>";
+    h += '<div class="handle-strip">↳ Run: <b>diffuse → isolate → temp-check → scale → double tie-down</b>, then:</div>';
+    h += '<div class="say-block"><div class="say-label">Say this</div>';
+    (o.response_steps || []).forEach(function (s, i) {
+      h += '<div class="say-step"><span class="say-num">' + (i + 1) + "</span><span>" + esc(s) + "</span></div>";
+    });
+    h += "</div>";
+    if (o.do_not) h += '<div class="donot"><strong>Don\'t:</strong> ' + esc(o.do_not) + "</div>";
+    h += '<div class="pushback-trigger">matched: ' + esc(m.hits.slice(0, 4).join(", ")) + "</div>";
+    h += "</div>";
+    return h;
+  }
+
   /* ---------- render: call log ---------- */
   function logEntryHtml(e) {
     var txt = e.text.length > 280 ? e.text.slice(0, 280) + "…" : e.text;
@@ -234,7 +276,20 @@
     $("input").value = "";
     renderLog();
     var c = $("copilot");
-    c.innerHTML = result.anyHit ? pushbackCard(result) : noneCard();
+    if (result.anyHit) {
+      // Objections (from the closer's bank) lead — Cole's rule: handle
+      // every objection on appearance. Stage pushback comes after.
+      var html = "";
+      if (result.objectionHits && result.objectionHits.length) {
+        html += result.objectionHits.map(objectionCard).join("");
+      }
+      if (result.stageHits.length || result.globalHits.length) {
+        html += pushbackCard(result);
+      }
+      c.innerHTML = html;
+    } else {
+      c.innerHTML = noneCard();
+    }
     c.scrollTop = 0;
     c.focus();
   }
@@ -308,6 +363,7 @@
   function init() {
     // restore mode from storage
     if (state.mode === "dm" || state.mode === "outbound") {
+      document.body.classList.toggle("mode-call", state.mode === "call");
       document.body.classList.toggle("mode-dm", state.mode === "dm");
       document.body.classList.toggle("mode-outbound", state.mode === "outbound");
       ["call", "dm", "outbound"].forEach(function (k) {

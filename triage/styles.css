@@ -33,26 +33,53 @@ body {
   overflow: hidden;
 }
 
-/* ---- Top bar ---- */
+/* ---- Top bar — refined, premium feel ---- */
 .topbar {
+  position: relative;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 12px 20px;
-  background: var(--bg-panel);
-  border-bottom: 1px solid var(--border);
+  padding: 14px 22px;
+  background:
+    radial-gradient(900px 240px at 8% -60%, rgba(0,191,241,.10), transparent 60%),
+    radial-gradient(800px 220px at 95% -50%, rgba(219,0,139,.06), transparent 60%),
+    linear-gradient(180deg, #1a1335 0%, #120c28 100%);
+  border-bottom: 1px solid rgba(255,255,255,.06);
   flex-shrink: 0;
+  box-shadow: 0 8px 24px -16px rgba(0,0,0,.6);
 }
-.brand { display: flex; align-items: center; gap: 12px; }
+/* hairline accent line under the topbar */
+.topbar::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0,191,241,.45) 22%, rgba(245,192,74,.35) 55%, rgba(219,0,139,.3) 78%, transparent 100%);
+  opacity: .55;
+}
+.brand { display: flex; align-items: center; gap: 14px; }
 .brand-mark {
-  background: linear-gradient(150deg, var(--aubergine) 0%, var(--aubergine-deep) 100%);
-  width: 40px; height: 40px;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255,255,255,.18), transparent 55%),
+    linear-gradient(150deg, var(--aubergine) 0%, var(--aubergine-deep) 100%);
+  width: 44px; height: 44px;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 10px; flex-shrink: 0;
-  border: 1px solid #4a2da3;
+  border-radius: 12px; flex-shrink: 0;
+  border: 1px solid rgba(245,192,74,.35);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.08) inset,
+    0 6px 20px rgba(42,13,119,.5),
+    0 0 0 1px rgba(0,0,0,.4);
 }
-.topbar h1 { font-size: 18px; font-weight: 800; letter-spacing: -0.2px; line-height: 1.2; }
-.brand-accent { color: var(--cyan); }
-.brand-sub { font-size: 11.5px; color: var(--text-dim); margin-top: 1px; }
-.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.topbar h1 {
+  font-size: 19px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.15;
+  color: #fff;
+}
+.brand-accent {
+  background: linear-gradient(90deg, #00BFF1 0%, #6ddcff 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  font-weight: 800;
+}
+.brand-sub {
+  font-size: 11px; color: var(--text-dim); margin-top: 3px;
+  letter-spacing: .3px; text-transform: uppercase; font-weight: 600;
+}
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
 
 .mode-badge {
   font-size: 11px; font-weight: 600; padding: 4px 9px; border-radius: 20px;
@@ -541,20 +568,41 @@ body {
 .stage-pill.active { background: #c0392b; color: white; box-shadow: 0 0 0 2px rgba(192,57,43,.25); }
 
 
-/* ---- Mode switch (Triage Call vs DMs) ---- */
+/* ---- Mode switch (Triage Call / DMs / Outbound) — segmented control ---- */
 .mode-switch {
-  display: inline-flex; background: var(--bg-input);
-  border: 1px solid var(--border); border-radius: 22px; padding: 2px;
-  margin-right: 4px;
+  display: inline-flex; align-items: center;
+  background: rgba(10,7,23,.85);
+  border: 1px solid rgba(255,255,255,.06); border-radius: 24px; padding: 3px;
+  margin-right: 6px;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.04) inset,
+    0 2px 8px rgba(0,0,0,.35) inset;
 }
 .mode-switch-btn {
   background: transparent; color: var(--text-dim); border: 0;
   font-family: inherit; font-size: 12px; font-weight: 700;
-  padding: 5px 12px; border-radius: 18px; cursor: pointer;
+  padding: 6px 14px; border-radius: 20px; cursor: pointer;
+  letter-spacing: .2px;
+  transition: color .15s ease, background .15s ease, box-shadow .15s ease, transform .12s ease;
 }
 .mode-switch-btn:hover { color: var(--text); }
 .mode-switch-btn.active {
-  background: var(--cyan); color: #04222b; box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  background: linear-gradient(180deg, #00d3ff 0%, #00a4d6 100%);
+  color: #04222b;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.4) inset,
+    0 4px 12px rgba(0,191,241,.32);
+}
+/* When DMs mode active → cyan stays. When Outbound active → amber. */
+body.mode-outbound .mode-switch-btn.active {
+  background: linear-gradient(180deg, #ffd060 0%, #d99c20 100%);
+  color: #2a1d00;
+  box-shadow: 0 1px 0 rgba(255,255,255,.4) inset, 0 4px 12px rgba(245,192,74,.32);
+}
+body.mode-call .mode-switch-btn.active {
+  background: linear-gradient(180deg, #ff4747 0%, #c41818 100%);
+  color: #fff;
+  box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 4px 12px rgba(255,56,56,.3);
 }
 
 /* DMs mode — slightly different stage pill colour so reps know which they're in */
@@ -579,3 +627,48 @@ body.mode-outbound .style-banner {
   color: var(--amber); background: rgba(245,192,74,.08);
 }
 body.mode-outbound .style-banner::before { content: "📲 "; }
+
+/* ---- Objection cards (the closer's 29-objection bank wired into triage) ---- */
+.card-obj {
+  border-left: 5px solid var(--red);
+  background: linear-gradient(180deg, #2a1414 0%, #1a0d0d 100%);
+  box-shadow: 0 0 0 1px rgba(255,107,107,.2), 0 4px 14px rgba(255,107,107,.12);
+}
+.card-obj .card-kicker {
+  color: #ff8585; font-weight: 900; font-size: 12px; letter-spacing: .8px;
+}
+.card-obj .card-title {
+  color: #ffe1e1; font-size: 17px; font-weight: 800; line-height: 1.3;
+}
+.card-bucket {
+  font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px;
+  background: rgba(0,0,0,.4); color: #ffb4b4; text-transform: uppercase;
+  letter-spacing: .4px;
+}
+.handle-strip {
+  font-size: 12px; color: var(--text-dim);
+  padding: 4px 14px 8px; line-height: 1.5;
+}
+.handle-strip b { color: var(--cyan); font-weight: 700; }
+.card-obj .say-block { background: rgba(0,0,0,.18); border-radius: 8px; margin: 6px 14px 10px; padding: 10px 12px; }
+.card-obj .say-label { color: #ff8585; font-size: 10.5px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 6px; }
+.card-obj .say-step {
+  display: flex; gap: 9px; padding: 8px 10px; margin-bottom: 6px;
+  background: rgba(0,0,0,.3); border-radius: 7px;
+  font-size: 14px; line-height: 1.55; color: #ffeaea;
+}
+.card-obj .say-num {
+  flex-shrink: 0; font-weight: 800; color: #ff8585;
+  font-size: 12px; padding-top: 2px; min-width: 16px;
+}
+.donot {
+  margin: 2px 14px 12px; padding: 9px 12px;
+  background: #2a1a1a; border-radius: 7px;
+  font-size: 12.5px; color: #ffb4b4; line-height: 1.5;
+  border-left: 3px solid var(--red);
+}
+.donot strong { color: var(--red); font-weight: 800; }
+.card-obj .pushback-trigger {
+  font-size: 11px; color: #ffb4b4; padding: 6px 14px;
+  border-top: 1px solid rgba(255,56,56,.2); background: rgba(0,0,0,.25);
+}
