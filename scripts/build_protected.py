@@ -80,6 +80,7 @@ def encrypt(html, out_dir, label):
     try:
         # Password comes from STATICRYPT_PASSWORD env var (already set by caller).
         # Not passed as -p flag to keep it out of process argv listings.
+        custom_template = os.path.join(base, "scripts/staticrypt/password_template.html")
         cmd = [
             "npx", "-y", "staticrypt",
             tmp_path,
@@ -87,6 +88,7 @@ def encrypt(html, out_dir, label):
             "-c", "false",                # don't write .staticrypt.json config file
             "--short",
             "--remember", "7",
+            "--template", custom_template,  # custom: handles inline <script> execution
             "--template-button", "Unlock",
             "--template-instructions", "Team-only. Ping Lauren if you need the password.",
         ]
