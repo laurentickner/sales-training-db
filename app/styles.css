@@ -515,3 +515,37 @@ body {
 .offer-card .offer-foot {
   margin-top: 8px; font-size: 11.5px; color: var(--text-dim); font-style: italic;
 }
+
+/* ---- Settings: divider + sub-section heading for the GHL block ---- */
+.settings-divider {
+  border: none; border-top: 1px solid var(--border);
+  margin: 18px 0 14px;
+}
+.settings-subhead {
+  font-size: 12.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--text-dim); margin: 0 0 8px;
+}
+
+/* ---- Post-call review modal output ---- */
+.review-status {
+  margin-top: 10px; padding: 9px 12px; border-radius: 8px;
+  font-size: 12.5px; line-height: 1.5; border: 1px solid var(--border);
+  background: var(--bg-card); color: var(--text-dim);
+}
+.review-status-ok   { border-color: #1e5e40; color: var(--green); background: rgba(35, 134, 90, 0.08); }
+.review-status-warn { border-color: #5a3f00; color: var(--amber); background: rgba(245, 192, 74, 0.08); }
+.review-status-info { border-color: var(--border); }
+
+.review-output {
+  margin-top: 12px; max-height: 480px; overflow-y: auto;
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 18px; background: var(--bg-card);
+}
+.review-body {
+  font-size: 13.5px; line-height: 1.6; color: var(--text);
+}
+.review-body h2 { font-size: 16px; margin: 0 0 10px; color: var(--cyan); }
+.review-body h3 { font-size: 13.5px; margin: 14px 0 6px; color: var(--text);
+  text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+.review-body h4 { font-size: 12.5px; margin: 10px 0 4px; color: var(--text-dim); }
+.review-body strong { color: var(--text); }

@@ -95,6 +95,8 @@
     log: [],                 // { id, time, stageName, text, result }
     apiKey: store.get("copilot_api_key") || "",
     smart: store.get("copilot_smart") === "1",
+    ghlKey: store.get("copilot_ghl_key") || "",
+    ghlLocationId: store.get("copilot_ghl_location") || "",
     handledObjections: [],   // labels of objections surfaced earlier this call
     beliefsCovered: {},      // belief id -> true once touched in discovery
     prospect: null,          // { name, business, situation, source, goal, extra, prep }
@@ -679,6 +681,8 @@
   function openSettings() {
     $("api-key").value = state.apiKey;
     $("smart-toggle").checked = state.smart;
+    var gk = $("ghl-key"); if (gk) gk.value = state.ghlKey;
+    var gl = $("ghl-location"); if (gl) gl.value = state.ghlLocationId;
     openModal("settings-modal", "api-key");
   }
   function closeSettings() { closeModal(); }
@@ -690,9 +694,13 @@
     }
     state.apiKey = k;
     state.smart = $("smart-toggle").checked;
+    var gk = $("ghl-key"); state.ghlKey = gk ? gk.value.trim() : state.ghlKey;
+    var gl = $("ghl-location"); state.ghlLocationId = gl ? gl.value.trim() : state.ghlLocationId;
     var ok = store.set("copilot_api_key", state.apiKey) &
-             store.set("copilot_smart", state.smart ? "1" : "0");
-    if (!ok) alert("Couldn't save to browser storage — smart mode will work for this session only.");
+             store.set("copilot_smart", state.smart ? "1" : "0") &
+             store.set("copilot_ghl_key", state.ghlKey) &
+             store.set("copilot_ghl_location", state.ghlLocationId);
+    if (!ok) alert("Couldn't save to browser storage — settings will work for this session only.");
     updateModeBadge();
     closeSettings();
   }
@@ -1069,6 +1077,388 @@
     }
   }
 
+  /* ---------- post-call review (paste-transcript MVP) ----------
+     Lauren / a rep pastes a finished-call transcript. Claude reads it against
+     the full methodology, scores per stage + beliefs covered + objection
+     handling + voice-level moves, returns a tight markdown brief modelled on
+     the canonical Jason Rosado review at app-data/_review/. The review is
+     saved to the prospect's record AND (if GHL is configured in Settings)
+     auto-pushed as a Note on the GHL Contact + outcome tag. */
+
+  var REVIEW_KEY_LASTID = "copilot_review_last";
+
+  function buildReviewSystemPrompt() {
+    return [
+      "You are a senior sales coach reviewing a finished sales call against a strict methodology. Be specific, surgical, and honest — your job is to make the rep better, not to flatter them. No fluff, no generic advice.",
+      "",
+      "METHODOLOGY YOU SCORE AGAINST",
+      "",
+      "1) Funnel order — 7 stages, must run in this order:",
+      "   Introduction → Discovery → Transition → Pitch → Committing → Objections → Close Confirmation.",
+      "   - Introduction: take frame control, set the agenda, get the prospect to say YES to the call structure. The sale is won or lost at hello.",
+      "   - Discovery: extract the 9 DISCOVERY beliefs + exact numbers. 80% questions, 20% statements.",
+      "   - Transition: bridge from discovery to pitch. Recap the gap, get permission to walk through the solution.",
+      "   - Pitch: 3 pillars (paradigm shift / proof / payoff), tie-down after each pillar.",
+      "   - Committing: temp-check → 1–10 scale → 'what would make it a 10?' → onboarding-before-price → price on a downward inflection → silence.",
+      "   - Objections: every objection handled through the universal handle (diffuse → isolate → temp-check → scale → double tie-down). Uncertainty before logistics.",
+      "   - Close confirmation: lock the sale, set the buyer's-remorse pre-frame, set the next concrete step.",
+      "",
+      "2) DISCOVERY beliefs — 9-letter mnemonic that the rep MUST cover:",
+      "   D — Desire: the real why behind the number, not the surface number.",
+      "   I — Issue: the specific personal cost, not the surface complaint.",
+      "   S — Sum: exact numbers (revenue last month, leads/week, close rate, LTV). Without this you cannot run upside math.",
+      "   C — Cost: cost of inaction. 'what if the next 5 years = the last 5?'",
+      "   O — Own: why they cannot solve this alone / why their past attempts failed.",
+      "   V — Verify: trust — why YOU, why this company.",
+      "   E — Everyone: who else is involved in the decision (spouse, partner, CFO, board).",
+      "   R — Resources: money belief — can they comfortably invest? Install this BEFORE pitch.",
+      "   Y — Why: the catalyst — why NOW. People don't book for no reason.",
+      "",
+      "3) Universal objection handle — every objection should run through:",
+      "   diffuse (lower the temperature, acknowledge) → isolate (is that the only thing?) → temp-check (on a scale of 1-10 how strong is that concern?) → scale (what would make it lower?) → double tie-down (if I solved X, are you willing to move forward right now?).",
+      "   Trade every concession: payment plan request → 'if I can make that work, are you ready to move forward right now?'",
+      "   Uncertainty objections ('what if this doesn't work') must be handled as uncertainty, not as logistics.",
+      "",
+      "4) Voice-level moves — surface where each landed or got missed:",
+      "   - Loop-back rule: when the prospect surfaces a feeling/concern, loop back into it 5–7 layers ('why though?' / 'how do you mean?' / 'what's underneath that?'). Do not move on at layer 1.",
+      "   - Identity-shift reframes: convert past behaviour into a 'type of person who…' frame. ('You tried 3 things before — sounds like the type of person who never gives up. Were you born that way or did you have to learn it?')",
+      "   - FOR them, not TO them: the rep is on the prospect's side of the table. Tone should be concerned-operator, never pushy.",
+      "   - Mask-off: discovery succeeds when the prospect says something they'd only say to a close friend, not a stranger. Surface the moments where the mask came off, and the moments it stayed on.",
+      "   - NEPQ pacing: slow and lower the tone at the end of each discovery question. Did the rep audibly pace the prospect, or push?",
+      "   - Catalyst / Why anchoring: did the rep find the catalyst event that triggered NOW? Without it, the gap isn't built.",
+      "",
+      "OUTPUT FORMAT — strict markdown, no preamble:",
+      "",
+      "# Call Review — {PROSPECT NAME}, {DATE}",
+      "",
+      "**Outcome: {OUTCOME}.** {one-line outcome summary using the outcome notes if given}",
+      "",
+      "## Adherence scores (/10)",
+      "",
+      "| Dimension | Score |",
+      "|---|---|",
+      "| Funnel order | N |",
+      "| Discovery / DISCOVERY beliefs | N |",
+      "| Exact numbers extracted | N |",
+      "| Pitch (3 pillars + tie-downs) | N |",
+      "| Committing phase | N |",
+      "| Objection handling | N |",
+      "| Voice-level moves (loop-back, identity, mask-off, pacing) | N |",
+      "| Outcome | N |",
+      "",
+      "## What was run well",
+      "",
+      "- 3–5 specific things, each citing the exact moment in the transcript (quote a line). What the rep did, why it worked.",
+      "",
+      "## What got skipped or went wrong",
+      "",
+      "- 3–6 specific gaps, each citing the exact moment. Be honest about which belief got skipped, which objection got conceded, which loop-back was missed at layer 1. Name the cost of each gap.",
+      "",
+      "## Beliefs covered (DISCOVERY)",
+      "",
+      "For each of the 9 letters, mark ✅ covered / ⚠ partial / ❌ missed. One line of evidence per letter.",
+      "",
+      "## Objections that surfaced",
+      "",
+      "List every objection raised. For each: how the prospect framed it, how the rep handled it, what step of the universal handle was missed, and what the rep should have said instead.",
+      "",
+      "## Voice-level moments",
+      "",
+      "Best loop-back. Best identity-shift moment. Best mask-off moment. Worst missed loop-back. (One line each. Quote the moment.)",
+      "",
+      "## Top 3 fixes for the next call",
+      "",
+      "1. Most leveraged behaviour change. Specific. Word-track if helpful.",
+      "2. Second-most. Specific.",
+      "3. Third. Specific.",
+      "",
+      "## Next step",
+      "",
+      "Given the outcome + transcript, the SINGLE next-best action the rep should take in the next 24h. Concrete (e.g. 'send Jordan the Loom on supplier match by Monday, ask her to confirm spouse buy-in before our Wed call').",
+      "",
+      "Be tight. Total review under 700 words. Quote real lines from the transcript wherever possible — the rep should not be able to argue with the evidence.",
+      ""
+    ].join("\n");
+  }
+
+  function readReviewForm() {
+    return {
+      name: $("review-name").value.trim(),
+      email: $("review-email").value.trim(),
+      phone: $("review-phone").value.trim(),
+      transcript: $("review-transcript").value,            // preserve whitespace
+      outcome: $("review-outcome").value,
+      outcomeNotes: $("review-outcome-notes").value.trim()
+    };
+  }
+  function fillReviewForm(p) {
+    $("review-name").value = p.name || "";
+    $("review-email").value = p.email || "";
+    $("review-phone").value = p.phone || "";
+    $("review-transcript").value = p.transcript || "";
+    $("review-outcome").value = p.outcome || "";
+    $("review-outcome-notes").value = p.outcomeNotes || "";
+    var out = $("review-output");
+    var push = $("btn-push-review");
+    if (p.review) {
+      out.hidden = false;
+      out.innerHTML = renderReviewMarkdown(p.review);
+      if (push) push.hidden = false;
+    } else {
+      out.hidden = true; out.innerHTML = "";
+      if (push) push.hidden = true;
+    }
+    var st = $("review-status");
+    if (st) {
+      if (p.ghlPushedAt) {
+        st.hidden = false;
+        st.className = "review-status review-status-ok";
+        st.textContent = "✓ Pushed to GoHighLevel at " + new Date(p.ghlPushedAt).toLocaleString();
+      } else {
+        st.hidden = true; st.textContent = "";
+      }
+    }
+  }
+  function renderReviewMarkdown(md) {
+    // Cheap markdown → HTML: just escape, preserve line breaks, bold headings.
+    // Good enough for the modal display; the raw markdown is what we save + push.
+    var safe = esc(md);
+    safe = safe.replace(/^### (.+)$/gm, "<h4>$1</h4>");
+    safe = safe.replace(/^## (.+)$/gm, "<h3>$1</h3>");
+    safe = safe.replace(/^# (.+)$/gm, "<h2>$1</h2>");
+    safe = safe.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    safe = safe.replace(/\n/g, "<br>");
+    return '<div class="review-body">' + safe + "</div>";
+  }
+  function openReview() {
+    var map = loadProspects();
+    var names = Object.keys(map).sort();
+    $("review-load").innerHTML = '<option value="">— new prospect —</option>' +
+      names.map(function (n) { return '<option value="' + esc(n) + '">' + esc(n) + "</option>"; }).join("");
+    // Pre-fill with the currently active prospect if any (call just ended).
+    if (state.prospect) fillReviewForm(state.prospect);
+    else fillReviewForm({});
+    openModal("review-modal", "review-transcript");
+  }
+  function persistReview(p, review, opts) {
+    opts = opts || {};
+    var map = loadProspects();
+    var existing = map[p.name] || {};
+    var merged = Object.assign({}, existing, {
+      name: p.name,
+      email: p.email || existing.email || "",
+      phone: p.phone || existing.phone || "",
+      transcript: p.transcript || existing.transcript || "",
+      outcome: p.outcome || existing.outcome || "",
+      outcomeNotes: p.outcomeNotes || existing.outcomeNotes || "",
+      review: review,
+      reviewedAt: new Date().toISOString(),
+      lastTouchedAt: new Date().toISOString()
+    });
+    if (opts.ghlPushedAt) merged.ghlPushedAt = opts.ghlPushedAt;
+    if (opts.ghlContactId) merged.ghlContactId = opts.ghlContactId;
+    if (opts.ghlError) merged.ghlError = opts.ghlError;
+    map[p.name] = merged;
+    store.set(PROSPECTS_KEY, JSON.stringify(map));
+    return merged;
+  }
+  function showReviewStatus(html, kind) {
+    var st = $("review-status");
+    if (!st) return;
+    st.hidden = false;
+    st.className = "review-status review-status-" + (kind || "info");
+    st.innerHTML = html;
+  }
+
+  function runReview() {
+    var form = readReviewForm();
+    if (!form.name) { alert("Give the prospect a name first."); return; }
+    if (!form.transcript || form.transcript.trim().length < 200) {
+      alert("Paste at least a couple hundred characters of transcript. The review needs something to score.");
+      return;
+    }
+    if (!state.apiKey) {
+      alert("Add your Anthropic API key in Settings first — the review needs Claude to read the transcript.");
+      return;
+    }
+    var date = new Date().toISOString().slice(0, 10);
+    var outcomeLabel = OUTCOME_LABEL[form.outcome] || (form.outcome || "pending");
+    var userMsg = [
+      "PROSPECT: " + form.name,
+      "DATE: " + date,
+      "OUTCOME: " + outcomeLabel,
+      form.outcomeNotes ? "OUTCOME NOTES: " + form.outcomeNotes : "",
+      "",
+      "TRANSCRIPT (verbatim — speaker labels may or may not be present):",
+      form.transcript.slice(0, 180000)
+    ].filter(Boolean).join("\n");
+
+    var generateBtn = $("btn-generate-review");
+    if (generateBtn) { generateBtn.disabled = true; generateBtn.textContent = "Reading the call…"; }
+    var out = $("review-output");
+    out.hidden = false;
+    out.innerHTML = '<div class="card-sub" style="padding:10px 0">Reading the call against the methodology…</div>';
+    showReviewStatus("Calling Claude — this can take 30–60 seconds for a long call.", "info");
+
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, 90000);
+
+    fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST", signal: ctrl.signal,
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": state.apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-5",
+        max_tokens: 2500,
+        temperature: 0.3,
+        system: buildReviewSystemPrompt(),
+        messages: [{ role: "user", content: userMsg }]
+      })
+    })
+      .then(function (r) {
+        if (r.ok) return r.json();
+        return r.text().then(function (t) {
+          if (window.console) console.warn("Review HTTP " + r.status + ": " + t.slice(0, 400));
+          throw new Error(statusMessage ? statusMessage(r.status) : "HTTP " + r.status);
+        });
+      })
+      .then(function (j) {
+        if (j && j.type === "error") throw new Error((j.error && j.error.message) || "Claude returned an error.");
+        var block = j && j.content && j.content[0];
+        var review = (block && block.text) ? block.text : "(no usable review returned)";
+        if (j && j.stop_reason === "max_tokens") review += "\n\n⚠ Output was truncated — re-run with a shorter transcript or split the call.";
+        var saved = persistReview(form, review);
+        // Surface the review immediately.
+        out.innerHTML = renderReviewMarkdown(review);
+        var push = $("btn-push-review"); if (push) push.hidden = false;
+        showReviewStatus("✓ Review saved locally for <strong>" + esc(form.name) + "</strong>.", "ok");
+        // Auto-push to GHL if configured. Don't block the UI on it.
+        if (state.ghlKey && state.ghlLocationId) {
+          ghlPush(saved, review).then(function (res) {
+            if (res && res.ok) {
+              persistReview(form, review, { ghlPushedAt: new Date().toISOString(), ghlContactId: res.contactId });
+              showReviewStatus("✓ Review saved + pushed to GoHighLevel (contact " + esc(res.contactId) + ").", "ok");
+            } else {
+              persistReview(form, review, { ghlError: (res && res.reason) || "unknown error" });
+              showReviewStatus("⚠ Saved locally but GHL push failed: " + esc((res && res.reason) || "unknown") + ". Hit 'Push to GHL' to retry.", "warn");
+            }
+          }, function (err) {
+            persistReview(form, review, { ghlError: err && err.message });
+            showReviewStatus("⚠ Saved locally but GHL push failed: " + esc(err.message || "network error") + ". Hit 'Push to GHL' to retry.", "warn");
+          });
+        } else {
+          showReviewStatus("✓ Review saved locally. (Add a GHL token in Settings to auto-push to your CRM.)", "ok");
+        }
+      })
+      .catch(function (e) {
+        var msg = e.name === "AbortError" ? "Claude timed out (90s) — try shortening the transcript." : (e.message || "Review failed.");
+        out.hidden = true; out.innerHTML = "";
+        showReviewStatus("⚠ " + esc(msg), "warn");
+      })
+      .then(function () {
+        clearTimeout(timer);
+        if (generateBtn) { generateBtn.disabled = false; generateBtn.textContent = "Generate review"; }
+      }, function () {
+        clearTimeout(timer);
+        if (generateBtn) { generateBtn.disabled = false; generateBtn.textContent = "Generate review"; }
+      });
+  }
+
+  /* ---------- GoHighLevel push ----------
+     Best-effort: upsert the contact (match by email OR phone), then POST the
+     review as a Note on that contact, then tag the contact with the outcome.
+     Uses the v2 (LeadConnector) API with a sub-account Private Integration
+     Token. CSP allow-lists services.leadconnectorhq.com in index.html. */
+
+  function ghlNameSplit(full) {
+    var parts = (full || "").trim().split(/\s+/);
+    return { first: parts[0] || "", last: parts.slice(1).join(" ") || "" };
+  }
+  function ghlHeaders() {
+    return {
+      "Authorization": "Bearer " + state.ghlKey,
+      "Version": "2021-07-28",
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    };
+  }
+  function ghlPush(prospect, review) {
+    if (!state.ghlKey || !state.ghlLocationId) {
+      return Promise.resolve({ ok: false, reason: "GHL not configured in Settings" });
+    }
+    if (!prospect.email && !prospect.phone) {
+      return Promise.resolve({ ok: false, reason: "Need an email or phone on the prospect for GHL contact matching" });
+    }
+    var n = ghlNameSplit(prospect.name);
+    var upsertBody = {
+      locationId: state.ghlLocationId,
+      firstName: n.first,
+      lastName: n.last,
+      tags: ["sales-call-review"].concat(prospect.outcome ? ["outcome:" + prospect.outcome] : [])
+    };
+    if (prospect.email) upsertBody.email = prospect.email;
+    if (prospect.phone) upsertBody.phone = prospect.phone;
+
+    return fetch("https://services.leadconnectorhq.com/contacts/upsert", {
+      method: "POST", headers: ghlHeaders(),
+      body: JSON.stringify(upsertBody)
+    })
+      .then(function (r) {
+        return r.text().then(function (t) {
+          if (!r.ok) throw new Error("GHL upsert " + r.status + ": " + t.slice(0, 200));
+          try { return JSON.parse(t); } catch (e) { throw new Error("GHL returned non-JSON on upsert"); }
+        });
+      })
+      .then(function (j) {
+        var contact = j.contact || j;
+        var contactId = contact && contact.id;
+        if (!contactId) throw new Error("GHL upsert returned no contact id");
+        var noteBody = "Call review — " + new Date().toLocaleString() + "\n\n" + review;
+        return fetch("https://services.leadconnectorhq.com/contacts/" + contactId + "/notes", {
+          method: "POST", headers: ghlHeaders(),
+          body: JSON.stringify({ body: noteBody, userId: undefined })
+        }).then(function (r) {
+          return r.text().then(function (t) {
+            if (!r.ok) throw new Error("GHL note " + r.status + ": " + t.slice(0, 200));
+            return { ok: true, contactId: contactId };
+          });
+        });
+      })
+      .catch(function (err) {
+        return { ok: false, reason: err.message || String(err) };
+      });
+  }
+
+  function manualPushReview() {
+    var form = readReviewForm();
+    if (!form.name) { alert("Pick or name a prospect first."); return; }
+    var map = loadProspects();
+    var p = map[form.name];
+    if (!p || !p.review) { alert("No saved review for this prospect yet — generate one first."); return; }
+    if (!state.ghlKey || !state.ghlLocationId) {
+      alert("Add your GHL token + Location ID in Settings before pushing.");
+      return;
+    }
+    showReviewStatus("Pushing to GoHighLevel…", "info");
+    ghlPush({
+      name: form.name,
+      email: form.email || p.email,
+      phone: form.phone || p.phone,
+      outcome: form.outcome || p.outcome
+    }, p.review).then(function (res) {
+      if (res && res.ok) {
+        persistReview(form, p.review, { ghlPushedAt: new Date().toISOString(), ghlContactId: res.contactId });
+        showReviewStatus("✓ Pushed to GHL (contact " + esc(res.contactId) + ").", "ok");
+      } else {
+        showReviewStatus("⚠ GHL push failed: " + esc((res && res.reason) || "unknown") + ".", "warn");
+      }
+    });
+  }
+
   /* ---------- export + new call ---------- */
   function exportLog() {
     if (!state.log.length) { alert("Nothing to export yet."); return; }
@@ -1148,6 +1538,19 @@
       if (!this.value) return;
       var map = loadProspects();
       if (map[this.value]) fillPrepForm(map[this.value]);
+    });
+    // post-call review (paste transcript -> Claude scoring -> optional GHL push)
+    $("btn-review").addEventListener("click", openReview);
+    $("btn-generate-review").addEventListener("click", runReview);
+    $("btn-push-review").addEventListener("click", manualPushReview);
+    $("btn-close-review").addEventListener("click", closeModal);
+    $("review-modal").addEventListener("click", function (e) {
+      if (e.target === $("review-modal")) closeModal();
+    });
+    $("review-load").addEventListener("change", function () {
+      if (!this.value) { fillReviewForm({}); return; }
+      var map = loadProspects();
+      if (map[this.value]) fillReviewForm(map[this.value]);
     });
     // delegated log handlers — listeners don't multiply per render
     $("log").addEventListener("click", onLogActivate);
