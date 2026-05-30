@@ -1266,7 +1266,10 @@
   }
   function bootAuthThenInit() {
     if (!shouldEnforceGate()) {
-      // Local dev or widget unavailable → skip gate
+      // Local dev or widget unavailable → skip gate (the HTML ships it visible
+      // by default so a slow Identity init can't leave a blank shell — hide it
+      // explicitly here so localhost boots straight into the app).
+      hideGate();
       if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", init);
       } else { init(); }

@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self' https://identity.netlify.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://api.anthropic.com https://*.netlify.com https://*.netlify.app; img-src 'self' data: https://www.gravatar.com https://secure.gravatar.com; font-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Scale Systems Sales Call Copilot</title>
-<link rel="stylesheet" href="styles.css?v=30" />
+<link rel="stylesheet" href="styles.css?v=31" />
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
@@ -16,8 +16,9 @@
 <a class="skip-link" href="#input">Skip to call input</a>
 
 <!-- Auth gate — full-screen overlay shown until Netlify Identity confirms the visitor.
-     Skipped automatically on localhost so local dev keeps working. -->
-<div id="auth-gate" class="auth-gate hidden" role="dialog" aria-modal="true" aria-labelledby="auth-gate-title">
+     Starts VISIBLE so a slow / failed Identity init can't leave the visitor on a
+     blank shell. JS hides it once auth resolves (login success) or on localhost. -->
+<div id="auth-gate" class="auth-gate" role="dialog" aria-modal="true" aria-labelledby="auth-gate-title">
   <div class="auth-gate-card">
     <span class="brand-mark" aria-hidden="true">
       <svg viewBox="0 0 32 32" width="34" height="34" role="img" aria-hidden="true">
@@ -274,7 +275,7 @@
   </div>
 </div>
 
-<script src="data/data.js?v=30"></script>
-<script src="app.js?v=30"></script>
+<script src="data/data.js?v=31"></script>
+<script src="app.js?v=31"></script>
 </body>
 </html>
