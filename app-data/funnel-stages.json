@@ -70,7 +70,7 @@
       "id": "pitch",
       "name": "4. Pitch",
       "goal": "Sell the METHOD, not the deliverables. High-level promise -> 3 pillars -> delivery. Each pillar is the simultaneous explanation of why their past attempts failed and why this is different. Tie-down after every pillar.",
-      "listen_for": "Comprehension. If they say 'yeah' but clearly don't get it — stop and re-explain. Pillars 1 & 2 are paradigm shifts; 3 is the payoff. PROOF: back every pillar claim with proof — a case study, your own story, the reason-why, or the analogy — aim for 2-3 forms per claim, or it won't land.",
+      "listen_for": "Comprehension. If they say 'yeah' but clearly don't get it — stop and re-explain. Pillars 1 & 2 are paradigm shifts; 3 is the payoff. PROOF: back every pillar claim with proof — a case study, your own story, the reason-why, or the analogy — aim for 2-3 forms per claim, or it won't land. BREVITY RULE on tie-downs: the prospect's answer to each tie-down should be 1 line, max 10 seconds. Longer = they're avoiding or confused. Loop until tight before moving to the next pillar.",
       "say": [
         "Gotcha. Do you have your pen and pad? Great — on your pen and pad, write out one through three (or four), with a good amount of space in between.",
         "Let me preface this by saying — everything we do is fully customised based on what's best for you. For you specifically, it's going to be three things, three things to help you go from [current state they said] to [desired state they said].",
@@ -78,8 +78,11 @@
         "These calls go one of three ways. One, yes, it's amazing, I want to work with you. Two, no, it's not the right fit — and I want to let you know in advance it's totally okay if you say no to me, you won't hurt my feelings. But the third thing I want to stay away from is the maybe, the 'let me sleep on it', because a lot of the time that's just a polite way to say no. Does that sound fair enough?",
         "PRE-FRAME (what this IS / what this is NOT): [[OFFER_PREFRAME]]",
         "PILLAR 1 (paradigm shift #1): [[OFFER_PILLAR_1]]",
+        "TIE-DOWN (after Pillar 1): Are you following me so far? ... What questions do you have about that part specifically? (Their answer to each = 1 line, max 10 seconds. Anything longer = they're avoiding or confused — loop until tight before moving on.)",
         "PILLAR 2 (paradigm shift #2 + proof): [[OFFER_PILLAR_2]]",
-        "PILLAR 3 (the payoff — what they walk away with): [[OFFER_PILLAR_3]]"
+        "TIE-DOWN (after Pillar 2): Are you following me so far? ... What questions do you have about that part specifically? (Their answer to each = 1 line, max 10 seconds. Anything longer = they're avoiding or confused — loop until tight before moving on.)",
+        "PILLAR 3 (the payoff — what they walk away with): [[OFFER_PILLAR_3]]",
+        "TIE-DOWN (after Pillar 3): Are you following me so far? ... What questions do you have about that part specifically? (Their answer to each = 1 line, max 10 seconds. Anything longer = they're avoiding or confused — loop until tight before moving on.)"
       ],
       "advance_when": "You've covered all 3 pillars with a tie-down after each. Then run the conservative upside math and move to Committing."
     },
