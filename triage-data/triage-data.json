@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "description": "Scale Session triage call script (Mariana-led qualification call before the closer's strategy call with John). Each stage has the verbatim script, a clear goal, green-light criteria the rep must hit before moving on, uncertainty triggers, and the exact pushback script.",
+  "description": "Scale Session triage call script (Mariana-led qualification call before the prospect is passed to Lauren — the closer — for the strategy call). Each stage has the verbatim script, a clear goal, green-light criteria the rep must hit before moving on, uncertainty triggers, and the exact pushback script.",
   "stages": [
     {
       "id": "opening",
@@ -73,7 +73,7 @@
         "take me off",
         "remove me"
       ],
-      "pushback_script": "OPENING DEFENSIVE — pick the right branch:\n\n— STALL ('idk' / 'just curious' / 'just to learn' / 'not sure'): 'Got it — and just so I know we're using your time well, what was the SPECIFIC reason you booked this call? Like what's the problem we'd be solving for you?' (Drop your tone at the end. Don't lift.) If they still hedge: 'IDK what you guys do — how did you end up on this call then? Ok cool no worries then, in an ideal world what would you like to get out of this call?'\n\n— 'JUST TO LEARN MORE ABOUT ___': 'Got it, and I can imagine you're quite busy right?' (PAUSE — let them say yes.) Then half laughing with a smile: 'Yeah. And just so we can see what could best help… Do you go around jumping on calls to learn more all day? Or are you here because you're interested in potentially working with us, if you think it could help?'\n\n— MONEY BLURT ('no money' / 'cant afford' / 'no budget' / 'im broke' / 'tight on cash'): 'Oh no worries at all — we haven't even talked numbers, and I don't even know if we're a fit yet. This call is just for me to understand what you're working on. Is that cool?' Then redirect: 'So what made you book this call in the first place?'\n\n— 'WHAT IS THIS' / 'NOT INTERESTED' (weird on a scheduled call — they BOOKED it): 'Wait — you booked the call though, right? So something brought you here. What was that? Even if you're not 100% sure right now, just throw out what was on your mind when you booked.'\n\n— 'IM BUSY' / 'NOT A GOOD TIME': 'Totally — we can keep this tight, 15 min max. Or if now genuinely isn't the right window, want me to send you 2 other times that work better?'\n\n— 'TAKE ME OFF' / 'REMOVE ME': 'Of course — but can I ask, what changed since you booked? Just so I can flag whatever wasn't useful so we don't keep sending the same thing.'\n\nKEY: this is a SCHEDULED call — they showed up, so SOMETHING brought them here. Your job in the opening is to surface that something. NO PAIN = NO MORE TALKING — don't move on until you know WHY they're here."
+      "pushback_script": "OPENING DEFENSIVE — pick the right branch: — STALL ('idk' / 'just curious' / 'just to learn' / 'not sure'): 'Got it — and just so I know we're using your time well, what was the SPECIFIC reason you booked this call? Like what's the problem we'd be solving for you?' (Drop your tone at the end. Don't lift.) If they still hedge: 'IDK what you guys do — how did you end up on this call then? Ok cool no worries then, in an ideal world what would you like to get out of this call?' — 'JUST TO LEARN MORE ABOUT ___': 'Got it, and I can imagine you're quite busy right?' (PAUSE — let them say yes.) Then half laughing with a smile: 'Yeah. And just so we can see what could best help… Do you go around jumping on calls to learn more all day? Or are you here because you're interested in potentially working with us, if you think it could help?' — MONEY BLURT ('no money' / 'cant afford' / 'no budget' / 'im broke' / 'tight on cash'): 'Oh no worries at all — we haven't even talked numbers, and I don't even know if we're a fit yet. This call is just for me to understand what you're working on. Is that cool?' Then redirect: 'So what made you book this call in the first place?' — 'WHAT IS THIS' / 'NOT INTERESTED' (weird on a scheduled call — they BOOKED it): 'Wait — you booked the call though, right? So something brought you here. What was that? Even if you're not 100% sure right now, just throw out what was on your mind when you booked.' — 'IM BUSY' / 'NOT A GOOD TIME': 'Totally — we can keep this tight, 15 min max. Or if now genuinely isn't the right window, want me to send you 2 other times that work better?' — 'TAKE ME OFF' / 'REMOVE ME': 'Of course — but can I ask, what changed since you booked? Just so I can flag whatever wasn't useful so we don't keep sending the same thing.' KEY: this is a SCHEDULED call — they showed up, so SOMETHING brought them here. Your job in the opening is to surface that something. NO PAIN = NO MORE TALKING — don't move on until you know WHY they're here."
     },
     {
       "id": "icp",
@@ -248,7 +248,7 @@
         "no specific timeline",
         "when's good for you"
       ],
-      "pushback_script": "STALLING on urgency — TWO moves:\n\n(1) INVERSION (mishear the hedge as a no): 'So it sounds like you don't think this will actually work for you?' 9/10 they snap back: 'no no, I do think it'll work.' Lower tone: 'Hold on — why do you think it'll work?' Now they're DEFENDING the buy, not stalling it.\n\n(2) qualifier (only if not financially qualified): 'Got it — and if you were certain this would add decent revenue to your business on a monthly basis, would that change things?'\n\nEven if still stalling, pass through to closer — but make sure the closer KNOWS they aren't rushing."
+      "pushback_script": "STALLING on urgency — TWO moves: (1) INVERSION (mishear the hedge as a no): 'So it sounds like you don't think this will actually work for you?' 9/10 they snap back: 'no no, I do think it'll work.' Lower tone: 'Hold on — why do you think it'll work?' Now they're DEFENDING the buy, not stalling it. (2) qualifier (only if not financially qualified): 'Got it — and if you were certain this would add decent revenue to your business on a monthly basis, would that change things?' Even if still stalling, pass through to closer — but make sure the closer KNOWS they aren't rushing."
     },
     {
       "id": "budget",
@@ -287,7 +287,7 @@
         "even just",
         "at least"
       ],
-      "pushback_script": "Hhhhmmm okay OR Got it — and so we can see which of our options could be feasible, on a monthly basis, what are you willing to invest to be sure you'd get this working?\n\nIf they STILL won't give a number — push once more: 'Just throw out a real number, even if it's a rough one. There's no wrong answer — it just helps me match you to the right tier.' Don't move on without a number you can pass to the closer."
+      "pushback_script": "Hhhhmmm okay OR Got it — and so we can see which of our options could be feasible, on a monthly basis, what are you willing to invest to be sure you'd get this working? If they STILL won't give a number — push once more: 'Just throw out a real number, even if it's a rough one. There's no wrong answer — it just helps me match you to the right tier.' Don't move on without a number you can pass to the closer."
     },
     {
       "id": "authority",
@@ -322,25 +322,25 @@
       "id": "fit-qualified",
       "name": "9a. Fit — Pass to Closer",
       "tone": "[SLOW + CONFIDENT TONALITY]",
-      "goal": "Book the strategy call with John (closer) and hold them accountable to watching the pre-call doc.",
+      "goal": "Book the strategy call with Lauren (the closer) and hold them accountable to watching the pre-call doc.",
       "say": [
         "Cool. So with what you're looking to do, it's a pretty straightforward problem for us to solve.",
-        "Now I am going to get you to have a 1:1 interview with Lauren's business partner directly, John, to go through the details and specifics on how it'll work for you, to ensure you [overcome the problem they have].",
+        "Now I am going to get you to have a 1:1 interview with Lauren directly, to go through the details and specifics on how it'll work for you, to ensure you [overcome the problem they have].",
         "(*Act like you are looking at a jam-packed calendar with 0 availability*)",
-        "So I'm just looking at John's calendar here… Okk… hmm.. So John's calendar is really full…",
-        "Now, what I can do, because you're looking to work with us… is I can move a few things around for you… Would [X] or [Y] time work best for you? Then I'll be able to get you in directly with Lauren's business partner.",
+        "So I'm just looking at Lauren's calendar here… Okk… hmm.. So Lauren's calendar is really full…",
+        "Now, what I can do, because you're looking to work with us… is I can move a few things around for you… Would [X] or [Y] time work best for you? Then I'll be able to get you in directly with Lauren.",
         "▸ BOOK THE TIME HERE WITH CLOSER.",
         "Great — you mentioned earlier that you run decisions by [x], so what's their email address so I can invite them to the next call?",
         "(Let them reply.)",
         "Ok great. I am booking that now for you…. [3 seconds]",
         "You should have received a confirmation email by now, did you get that? (Make sure they check.)",
-        "Ok great so now I'm sending you a document which breaks down our offer and how it works. It's really important you watch that, because when you speak with John he'll be able to break down, for YOU, how this system will work when applied specifically to your business.",
-        "John is really busy — so if you can't go through that before your call with him, can you let me know now? (Get confirmation they can watch it before.)",
-        "Ok great — when are you planning to watch it, so I can check in with you to make sure you've been able to go through it in full, and confirm your call with John?",
+        "Ok great so now I'm sending you a document which breaks down our offer and how it works. It's really important you watch that, because when you speak with Lauren she'll be able to break down, for YOU, how this system will work when applied specifically to your business.",
+        "Lauren is really busy — so if you can't go through that before your call with her, can you let me know now? (Get confirmation they can watch it before.)",
+        "Ok great — when are you planning to watch it, so I can check in with you to make sure you've been able to go through it in full, and confirm your call with Lauren?",
         "Ok cool — I will hold you accountable to that. So expect a call or text from me right around then!",
         "Just a note, your strategy session will take place on a google meet link, not a phone call. So please make sure you are somewhere quiet, where you can focus. Sounds ok?",
         "It's been great chatting today — I'll be waiting for your reply to that email confirming you've been through the doc.",
-        "IDENTITY LOCK before hand-off: 'Honestly, sounds like you're the type of person who, once they see something that actually fits, they MOVE on it. Would I be right?' Get the YES. Now when John (the closer) gets them, they've already committed to the identity of 'I'm the kind of person who moves when I see fit' — much harder to stall."
+        "IDENTITY LOCK before hand-off: 'Honestly, sounds like you're the type of person who, once they see something that actually fits, they MOVE on it. Would I be right?' Get the YES. Now when Lauren (the closer) gets them, they've already committed to the identity of 'I'm the kind of person who moves when I see fit' — much harder to stall."
       ],
       "green_light": [
         "Strategy call booked + on the calendar",
@@ -358,12 +358,12 @@
         "i'll get to it",
         "no promises"
       ],
-      "pushback_script": "They just gave you a soft commitment on watching the doc. Don't accept it. Push: 'John is really busy — so if you can't go through that before your call with him, can you let me know now?' Get a hard yes or move the call. A soft yes here = a no-show or unprepared prospect, which wastes John's time and burns the opportunity."
+      "pushback_script": "They just gave you a soft commitment on watching the doc. Don't accept it. Push: 'Lauren is really busy — so if you can't go through that before your call with her, can you let me know now?' Get a hard yes or move the call. A soft yes here = a no-show or unprepared prospect, which wastes Lauren's time and burns the opportunity."
     },
     {
       "id": "fit-disqualified",
       "name": "9b. Fit — Lauren Follow-up (not qualified)",
-      "tone": "Warm — they're not going to John, but Lauren will reach out personally.",
+      "tone": "Warm — they're not getting a strategy call, but Lauren will reach out personally.",
       "goal": "Pass them to Lauren via DM follow-up. Confirm they're following her on the right platform and they'll be on phone to receive her message.",
       "say": [
         "Cool. So with what you're looking to do, it's a pretty straightforward problem for us to solve.",
@@ -485,7 +485,7 @@
           "dont message me",
           "stop messaging"
         ],
-        "pushback_script": "DM DEFENSIVE BLURT — they're trying to make this not-a-DM. Stay light, stay short. DO NOT explain or pitch. A DM 'no' is way less binding than a call 'no' — stay relaxed.\n\n— 'WHAT IS THIS' / 'WHAT IS IT' / 'WHAT'S THE DOC': 'it's a doc that breaks down exactly what we do based on your stage of business. so can you tell me — 6 figures, 7+ figures, or just starting out? then i'll send you the one that fits'\n\n— MONEY BLURT ('no money' / 'cant afford' / 'no budget' / 'not buying' / 'im broke'): 'lol no worries, this isn't even a sales thing — i literally just send a free doc based on stage. you 6 figs, 7+ figs, or just starting out? then i'll send the right one'\n\n— 'NOT INTERESTED' / 'IM NOT INTERESTED': 'all good — quick one before you go, what made you reply in the first place? just trying to flag what we put in front of you that you DIDN'T want, so we don't keep sending it'\n\n— 'REMOVE ME' / 'TAKE ME OFF' / 'STOP MESSAGING': 'totally, i'll make sure that happens. one ask before you go: what made you opt in originally? want to flag what wasn't useful'\n\n— 'IM BUSY' / 'NOT A GOOD TIME': 'no worries, 10-second answer — 6 figs, 7+ figs, or just starting? then i'll send the doc and you can read whenever'\n\nKEY: the 'just a free doc based on stage' line is the universal escape hatch — makes the DM feel zero-stakes. Match their casing / casualness in your reply (lowercase if they're lowercase). Don't justify, don't oversell, don't add to the message."
+        "pushback_script": "DM DEFENSIVE BLURT — they're trying to make this not-a-DM. Stay light, stay short. DO NOT explain or pitch. A DM 'no' is way less binding than a call 'no' — stay relaxed. — 'WHAT IS THIS' / 'WHAT IS IT' / 'WHAT'S THE DOC': 'it's a doc that breaks down exactly what we do based on your stage of business. so can you tell me — 6 figures, 7+ figures, or just starting out? then i'll send you the one that fits' — MONEY BLURT ('no money' / 'cant afford' / 'no budget' / 'not buying' / 'im broke'): 'lol no worries, this isn't even a sales thing — i literally just send a free doc based on stage. you 6 figs, 7+ figs, or just starting out? then i'll send the right one' — 'NOT INTERESTED' / 'IM NOT INTERESTED': 'all good — quick one before you go, what made you reply in the first place? just trying to flag what we put in front of you that you DIDN'T want, so we don't keep sending it' — 'REMOVE ME' / 'TAKE ME OFF' / 'STOP MESSAGING': 'totally, i'll make sure that happens. one ask before you go: what made you opt in originally? want to flag what wasn't useful' — 'IM BUSY' / 'NOT A GOOD TIME': 'no worries, 10-second answer — 6 figs, 7+ figs, or just starting? then i'll send the doc and you can read whenever' KEY: the 'just a free doc based on stage' line is the universal escape hatch — makes the DM feel zero-stakes. Match their casing / casualness in your reply (lowercase if they're lowercase). Don't justify, don't oversell, don't add to the message."
       },
       {
         "id": "dm-get-stage",
@@ -711,7 +711,7 @@
           "broke right now",
           "tight on cash"
         ],
-        "pushback_script": "DEFENSIVE DISARM — they're trying to end the call before it starts. Stay LOW energy. Do NOT push. Whoever wants something MORE loses the frame — so you want LESS.\n\n— MONEY DISARM (if they blurt 'no money' / 'can't afford' / 'no budget' / 'not buying'): 'Oh no problem at all — honestly I don't even know if I can help you yet, this isn't a sales call. They opted into [YOU-AI training / freebie] and my job is just to make sure you got it. Can I take 30 seconds to ask what made you grab it in the first place?'\n\n— 'I DON'T REMEMBER' / 'WHAT IS THIS': 'Yeah, totally fair — it's pretty common people don't remember. Looks like it was a few [days/weeks] ago. My job is just to get the information out to you, don't shoot the messenger. It'll take 5 minutes here, okay?'\n\n— 'I'M BUSY' / 'NOT A GOOD TIME' / 'NOT INTERESTED': 'Totally — I'll keep it to 5 minutes. Quick question — what made you grab the [freebie] when you did? Then I can point you to the right thing.'\n\n— 'TAKE ME OFF' / 'REMOVE ME': 'For sure, no problem — I'll make sure that happens. Before I do, can I ask — what made you opt in originally? Just so I can flag whatever wasn't useful so we don't send the same thing to anyone else.'\n\nKEY PRINCIPLE: the 'just' framing downgrades the stakes ('just 5 minutes', 'I don't even know if I can help'). Stay genuinely relaxed about them hanging up — that's what disarms them. If they keep fighting: repeat the same line in a different word order until they soften."
+        "pushback_script": "DEFENSIVE DISARM — they're trying to end the call before it starts. Stay LOW energy. Do NOT push. Whoever wants something MORE loses the frame — so you want LESS. — MONEY DISARM (if they blurt 'no money' / 'can't afford' / 'no budget' / 'not buying'): 'Oh no problem at all — honestly I don't even know if I can help you yet, this isn't a sales call. They opted into [YOU-AI training / freebie] and my job is just to make sure you got it. Can I take 30 seconds to ask what made you grab it in the first place?' — 'I DON'T REMEMBER' / 'WHAT IS THIS': 'Yeah, totally fair — it's pretty common people don't remember. Looks like it was a few [days/weeks] ago. My job is just to get the information out to you, don't shoot the messenger. It'll take 5 minutes here, okay?' — 'I'M BUSY' / 'NOT A GOOD TIME' / 'NOT INTERESTED': 'Totally — I'll keep it to 5 minutes. Quick question — what made you grab the [freebie] when you did? Then I can point you to the right thing.' — 'TAKE ME OFF' / 'REMOVE ME': 'For sure, no problem — I'll make sure that happens. Before I do, can I ask — what made you opt in originally? Just so I can flag whatever wasn't useful so we don't send the same thing to anyone else.' KEY PRINCIPLE: the 'just' framing downgrades the stakes ('just 5 minutes', 'I don't even know if I can help'). Stay genuinely relaxed about them hanging up — that's what disarms them. If they keep fighting: repeat the same line in a different word order until they soften."
       },
       {
         "id": "ob-confirm",
@@ -788,7 +788,7 @@
           "maybe next week",
           "i need to think"
         ],
-        "pushback_script": "FOR PRICE / COST QUESTIONS — verbatim deflection: 'Well, there's a couple of different options. Why don't we do this — Mariana will walk you through the rest of how it works on the call, then she'll show you the options and we'll see which one makes the most sense, okay?'\n\nFOR 'SEND ME MORE INFO' — don't send anything. The call IS the info. 'Totally get it — and to be straight, the Scale Session is just 15-20 minutes, no pitch. Mariana literally walks you through your situation and we see if it makes sense to keep talking. So [time A] or [time B]? Even a tentative slot — you can always move it.'\n\nFOR 'LET ME CHECK MY CALENDAR' — flip to a soft tentative: 'No worries — let's pencil [time A] for now, tentative, and you can shift it if you need to. What's your best email so I can fire the invite over?'\n\nFOR ANY HARD STALL — book a tentative + follow up: 'Cool, can I send you the AI training in the meantime and circle back in a couple of days?' Then onto follow-up (and Hitlist if 6 figs+)."
+        "pushback_script": "FOR PRICE / COST QUESTIONS — verbatim deflection: 'Well, there's a couple of different options. Why don't we do this — Mariana will walk you through the rest of how it works on the call, then she'll show you the options and we'll see which one makes the most sense, okay?' FOR 'SEND ME MORE INFO' — don't send anything. The call IS the info. 'Totally get it — and to be straight, the Scale Session is just 15-20 minutes, no pitch. Mariana literally walks you through your situation and we see if it makes sense to keep talking. So [time A] or [time B]? Even a tentative slot — you can always move it.' FOR 'LET ME CHECK MY CALENDAR' — flip to a soft tentative: 'No worries — let's pencil [time A] for now, tentative, and you can shift it if you need to. What's your best email so I can fire the invite over?' FOR ANY HARD STALL — book a tentative + follow up: 'Cool, can I send you the AI training in the meantime and circle back in a couple of days?' Then onto follow-up (and Hitlist if 6 figs+)."
       },
       {
         "id": "ob-secure",

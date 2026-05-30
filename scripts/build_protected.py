@@ -158,7 +158,7 @@ def write_landing():
       <span>For Mariana — qualifying calls, DMs, outbound dials</span>
     </a>
     <a href="./app/">📞 Sales Call Copilot
-      <span>For John — closer's tool, the full Cole / NEPQ stack</span>
+      <span>Closer tool — the full discovery + objection-handling stack</span>
     </a>
   </div>
 </body>
