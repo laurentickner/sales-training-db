@@ -68,17 +68,17 @@
   var MAX_INPUT = 2000;   // one spoken turn, not a pasted transcript
   var MIN_SCORE = 1.0;    // below this, a keyword match is too weak to surface
 
-  /* DISCOVER framework — Cole's 7 beliefs + Ravi LTV math, relabelled to spell DISCOVER */
-  var BELIEFS = ["desire", "pain", "math", "cost", "doubt", "trust", "support", "money"];
+  /* DISCOVERY framework — Cole's 7 beliefs + Ravi LTV math + the catalyst/why, spelling DISCOVERY */
+  var BELIEFS = ["desire", "pain", "math", "cost", "doubt", "trust", "support", "money", "why"];
   var BELIEF_LABEL = {
     desire: "Desire", pain: "Issue", math: "Sum", cost: "Cost",
-    doubt: "Own", trust: "Verify", support: "Everyone", money: "Resources"
+    doubt: "Own", trust: "Verify", support: "Everyone", money: "Resources", why: "Why"
   };
-  // Display order: D-I-S-C-O-V-E-R
-  var DISCOVER_ORDER = ["desire", "pain", "math", "cost", "doubt", "trust", "support", "money"];
+  // Display order: D-I-S-C-O-V-E-R-Y
+  var DISCOVER_ORDER = ["desire", "pain", "math", "cost", "doubt", "trust", "support", "money", "why"];
   var DISCOVER_LETTER = {
     desire: "D", pain: "I", math: "S", cost: "C",
-    doubt: "O", trust: "V", support: "E", money: "R"
+    doubt: "O", trust: "V", support: "E", money: "R", why: "Y"
   };
   var PROSPECTS_KEY = "copilot_prospects";
 
@@ -678,7 +678,7 @@
           (on ? "✓ " : "") + '<span class="chip-letter">' + letter + '</span> ' +
           esc(BELIEF_LABEL[b]) + "</button>";
       }).join("");
-      el.innerHTML = '<span class="belief-label">DISCOVER — ' + done + "/8</span>" +
+      el.innerHTML = '<span class="belief-label">DISCOVERY — ' + done + "/9</span>" +
         chips + '<span class="belief-hint">click each letter for prompts &amp; to tick it off</span>';
     } else if (state.stage === "introduction") {
       el.hidden = false;

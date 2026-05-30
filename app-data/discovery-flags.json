@@ -9,6 +9,7 @@
       "Take me back to the LAST time you tried to fix this -- what specifically happened? What did it cost you? (Past-pain probe -- Jeremy Miner. Past-pain auto-generates future-fear: their brain projects 'this will happen again' without you having to say it. More powerful than 'what if nothing changes' because the emotion is already loaded.)"
     ],
     "doubt": [
+      "Before we met today, were you out there looking for other potential solutions to [their problem]? ... [they name a past attempt] Hold on — how do you mean it didn't work out? (Jeremy Miner solution-awareness wrapper. Sets up the past-pain probe + re-meaning + identity-shift chain naturally — ask BEFORE the past-pain probe so the prospect surfaces the failed attempt themselves rather than you fishing for it.)",
       "What have you already tried to fix this? What happened?",
       "When something like that doesn't work, it's usually one of two things — the method or the execution. Which do you think it was?",
       "What's been the single biggest thing keeping you from fixing this on your own?"
@@ -42,6 +43,11 @@
       "What's a single client worth to you over their lifetime?",
       "On average, how many clients do you close a month?",
       "What's your current monthly revenue? And what would you need it to be? (Lock these — they're the inputs to the conservative upside math at committing.)"
+    ],
+    "why": [
+      "What's the REAL reason they want to make this change RIGHT NOW — not the surface goal?",
+      "If they had to write the why on a sticky note in one sentence, what would it actually say? (And does it sound like something they'd say to a stranger, or only to someone close — the latter means the mask is off.)",
+      "People don't book a call for no reason (Cole). What shifted recently that made NOW the time? If I can't name the catalyst in one sentence, I haven't built the gap yet."
     ]
   },
   "flags": [
@@ -246,10 +252,14 @@
         "money isn't a problem",
         "money is not an issue",
         "i don't really have a problem",
-        "no real pain"
+        "no real pain",
+        "sharpen our sword",
+        "sharpen the sword",
+        "always looking to improve",
+        "looking to improve"
       ],
       "probe": "On a scale of one to ten, where's [their area] at right now? ... And what does that number mean to you? ... If pain / money clearly isn't the lever (Matt Ryder): people don't book a call for no reason — what shifted recently that made NOW the time to look at this? Have you tried anything before, and why didn't it stick? Then measure the gap: how close does your current way realistically get you to [their goal]?",
-      "note": "No problem, no sale. If the prospect downplays, run the 1-10 gap question. If they say money / pain isn't the issue, switch to the catalyst-event line — there is always a reason they got on the call; the gap between their current method and their goal IS the urgency.\n\nIf they're a HIGH-REVENUE / no-pain prospect (Cole): you're not building from pain, you're building from unfulfilled desire. Playful disarm FIRST: 'we never have companies come to us wanting to learn how to sell less -- they always want to learn how to sell more. Is that why you came to us?' Then build the gap forward: 'if we came in and did [X], where do you FEEL you could get in 12 months?' (verbal pace + 'feel' to keep them emotional). If they lob a humble number, call it: 'OK, 15 -- is that your humble goal? You can tell me, we're not posting it on Instagram.'"
+      "note": "No problem, no sale. If the prospect downplays, run the 1-10 gap question. If they say money / pain isn't the issue, switch to the catalyst-event line — there is always a reason they got on the call; the gap between their current method and their goal IS the urgency.\n\nIf they're a HIGH-REVENUE / no-pain prospect (Cole): you're not building from pain, you're building from unfulfilled desire. Playful disarm FIRST: 'we never have companies come to us wanting to learn how to sell less -- they always want to learn how to sell more. Is that why you came to us?' Then build the gap forward: 'if we came in and did [X], where do you FEEL you could get in 12 months?' (verbal pace + 'feel' to keep them emotional). If they lob a humble number, call it: 'OK, 15 -- is that your humble goal? You can tell me, we're not posting it on Instagram.'\n\nSEQUENCING (Jeremy Miner): the 'we never have companies come to us wanting to sell less' line must be delivered PLAYFUL FIRST to disarm — then switch to serious/concerned. Lead with serious tone = guard goes up, prospect rejects the frame. Playful tone IS the disarm — not a vibe, a deliberate sequence. Triggers to add: 'sharpen our sword', 'sharpen the sword', 'always looking to improve', 'looking to improve'."
     },
     {
       "id": "story-not-numbers",
@@ -575,7 +585,7 @@
         "best case"
       ],
       "probe": "Can I make a suggestion on a word I just heard you say that could be holding us back? You said [their word] — have you ever thought that when we focus on getting [the least / the just / what we'd be happy with], what do we typically get? And you don't come across to me as the type of person who wants the least things in life. Would I be right? ... So what do you really want? (Jeremy Miner — identity-shift via word-catch.)",
-      "note": "Jeremy Miner's word-catch move. Their first answer reveals their ceiling — flip it now before it caps the rest of the call. Use a concerned, soft tone — 'could be holding US back', never 'YOU back'. Never accuse."
+      "note": "Jeremy Miner's word-catch move. Their first answer reveals their ceiling — flip it now before it caps the rest of the call. Use a concerned, soft tone — 'could be holding US back', never 'YOU back'. Never accuse.\n\nCOLE 3-STAGE REFRAME for 'at least' / 'I'd be happy with': (1) 'Can I make a suggestion on a word I heard that could be holding US back?' (US, not YOU — doesn't accuse). (2) 'You said the LEAST. Have you ever thought — when we focus on getting the least things in life, what do you typically get? ... The least.' (3) 'And you don't come across to me as the person who wants to get the least things in life. Would I be right?' (4) 'So what do you really want?' Belief surface → negative identity flip → re-anchor the real number. Don't skip to step 4."
     },
     {
       "id": "revenue-annualized",
