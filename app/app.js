@@ -1403,7 +1403,105 @@
       });
   }
 
-  /* ---------- export + new call ---------- */
+  /* ---------- export + new call ----------
+     copyCallSnapshot() builds a single markdown blob that captures everything
+     Lauren typed/touched during the call (prep brief, prospect facts, log
+     lines, objections that fired, situations she tapped) and copies it to
+     the clipboard. After the call she pastes it into the Notes-by-Gemini
+     Doc — the sales-coach Apps Script then auto-includes it in the v2.2
+     review context, so the auto-review reflects what actually happened
+     in the room, not just the verbatim transcript. */
+  function copyCallSnapshot() {
+    var p = state.prospect || {};
+    var name = p.name || "(unnamed prospect)";
+    var date = new Date().toISOString().slice(0, 10);
+    var L = [];
+    L.push("## In-call Copilot snapshot — " + name + " — " + date);
+    L.push("");
+    L.push("(Pasted from the Scale Systems Sales Call Copilot. The sales-coach Apps Script reads this section alongside the verbatim transcript when it auto-scores the call.)");
+    L.push("");
+    if (p.prep) {
+      L.push("### Pre-call prep brief");
+      L.push("");
+      L.push(p.prep);
+      L.push("");
+    }
+    if (state.liveFacts && state.liveFacts.trim()) {
+      L.push("### Prospect facts captured live");
+      L.push("");
+      L.push(state.liveFacts.trim());
+      L.push("");
+    }
+    var beliefsHit = Object.keys(state.beliefsCovered || {}).filter(function (b) { return state.beliefsCovered[b]; });
+    if (beliefsHit.length) {
+      L.push("### DISCOVERY beliefs ticked during the call");
+      L.push("");
+      beliefsHit.forEach(function (b) {
+        L.push("- " + (BELIEF_LABEL[b] || b) + " (" + (DISCOVER_LETTER[b] || "?") + ") ✓");
+      });
+      L.push("");
+    }
+    if (state.activeObjection) {
+      L.push("### Last active objection at end of call");
+      L.push("");
+      L.push("- " + state.activeObjection.label);
+      L.push("");
+    }
+    if (state.log && state.log.length) {
+      L.push("### Call log (lines I typed + what fired)");
+      L.push("");
+      state.log.forEach(function (e) {
+        L.push("**[" + e.time + " · " + e.stageName + "]**");
+        L.push("> " + e.text);
+        if (e.result && e.result.objections && e.result.objections.length) {
+          e.result.objections.forEach(function (m) { L.push("  - 🚩 Objection: " + m.item.label); });
+        }
+        if (e.result && e.result.flags && e.result.flags.length) {
+          e.result.flags.forEach(function (m) { L.push("  - ⚐ Flag: " + m.item.signal); });
+        }
+        L.push("");
+      });
+    }
+    if (p.outcome) {
+      L.push("### Outcome marked in Prep modal");
+      L.push("");
+      L.push("- " + (OUTCOME_LABEL[p.outcome] || p.outcome));
+      if (p.outcomeNotes) L.push("- " + p.outcomeNotes);
+      L.push("");
+    }
+    if (L.length <= 3) {
+      alert("Nothing to snapshot yet — no prep, no facts, no log entries.");
+      return;
+    }
+    var snapshot = L.join("\n");
+    var done = function () {
+      var btn = $("btn-snapshot");
+      if (!btn) return;
+      var old = btn.textContent;
+      btn.textContent = "✓ Copied — paste into the Notes Doc";
+      btn.disabled = true;
+      setTimeout(function () { btn.textContent = old; btn.disabled = false; }, 4500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(snapshot).then(done, function () {
+        // Clipboard API failed → fall back to textarea selection
+        snapshotFallback(snapshot, done);
+      });
+    } else {
+      snapshotFallback(snapshot, done);
+    }
+  }
+  function snapshotFallback(snapshot, done) {
+    var ta = document.createElement("textarea");
+    ta.value = snapshot;
+    ta.style.position = "fixed"; ta.style.top = "-1000px";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); }
+    catch (e) { alert("Couldn't access clipboard — opening a popup with the snapshot to copy manually."); window.prompt("Copy this snapshot, then paste it into the Notes-by-Gemini Doc:", snapshot); }
+    document.body.removeChild(ta);
+  }
+
   function exportLog() {
     if (!state.log.length) { alert("Nothing to export yet."); return; }
     var lines = ["CALL COPILOT — CALL LOG", new Date().toLocaleString(), ""];
@@ -1456,6 +1554,8 @@
       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); analyze(); }
     });
     $("btn-export").addEventListener("click", exportLog);
+    var snapBtn = $("btn-snapshot");
+    if (snapBtn) snapBtn.addEventListener("click", copyCallSnapshot);
     $("btn-newcall").addEventListener("click", newCall);
     $("btn-settings").addEventListener("click", openSettings);
     $("btn-save-settings").addEventListener("click", saveSettings);

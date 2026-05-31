@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.anthropic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Scale Systems Sales Call Copilot</title>
-<link rel="stylesheet" href="styles.css?v=43" />
+<link rel="stylesheet" href="styles.css?v=44" />
 </head>
 <body>
 
@@ -55,7 +55,8 @@
         placeholder="Type what the prospect just said (or paste it) and press Enter…"></textarea>
       <div class="input-row">
         <button id="btn-analyze" class="btn btn-primary">Analyze <span aria-hidden="true">⏎</span></button>
-        <button id="btn-export" class="btn btn-ghost btn-sm" title="Download the call log"><span aria-hidden="true">↓</span> Export log</button>
+        <button id="btn-snapshot" class="btn btn-ghost btn-sm" title="After the call: copy prep + facts + log + objections as markdown, then paste into the Notes-by-Gemini Doc so the auto-review picks them up"><span aria-hidden="true">⧉</span> Copy call snapshot</button>
+        <button id="btn-export" class="btn btn-ghost btn-sm" title="Download the call log as a .txt"><span aria-hidden="true">↓</span> Export log</button>
       </div>
       <p class="hint">Enter = analyze · Shift+Enter = new line</p>
       <div class="situation-bar" id="situation-bar" aria-label="Non-verbal situations"></div>
@@ -318,7 +319,7 @@
   </div>
 </div>
 
-<script src="data/data.js?v=43"></script>
-<script src="app.js?v=43"></script>
+<script src="data/data.js?v=44"></script>
+<script src="app.js?v=44"></script>
 </body>
 </html>
