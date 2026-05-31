@@ -22,6 +22,17 @@
  *   3. (Optional, for Slack ping) Add property:
  *        Name:  SLACK_WEBHOOK_URL
  *        Value: <incoming webhook URL for #daniel-lauren>
+ *   3b. (Optional, for GoHighLevel auto-push) Add properties:
+ *        Name:  GHL_PIT
+ *        Value: <Private Integration Token — sub-account → Settings →
+ *               Private Integrations. Scopes: contacts.write,
+ *               contacts.readonly, locations.readonly>
+ *        Name:  GHL_LOCATION_ID
+ *        Value: <sub-account → Settings → Business Profile>
+ *      When both are set, every auto-generated review pushes as a Note on
+ *      the matched GHL Contact (matched by attendee email from the email,
+ *      or created fresh by name). Internal-only — the client tool stays
+ *      on copy-to-clipboard. Token never touches the browser.
  *   4. Triggers (⏰ left sidebar) → + Add Trigger
  *        Function: processNewMeetEmails
  *        Event source: Time-driven
@@ -50,12 +61,15 @@
 
 const ANTHROPIC_API_KEY = PropertiesService.getScriptProperties().getProperty('ANTHROPIC_API_KEY');
 const SLACK_WEBHOOK_URL = PropertiesService.getScriptProperties().getProperty('SLACK_WEBHOOK_URL');
+const GHL_PIT = PropertiesService.getScriptProperties().getProperty('GHL_PIT');
+const GHL_LOCATION_ID = PropertiesService.getScriptProperties().getProperty('GHL_LOCATION_ID');
 const ANTHROPIC_MODEL = 'claude-sonnet-4-5';
 const MAX_TOKENS = 6000;
 const TRANSCRIPT_CHAR_CAP = 180000;
 const LABEL_REVIEWED = 'sales-coach/reviewed';
 const LABEL_FAILED = 'sales-coach/failed';
 const LABEL_SKIP = 'sales-coach/skip';
+const SNAPSHOT_HEADING = '## In-call Copilot snapshot';
 
 /**
  * Entry point — call from the time trigger. Finds new gemini-notes emails
@@ -152,13 +166,104 @@ function processOne(msg) {
   // 7. Append the review to the Notes Doc as a new section at the bottom.
   appendReviewToNotesDoc(notesDocId, review, prospectName);
 
+  // 8. Auto-push to GoHighLevel if configured. Internal-only; server-side
+  //    via Script Properties so no GHL token ever touches the browser.
+  let ghlResult = null;
+  if (GHL_PIT && GHL_LOCATION_ID) {
+    try {
+      ghlResult = pushReviewToGHL(prospectName, msg, review);
+      console.log('GHL push: ' + (ghlResult.ok ? 'OK contact=' + ghlResult.contactId : 'FAIL ' + ghlResult.reason));
+    } catch (e) {
+      ghlResult = { ok: false, reason: e.message };
+      console.error('GHL push threw: ' + e.message);
+    }
+  }
+
   return {
     meetingTitle: meetingTitle,
     prospectName: prospectName,
     notesDocId: notesDocId,
     reviewLen: review.length,
     scoreTable: extractScoreTable(review),
+    ghl: ghlResult,
   };
+}
+
+/* ------------------------------------------------------------------ */
+/*  GoHighLevel push — internal-only, server-side, no browser token   */
+/* ------------------------------------------------------------------ */
+/**
+ * Upsert the prospect as a Contact on Lauren's GHL sub-account, then post
+ * the review as a Note on that Contact. Matches by email if any attendee
+ * (other than Lauren / Daniel / Mariana) is found in the Calendar event;
+ * otherwise creates a new Contact by name only.
+ *
+ * GHL_PIT — sub-account Private Integration Token (Sub-account → Settings
+ *   → Private Integrations). Scopes needed: contacts.write,
+ *   contacts.readonly, locations.readonly.
+ * GHL_LOCATION_ID — sub-account → Settings → Business Profile.
+ *
+ * If either is missing, this function is never called.
+ */
+function pushReviewToGHL(prospectName, originalEmailMsg, reviewMarkdown) {
+  // Try to find the prospect's email from the original Gemini email body.
+  // The email cc's all attendees; Gemini also embeds attendee addresses in
+  // the doc-share envelope. Cheap regex extraction.
+  const body = (originalEmailMsg.getPlainBody() || '') + '\n' + (originalEmailMsg.getBody() || '');
+  const emailRe = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+  const internalDomains = /@(scalesystems\.io|impact-school\.com|google\.com|gemini-notes|firebaseapp)/i;
+  const allEmails = (body.match(emailRe) || []).filter(function (e) { return !internalDomains.test(e); });
+  const prospectEmail = allEmails.length ? allEmails[0] : '';
+
+  const nameParts = prospectName.trim().split(/\s+/);
+  const firstName = nameParts[0] || prospectName;
+  const lastName = nameParts.slice(1).join(' ') || '';
+
+  const headers = {
+    'Authorization': 'Bearer ' + GHL_PIT,
+    'Version': '2021-07-28',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
+
+  const upsertBody = {
+    locationId: GHL_LOCATION_ID,
+    firstName: firstName,
+    lastName: lastName,
+    tags: ['sales-call-auto-review'],
+  };
+  if (prospectEmail) upsertBody.email = prospectEmail;
+
+  const upsertResp = UrlFetchApp.fetch('https://services.leadconnectorhq.com/contacts/upsert', {
+    method: 'post',
+    contentType: 'application/json',
+    headers: headers,
+    payload: JSON.stringify(upsertBody),
+    muteHttpExceptions: true,
+  });
+  if (upsertResp.getResponseCode() !== 200 && upsertResp.getResponseCode() !== 201) {
+    return { ok: false, reason: 'GHL upsert ' + upsertResp.getResponseCode() + ': ' + upsertResp.getContentText().slice(0, 200) };
+  }
+  let contact;
+  try { contact = JSON.parse(upsertResp.getContentText()).contact || JSON.parse(upsertResp.getContentText()); }
+  catch (e) { return { ok: false, reason: 'GHL upsert returned non-JSON' }; }
+  const contactId = contact && contact.id;
+  if (!contactId) return { ok: false, reason: 'GHL upsert returned no contact id' };
+
+  const noteBody = 'Call review — auto-generated by sales-coach Apps Script ' +
+    Utilities.formatDate(new Date(), 'GMT', 'yyyy-MM-dd HH:mm') + ' UTC\n\n' +
+    reviewMarkdown;
+  const noteResp = UrlFetchApp.fetch('https://services.leadconnectorhq.com/contacts/' + contactId + '/notes', {
+    method: 'post',
+    contentType: 'application/json',
+    headers: headers,
+    payload: JSON.stringify({ body: noteBody }),
+    muteHttpExceptions: true,
+  });
+  if (noteResp.getResponseCode() !== 200 && noteResp.getResponseCode() !== 201) {
+    return { ok: false, reason: 'GHL note ' + noteResp.getResponseCode() + ': ' + noteResp.getContentText().slice(0, 200), contactId: contactId };
+  }
+  return { ok: true, contactId: contactId, email: prospectEmail };
 }
 
 /* ------------------------------------------------------------------ */
@@ -233,15 +338,47 @@ function isInternalMeeting(meetingTitle) {
 /* ------------------------------------------------------------------ */
 
 function callAnthropicReview(prospectName, meetingTitle, transcriptText) {
-  const userMsg = [
+  // Separate the In-call Copilot snapshot (if Lauren pasted one into the Doc)
+  // from the verbatim transcript. The snapshot section starts at "## In-call
+  // Copilot snapshot" and ends at the next ## heading or end-of-text. Both
+  // get passed to Claude but as separate, labelled blocks so the model knows
+  // which is which.
+  const snapshotMarker = SNAPSHOT_HEADING;
+  let snapshot = '';
+  let transcript = transcriptText;
+  const snapIdx = transcriptText.indexOf(snapshotMarker);
+  if (snapIdx >= 0) {
+    const after = transcriptText.slice(snapIdx);
+    // Find the next "##" heading after the snapshot heading. Anything before
+    // that is the snapshot; anything after is back to verbatim Gemini content.
+    const nextHeadingIdx = after.indexOf('\n## ', snapshotMarker.length);
+    if (nextHeadingIdx > 0) {
+      snapshot = after.slice(0, nextHeadingIdx).trim();
+      transcript = (transcriptText.slice(0, snapIdx) + after.slice(nextHeadingIdx)).trim();
+    } else {
+      snapshot = after.trim();
+      transcript = transcriptText.slice(0, snapIdx).trim();
+    }
+  }
+
+  const parts = [
     'PROSPECT: ' + prospectName,
     'MEETING: ' + meetingTitle,
     'DATE: ' + new Date().toISOString().slice(0, 10),
     'OUTCOME: pending (infer from transcript if obvious)',
     '',
-    'TRANSCRIPT (verbatim from Google Meet auto-transcription — may contain ASR errors):',
-    transcriptText.slice(0, TRANSCRIPT_CHAR_CAP),
-  ].join('\n');
+  ];
+
+  if (snapshot) {
+    parts.push('IN-CALL COPILOT SNAPSHOT (the rep\'s OWN notes from inside the Copilot during the call — what she ticked, what she observed, what the prep flagged. Weight this alongside the transcript when scoring; it tells you the rep\'s real-time read of the call, which the verbatim audio can\'t):');
+    parts.push(snapshot);
+    parts.push('');
+  }
+
+  parts.push('TRANSCRIPT (verbatim from Google Meet auto-transcription — may contain ASR errors):');
+  parts.push(transcript.slice(0, TRANSCRIPT_CHAR_CAP));
+
+  const userMsg = parts.join('\n');
 
   const response = UrlFetchApp.fetch('https://api.anthropic.com/v1/messages', {
     method: 'post',
