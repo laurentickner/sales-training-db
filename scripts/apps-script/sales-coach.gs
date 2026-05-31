@@ -647,3 +647,122 @@ function testProcessLatest() {
   var result = processOne(msg);
   console.log('Done: ' + result.prospectName + ' / review ' + result.reviewLen + ' chars');
 }
+
+/* ------------------------------------------------------------------ */
+/*  Web App endpoint — auto-append snapshot to Notes-by-Gemini Doc    */
+/* ------------------------------------------------------------------ */
+/**
+ * Deployed as a Web App (Deploy → New deployment → Web App). The SPA POSTs
+ * { prospectName, date, snapshot } to the Web App URL when Lauren clicks
+ * "Copy call snapshot". This handler finds the most recent matching
+ * Notes-by-Gemini Doc by title and inserts the snapshot at the top.
+ *
+ * Body is sent as text/plain to avoid CORS preflight (Apps Script Web
+ * Apps don't handle OPTIONS requests cleanly). We JSON.parse it here.
+ *
+ * Deploy settings:
+ *   Execute as: Me (Lauren) — so we have Drive write access
+ *   Who has access: Anyone with the link — URL acts as the auth secret
+ *
+ * The URL is stored in Lauren's browser localStorage in the SPA
+ * (state.docsWebhookUrl). Don't share it publicly.
+ */
+function doPost(e) {
+  try {
+    var raw = (e && e.postData && e.postData.contents) || '';
+    if (!raw) return jsonResponse({ ok: false, error: 'empty body' });
+    var body = JSON.parse(raw);
+    if (!body.prospectName) return jsonResponse({ ok: false, error: 'missing prospectName' });
+    if (!body.snapshot) return jsonResponse({ ok: false, error: 'missing snapshot' });
+
+    var docId = findNotesDocByProspect(body.prospectName, body.date);
+    if (!docId) return jsonResponse({ ok: false, error: 'no Notes-by-Gemini Doc found for "' + body.prospectName + '"' });
+
+    insertSnapshotAtTop(docId, body.snapshot);
+    return jsonResponse({ ok: true, docId: docId });
+  } catch (err) {
+    return jsonResponse({ ok: false, error: err.message });
+  }
+}
+
+/** Health-check / verification — useful while wiring the Web App URL.
+ *  Open the Web App URL in a browser; should show {"ok":true,"hint":"…"} */
+function doGet() {
+  return jsonResponse({
+    ok: true,
+    hint: 'sales-coach Web App is live. POST to this URL with JSON { prospectName, date, snapshot } to auto-append the snapshot to the matching Notes-by-Gemini Doc.'
+  });
+}
+
+function jsonResponse(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * Find the most recent Notes-by-Gemini Doc whose title contains the
+ * prospect name. Title pattern from real emails:
+ *   "<Prospect> + Lauren Tickner 1:1 Coaching (Strategy) - YYYY/MM/DD HH:MM TZ - Notes by Gemini"
+ *   "<Prospect> Strategy Session / Lauren Tickner Scale Systems - … - Notes by Gemini"
+ */
+function findNotesDocByProspect(prospectName, dateHint) {
+  // Drive query — title contains prospectName + "Notes by Gemini".
+  // Escape single quotes in the prospect name for the query string.
+  var safeName = prospectName.replace(/'/g, "\\'");
+  var query = "title contains '" + safeName + "' and title contains 'Notes by Gemini' and mimeType = 'application/vnd.google-apps.document' and trashed = false";
+  var files = DriveApp.searchFiles(query);
+  var bestFile = null;
+  while (files.hasNext()) {
+    var f = files.next();
+    if (!bestFile || f.getDateCreated() > bestFile.getDateCreated()) bestFile = f;
+  }
+  return bestFile ? bestFile.getId() : null;
+}
+
+/**
+ * Insert the snapshot markdown at the very top of the Doc body, before
+ * the existing Gemini-generated content. Converts markdown headings,
+ * lists, and paragraphs using the same simple converter that
+ * appendReviewToNotesDoc uses.
+ */
+function insertSnapshotAtTop(docId, snapshotMarkdown) {
+  var doc = DocumentApp.openById(docId);
+  var body = doc.getBody();
+  var idx = 0;
+
+  // Banner so it's obvious in the Doc where the snapshot starts
+  body.insertParagraph(idx++, '— In-call Copilot snapshot —')
+      .setHeading(DocumentApp.ParagraphHeading.TITLE);
+  body.insertParagraph(idx++,
+    'Auto-inserted by the Sales Call Copilot · ' +
+    Utilities.formatDate(new Date(), 'GMT', 'yyyy-MM-dd HH:mm') + ' UTC · ' +
+    'Read by the sales-coach Apps Script when scoring this call.'
+  ).editAsText().setItalic(true).setFontSize(10);
+
+  // Markdown → Doc paragraphs (basic — headings + bullets + paragraphs)
+  var lines = snapshotMarkdown.split('\n');
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    if (line.indexOf('## ') === 0) {
+      body.insertParagraph(idx++, line.slice(3)).setHeading(DocumentApp.ParagraphHeading.HEADING2);
+    } else if (line.indexOf('### ') === 0) {
+      body.insertParagraph(idx++, line.slice(4)).setHeading(DocumentApp.ParagraphHeading.HEADING3);
+    } else if (line.indexOf('- ') === 0) {
+      body.insertListItem(idx++, line.slice(2));
+    } else if (line.indexOf('> ') === 0) {
+      body.insertParagraph(idx++, line.slice(2)).editAsText().setItalic(true);
+    } else if (line.trim() === '') {
+      body.insertParagraph(idx++, '');
+    } else {
+      body.insertParagraph(idx++, line);
+    }
+  }
+
+  // Hard separator so the prospect's view of the Gemini notes section is clear
+  body.insertParagraph(idx++, '— End of in-call snapshot · Gemini notes follow —')
+      .editAsText().setItalic(true).setFontSize(10);
+  body.insertHorizontalRule(idx++);
+
+  doc.saveAndClose();
+}

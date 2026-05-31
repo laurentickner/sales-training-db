@@ -95,6 +95,7 @@
     log: [],                 // { id, time, stageName, text, result }
     apiKey: store.get("copilot_api_key") || "",
     smart: store.get("copilot_smart") === "1",
+    docsWebhookUrl: store.get("copilot_docs_webhook_url") || "",
     handledObjections: [],   // labels of objections surfaced earlier this call
     beliefsCovered: {},      // belief id -> true once touched in discovery
     prospect: null,          // { name, business, situation, source, goal, extra, prep }
@@ -703,6 +704,7 @@
   function openSettings() {
     $("api-key").value = state.apiKey;
     $("smart-toggle").checked = state.smart;
+    var wh = $("docs-webhook-url"); if (wh) wh.value = state.docsWebhookUrl;
     openModal("settings-modal", "api-key");
   }
   function closeSettings() { closeModal(); }
@@ -714,8 +716,14 @@
     }
     state.apiKey = k;
     state.smart = $("smart-toggle").checked;
+    var wh = $("docs-webhook-url"); state.docsWebhookUrl = wh ? wh.value.trim() : state.docsWebhookUrl;
+    if (state.docsWebhookUrl && !/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec/.test(state.docsWebhookUrl)) {
+      alert("That doesn't look like an Apps Script Web App URL (it should start with https://script.google.com/macros/s/…/exec).");
+      return;
+    }
     var ok = store.set("copilot_api_key", state.apiKey) &
-             store.set("copilot_smart", state.smart ? "1" : "0");
+             store.set("copilot_smart", state.smart ? "1" : "0") &
+             store.set("copilot_docs_webhook_url", state.docsWebhookUrl);
     if (!ok) alert("Couldn't save to browser storage — settings will work for this session only.");
     updateModeBadge();
     closeSettings();
@@ -1490,6 +1498,43 @@
     } else {
       snapshotFallback(snapshot, done);
     }
+    // If a Docs Web App URL is configured, ALSO POST the snapshot to the
+    // Apps Script Web App so it auto-appends to the Notes-by-Gemini Doc
+    // (no manual paste needed). Fire-and-forget — the clipboard copy is
+    // the safety net if the webhook fails.
+    if (state.docsWebhookUrl) syncSnapshotToDoc(name, snapshot);
+  }
+  function syncSnapshotToDoc(prospectName, snapshot) {
+    var btn = $("btn-snapshot");
+    fetch(state.docsWebhookUrl, {
+      method: "POST",
+      // Apps Script Web Apps reject custom Content-Type without a CORS
+      // preflight; use text/plain so the browser sends a simple request.
+      // The Web App's doPost() reads e.postData.contents and parses JSON itself.
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        prospectName: prospectName,
+        date: new Date().toISOString().slice(0, 10),
+        snapshot: snapshot
+      })
+    })
+      .then(function (r) { return r.text().then(function (t) { return { code: r.status, body: t }; }); })
+      .then(function (res) {
+        var parsed; try { parsed = JSON.parse(res.body); } catch (e) { parsed = null; }
+        if (parsed && parsed.ok) {
+          if (btn) btn.textContent = "✓ Copied + synced to Notes Doc";
+        } else if (parsed && parsed.error) {
+          if (btn) btn.textContent = "✓ Copied (Doc sync: " + parsed.error.slice(0, 40) + ")";
+          if (window.console) console.warn("Snapshot sync failed: " + parsed.error);
+        } else {
+          if (btn) btn.textContent = "✓ Copied (Doc sync " + res.code + ")";
+          if (window.console) console.warn("Snapshot sync HTTP " + res.code + ": " + res.body.slice(0, 200));
+        }
+      })
+      .catch(function (e) {
+        if (btn) btn.textContent = "✓ Copied (Doc sync failed)";
+        if (window.console) console.warn("Snapshot sync error: " + e.message);
+      });
   }
   function snapshotFallback(snapshot, done) {
     var ta = document.createElement("textarea");
