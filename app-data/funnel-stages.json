@@ -33,8 +33,8 @@
     {
       "id": "discovery",
       "name": "2. Discovery",
-      "goal": "Understand IF and HOW you can help. Run the DISCOVER framework: Desire, Issue, Sum, Cost, Own, Verify, Everyone, Resources. Eliminate objections before the close.",
-      "listen_for": "Discovery flags — vague answers, emotional words, numbers, spouse/team mentions, past attempts, hedging. The copilot will surface probes.",
+      "goal": "Understand IF and HOW you can help. Run the DISCOVERY framework: Desire, Issue, Sum, Cost, Own, Verify, Everyone, Resources, Why. Eliminate objections IN discovery, before they land in the objections stage.",
+      "listen_for": "Discovery flags — vague answers, emotional words, numbers, partner/team mentions, past attempts, hedging, minimising language ('happy with', 'at least'). The copilot surfaces the probes. Tonality > words: concerned-operator, lower tone at end of questions, slow pace (NEPQ). Loop-back 5–7 layers — the first answer is rarely the real one.",
       "say": [
         "What's your biggest challenge right now? Or what's not working at the level it truly could be?",
         "CATALYST (Matt Ryder — use when there's no obvious pain, e.g. they say money isn't the issue): People don't book a call for no reason. So what shifted recently that made NOW the time to look at this? ... Have you tried anything before — and why didn't it stick? (If they give a surface answer, loop: aside from that, what about it actually spoke to you?) Then measure the gap: with your current way of doing it, how close does that realistically get you to [their goal]? — that gap is the urgency.",
@@ -52,7 +52,7 @@
         "What else have you tried to fix this? What did you like or dislike about it? What we've found is when people don't get the result, it's one of two things — [blank] or [blank]. Which do you think it was?",
         "Are you married? Is your partner supportive of the change? Do they know you're on this call — and what would they think if they knew?"
       ],
-      "advance_when": "You're 100% clear on their biggest challenge AND their real desire — business and personal. Not surface-level."
+      "advance_when": "You're 100% clear on their biggest challenge AND their real desire — both professional and personal. Not surface-level."
     },
     {
       "id": "transition",
@@ -69,8 +69,8 @@
     {
       "id": "pitch",
       "name": "4. Pitch",
-      "goal": "Sell the METHOD, not the deliverables. High-level promise -> 3 pillars -> delivery. Each pillar is the simultaneous explanation of why their past attempts failed and why this is different. Tie-down after every pillar.",
-      "listen_for": "Comprehension. If they say 'yeah' but clearly don't get it — stop and re-explain. Pillars 1 & 2 are paradigm shifts; 3 is the payoff. PROOF: back every pillar claim with proof — a case study, your own story, the reason-why, or the analogy — aim for 2-3 forms per claim, or it won't land. BREVITY RULE on tie-downs: the prospect's answer to each tie-down should be 1 line, max 10 seconds. Longer = they're avoiding or confused. Loop until tight before moving to the next pillar.",
+      "goal": "Sell the METHOD, not the deliverables. METHOD = the WHY (the reason your way works — the moat). DELIVERABLES = the WHAT (calls, modules, sessions, sprints, audits, dashboards). Reps who list deliverables get commoditised. Reps who sell method get bought. Structure: high-level promise → 3 pillars → delivery. Each pillar simultaneously explains why their past attempts failed AND why this approach is different. Tie-down after every pillar.",
+      "listen_for": "Comprehension over agreement. If they say 'yeah' but clearly don't get it — stop and re-explain. Pillars 1 & 2 are paradigm shifts; 3 is the payoff (what they walk away with). PROOF per pillar: case study, your own story, the reason-why, or the analogy — aim for 2–3 forms per pillar or it won't land. If you catch yourself describing WHAT they get, stop and pivot back to WHY the method works. BREVITY RULE on tie-downs: the prospect's answer to each tie-down should be 1 line, max 10 seconds. Longer = they're avoiding or confused — loop until tight before moving to the next pillar. Tonality: concerned-operator FOR them, not pushed-rep TO them.",
       "say": [
         "Gotcha. Do you have your pen and pad? Great — on your pen and pad, write out one through three (or four), with a good amount of space in between.",
         "Let me preface this by saying — everything we do is fully customised based on what's best for you. For you specifically, it's going to be three things, three things to help you go from [current state they said] to [desired state they said].",
