@@ -49,8 +49,7 @@
     stage: CALL_STAGES[0].id,
     log: [],
     liveFacts: store.get("triage_livefacts") || "",
-    sayLineDone: {},       // { [stageId]: { [key]: true } } — ticked SAY lines per stage
-    advanceReady: {},      // { [stageId]: true } — "advance when" callout ticked
+    sayLineDone: {}        // { [stageId]: { [key]: true } } — ticked SAY lines per stage
     greenLightDone: {}   // "stageId|index" -> true
   };
   var nextId = 1;
@@ -337,17 +336,25 @@
     (s.say || []).forEach(function (line, idx) { h += renderSayLi(s.id, idx, line); });
     h += "</ul>";
 
-    // "Advance when:" callout — clickable, cascades to green-light chips.
-    // Pulls the advance criterion from the stage's goal field.
-    var advReady = !!state.advanceReady[s.id];
-    h += '<button class="sr-advance' + (advReady ? " on" : "") +
-      '" data-stage="' + esc(s.id) + '" aria-pressed="' + advReady + '">' +
-      '<span class="sr-advance-box" aria-hidden="true"></span>' +
-      '<span class="sr-advance-text">' +
-      '<strong>Advance when:</strong> ' + esc(s.goal) +
-      "</span></button>";
+    // "Advance when:" callout — bidirectional cascade with green-light chips.
+    // advReady is DERIVED from chip state: green when (and only when) every
+    // green-light chip for this stage is ticked. Clicking the callout flips
+    // all chips at once (tick-all if not all-ticked, untick-all if all-ticked).
+    // Result: the callout always honestly reflects whether the stage is done.
+    var hasChips = !!(s.green_light && s.green_light.length);
+    var advReady = hasChips && s.green_light.every(function (_, idx) {
+      return !!state.greenLightDone[s.id + "|" + idx];
+    });
+    if (hasChips) {
+      h += '<button class="sr-advance' + (advReady ? " on" : "") +
+        '" data-stage="' + esc(s.id) + '" aria-pressed="' + advReady + '">' +
+        '<span class="sr-advance-box" aria-hidden="true"></span>' +
+        '<span class="sr-advance-text">' +
+        '<strong>Advance when:</strong> ' + esc(s.goal) +
+        "</span></button>";
+    }
 
-    if (s.green_light && s.green_light.length) {
+    if (hasChips) {
       h += '<div class="greenlight-zone">';
       h += '<div class="greenlight-title">Green-light — tick before moving on</div>';
       s.green_light.forEach(function (item, idx) {
@@ -379,7 +386,6 @@
     state.log = [];
     state.greenLightDone = {};
     state.sayLineDone = {};
-    state.advanceReady = {};
     nextId = 1;
     renderLog();
     setStage(STAGES()[0].id);
@@ -573,21 +579,20 @@
         renderStageRef();
         return;
       }
-      // Advance-when callout tick (cascades to all green-light chips for this stage)
+      // Advance-when callout tick — toggles all green-light chips at once.
+      // The advance button's own "ticked" state is derived from chip state,
+      // so we just flip the chips and the button follows.
       var adv = e.target.closest(".sr-advance");
       if (adv) {
         var advStageId = adv.getAttribute("data-stage");
-        var nowOn = !state.advanceReady[advStageId];
-        state.advanceReady[advStageId] = nowOn;
-        if (nowOn) {
-          // Forward cascade: tick all green-light chips for this stage.
-          // Unticking advance does NOT clear chips — preserves manual work.
-          var stage = stageById(advStageId);
-          if (stage && stage.green_light) {
-            stage.green_light.forEach(function (_, idx) {
-              state.greenLightDone[advStageId + "|" + idx] = true;
-            });
-          }
+        var stage = stageById(advStageId);
+        if (stage && stage.green_light) {
+          var allOn = stage.green_light.every(function (_, idx) {
+            return !!state.greenLightDone[advStageId + "|" + idx];
+          });
+          stage.green_light.forEach(function (_, idx) {
+            state.greenLightDone[advStageId + "|" + idx] = !allOn;
+          });
         }
         renderStageRef();
         return;
