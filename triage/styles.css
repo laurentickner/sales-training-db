@@ -982,12 +982,22 @@ body.focus-mode .layout {
   max-width: 720px;
   margin: 0 auto;
   flex-direction: column;
+  overflow: visible;
 }
 body.focus-mode .panel-left,
 body.focus-mode .panel-right {
-  flex: 1 1 auto !important;
+  flex: 0 0 auto !important;
   border-right: none;
   background: var(--bg);
+  overflow: visible;  /* don't clip — let stage-ref grow to fit chips + advance buttons */
+}
+/* Let the WHOLE PAGE scroll in focus mode instead of constraining everything
+   to viewport height. Otherwise green-light chips + advance button get
+   clipped below the SAY lines. */
+body.focus-mode {
+  height: auto !important;
+  min-height: 100vh;
+  overflow-y: auto !important;
 }
 
 /* Order flip: script (panel-right) at TOP, input (panel-left) at BOTTOM.
