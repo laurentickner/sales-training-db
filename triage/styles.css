@@ -122,17 +122,61 @@ body {
   box-shadow: inset 0 0 0 2px rgba(0,0,0,0.25);
 }
 
-/* ---- Layout ---- */
+/* ---- Layout: 3-pane with drag-resize ---- */
 .layout {
-  flex: 1; display: grid; grid-template-columns: 40% 60%;
-  gap: 0; overflow: hidden;
+  flex: 1; display: flex; flex-direction: row;
+  gap: 0; overflow: hidden; min-height: 0;
 }
 .panel {
   display: flex; flex-direction: column;
   overflow: hidden; padding: 16px 18px;
+  min-width: 0; min-height: 0;
 }
-.panel-left { border-right: 1px solid var(--border); background: var(--bg); }
-.panel-right { background: var(--bg-panel); }
+.panel-left {
+  border-right: 1px solid var(--border); background: var(--bg);
+  flex: 0 0 40%;
+}
+.panel-right {
+  background: var(--bg-panel);
+  flex: 1 1 60%;
+}
+
+/* Drag handles — hover + active states make them obvious */
+.vsplitter {
+  flex: 0 0 6px; background: var(--border);
+  cursor: col-resize; position: relative;
+  transition: background .12s ease; user-select: none;
+}
+.vsplitter:hover, .vsplitter:focus-visible, .vsplitter.dragging {
+  background: var(--cyan); outline: none;
+}
+.vsplitter::before {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px; height: 32px; background: var(--text-dim);
+  border-radius: 1px; opacity: 0.6;
+}
+.vsplitter:hover::before, .vsplitter.dragging::before {
+  background: #04222b; opacity: 1;
+}
+.hsplitter {
+  flex: 0 0 6px; background: var(--border);
+  cursor: row-resize; position: relative;
+  transition: background .12s ease; user-select: none;
+  margin: 6px 0; border-radius: 3px;
+}
+.hsplitter:hover, .hsplitter:focus-visible, .hsplitter.dragging {
+  background: var(--cyan); outline: none;
+}
+.hsplitter::before {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px; height: 2px; background: var(--text-dim);
+  border-radius: 1px; opacity: 0.6;
+}
+.hsplitter:hover::before, .hsplitter.dragging::before {
+  background: #04222b; opacity: 1;
+}
 .panel-title {
   font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px;
   color: var(--text-dim); margin-bottom: 12px; flex-shrink: 0;
@@ -291,12 +335,22 @@ body {
 
 @media (max-width: 820px) {
   body { overflow: auto; height: auto; min-height: 100vh; }
-  .layout { grid-template-columns: 1fr; grid-template-rows: auto auto; overflow: visible; }
+  .layout { flex-direction: column; overflow: visible; }
   .panel { overflow: visible; }
-  .panel-left { border-right: none; border-bottom: 1px solid var(--border); }
+  .panel-left {
+    border-right: none; border-bottom: 1px solid var(--border);
+    flex: 1 1 auto;
+  }
+  .panel-right { flex: 1 1 auto; }
   .log { max-height: 30vh; }
   .copilot { max-height: none; }
   .stage-ref { max-height: none; }
+  .vsplitter, .hsplitter { display: none; }  /* hide drag handles on mobile */
+  /* Topbar: allow buttons to scroll horizontally when squeezed */
+  .topbar-actions {
+    flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 24px), transparent 100%);
+  }
 }
 
 /* ---- Accessibility: skip link + focus rings ---- */
@@ -545,16 +599,30 @@ body {
   text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px;
 }
 .greenlight-chip {
-  display: inline-block; margin: 3px 6px 3px 0;
-  font-size: 12px; font-weight: 600; font-family: inherit;
-  padding: 5px 11px; border-radius: 20px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 7px;
+  margin: 4px 7px 4px 0;
+  font-size: 13px; font-weight: 600; font-family: inherit;
+  padding: 7px 14px; border-radius: 22px; cursor: pointer;
   background: var(--bg-card); color: var(--text);
   border: 1px solid var(--border);
+  transition: background .12s ease, border-color .12s ease;
 }
+.greenlight-chip::before {
+  content: ""; width: 18px; height: 18px; flex-shrink: 0;
+  border: 2px solid var(--text-dim); border-radius: 4px;
+  background: transparent;
+  transition: border-color .12s ease, background .12s ease;
+}
+.greenlight-chip:hover { border-color: var(--cyan); }
+.greenlight-chip:hover::before { border-color: var(--cyan); }
 .greenlight-chip.on {
   background: #15402c; color: var(--green); border-color: #1e5e40;
 }
-.greenlight-chip.on::before { content: "✓ "; font-weight: 800; }
+.greenlight-chip.on::before {
+  content: "✓"; color: #04222b; background: var(--green);
+  border-color: var(--green); font-weight: 900;
+  font-size: 13px; line-height: 14px; text-align: center;
+}
 
 /* Tone banner under the stage strip — tells rep the energy to bring */
 .tone-banner {
@@ -672,3 +740,47 @@ body.mode-outbound .style-banner::before { content: "📲 "; }
   font-size: 11px; color: #ffb4b4; padding: 6px 14px;
   border-top: 1px solid rgba(255,56,56,.2); background: rgba(0,0,0,.25);
 }
+
+/* ---- Right panel: copilot + stage-ref split via hsplitter ---- */
+.panel-right { display: flex; flex-direction: column; }
+#copilot   { flex: 1 1 60%; min-height: 0; }
+#stage-ref { flex: 0 1 38%; min-height: 0; overflow-y: auto; }
+
+/* ---- Adjustable font size (S / M / L / XL — one button cycles).
+   Scales ONLY the live-reading text the rep stares at during a call:
+   copilot, stage-ref, log, input, facts. Topbar + modals stay stable. */
+body.fs-l .copilot { font-size: 16px; }
+body.fs-l .stage-ref .sr-goal,
+body.fs-l .stage-ref .sr-listen,
+body.fs-l .stage-ref ul li { font-size: 14.5px; line-height: 1.7; }
+body.fs-l .card-title,
+body.fs-l .say-step,
+body.fs-l .say-block { font-size: 15px; line-height: 1.65; }
+body.fs-l #input,
+body.fs-l #live-facts { font-size: 15px; line-height: 1.6; }
+body.fs-l .log-entry .log-text { font-size: 14px; }
+body.fs-l .empty-state p { font-size: 16px; }
+
+body.fs-xl .copilot { font-size: 18px; }
+body.fs-xl .stage-ref .sr-goal,
+body.fs-xl .stage-ref .sr-listen,
+body.fs-xl .stage-ref ul li { font-size: 16.5px; line-height: 1.75; }
+body.fs-xl .card-title,
+body.fs-xl .say-step,
+body.fs-xl .say-block { font-size: 17px; line-height: 1.7; }
+body.fs-xl #input,
+body.fs-xl #live-facts { font-size: 17px; line-height: 1.6; }
+body.fs-xl .log-entry .log-text { font-size: 16px; }
+body.fs-xl .empty-state p { font-size: 18px; }
+
+body.fs-s .copilot { font-size: 12.5px; }
+body.fs-s .stage-ref .sr-goal,
+body.fs-s .stage-ref .sr-listen,
+body.fs-s .stage-ref ul li { font-size: 11.5px; line-height: 1.5; }
+body.fs-s .card-title,
+body.fs-s .say-step,
+body.fs-s .say-block { font-size: 12.5px; line-height: 1.55; }
+body.fs-s #input,
+body.fs-s #live-facts { font-size: 12.5px; line-height: 1.5; }
+body.fs-s .log-entry .log-text { font-size: 11.5px; }
+body.fs-s .empty-state p { font-size: 13px; }

@@ -359,6 +359,126 @@
     $("input").focus();
   }
 
+  /* ---------- font size cycle (S / M / L / XL on <body>) ---------- */
+  var FONT_SIZES = [
+    { id: "s",  label: "S" },
+    { id: "m",  label: "M" },
+    { id: "l",  label: "L" },
+    { id: "xl", label: "XL" }
+  ];
+  function applyFontSize(id) {
+    var body = document.body;
+    FONT_SIZES.forEach(function (s) { body.classList.remove("fs-" + s.id); });
+    if (id && id !== "m") body.classList.add("fs-" + id);
+    var lbl = $("fontsize-label");
+    if (lbl) {
+      var found = FONT_SIZES.find(function (s) { return s.id === id; });
+      lbl.textContent = (found && found.label) || "M";
+    }
+    store.set("triage_font_size", id);
+  }
+  function cycleFontSize() {
+    var current = store.get("triage_font_size") || "m";
+    var i = FONT_SIZES.findIndex(function (s) { return s.id === current; });
+    var next = FONT_SIZES[(i + 1) % FONT_SIZES.length];
+    applyFontSize(next.id);
+  }
+
+  /* ---------- 3-pane drag-resize ----------
+     vsplitter = left vs right; hsplitter = copilot vs stage-ref.
+     Both persist size in localStorage. Keyboard arrows nudge in steps. */
+  function attachSplitterListeners() {
+    var saved = (function () {
+      try { return JSON.parse(store.get("triage_pane_sizes") || "{}"); }
+      catch (e) { return {}; }
+    })();
+    var panelLeft = $("panel-left");
+    var copilotEl = $("copilot");
+    var stageRefEl = $("stage-ref");
+    if (saved.leftPct && panelLeft) {
+      panelLeft.style.flex = "0 0 " + saved.leftPct + "%";
+    }
+    if (saved.copilotPct && copilotEl && stageRefEl) {
+      copilotEl.style.flex = "0 0 " + saved.copilotPct + "%";
+      stageRefEl.style.flex = "0 0 " + (98 - saved.copilotPct) + "%";
+    }
+    function persist(partial) {
+      var prev;
+      try { prev = JSON.parse(store.get("triage_pane_sizes") || "{}"); }
+      catch (e) { prev = {}; }
+      var next = Object.assign({}, prev, partial);
+      store.set("triage_pane_sizes", JSON.stringify(next));
+    }
+    var vs = $("vsplitter");
+    if (vs && panelLeft) {
+      var dragV = false;
+      vs.addEventListener("pointerdown", function (e) {
+        dragV = true; vs.classList.add("dragging");
+        vs.setPointerCapture && vs.setPointerCapture(e.pointerId);
+        e.preventDefault();
+      });
+      vs.addEventListener("pointermove", function (e) {
+        if (!dragV) return;
+        var layout = $("layout"); if (!layout) return;
+        var rect = layout.getBoundingClientRect();
+        var pct = ((e.clientX - rect.left) / rect.width) * 100;
+        pct = Math.max(20, Math.min(75, pct));
+        panelLeft.style.flex = "0 0 " + pct.toFixed(1) + "%";
+      });
+      vs.addEventListener("pointerup", function (e) {
+        if (!dragV) return;
+        dragV = false; vs.classList.remove("dragging");
+        try { vs.releasePointerCapture && vs.releasePointerCapture(e.pointerId); } catch (er) {}
+        var m = (panelLeft.style.flex || "").match(/0 0 ([0-9.]+)%/);
+        if (m) persist({ leftPct: parseFloat(m[1]) });
+      });
+      vs.addEventListener("keydown", function (e) {
+        if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+        e.preventDefault();
+        var m = (panelLeft.style.flex || "0 0 40%").match(/0 0 ([0-9.]+)%/);
+        var cur = m ? parseFloat(m[1]) : 40;
+        var next = Math.max(20, Math.min(75, cur + (e.key === "ArrowLeft" ? -2 : 2)));
+        panelLeft.style.flex = "0 0 " + next.toFixed(1) + "%";
+        persist({ leftPct: next });
+      });
+    }
+    var hs = $("hsplitter");
+    if (hs && copilotEl && stageRefEl) {
+      var dragH = false;
+      hs.addEventListener("pointerdown", function (e) {
+        dragH = true; hs.classList.add("dragging");
+        hs.setPointerCapture && hs.setPointerCapture(e.pointerId);
+        e.preventDefault();
+      });
+      hs.addEventListener("pointermove", function (e) {
+        if (!dragH) return;
+        var panelRight = $("panel-right"); if (!panelRight) return;
+        var rect = panelRight.getBoundingClientRect();
+        var pct = ((e.clientY - rect.top - 50) / (rect.height - 50)) * 100;
+        pct = Math.max(20, Math.min(85, pct));
+        copilotEl.style.flex = "0 0 " + pct.toFixed(1) + "%";
+        stageRefEl.style.flex = "0 0 " + (98 - pct).toFixed(1) + "%";
+      });
+      hs.addEventListener("pointerup", function (e) {
+        if (!dragH) return;
+        dragH = false; hs.classList.remove("dragging");
+        try { hs.releasePointerCapture && hs.releasePointerCapture(e.pointerId); } catch (er) {}
+        var m = (copilotEl.style.flex || "").match(/0 0 ([0-9.]+)%/);
+        if (m) persist({ copilotPct: parseFloat(m[1]) });
+      });
+      hs.addEventListener("keydown", function (e) {
+        if (e.key !== "ArrowUp" && e.key !== "ArrowDown") return;
+        e.preventDefault();
+        var m = (copilotEl.style.flex || "1 1 60%").match(/(?:0 0|1 1) ([0-9.]+)%/);
+        var cur = m ? parseFloat(m[1]) : 60;
+        var next = Math.max(20, Math.min(85, cur + (e.key === "ArrowUp" ? -3 : 3)));
+        copilotEl.style.flex = "0 0 " + next.toFixed(1) + "%";
+        stageRefEl.style.flex = "0 0 " + (98 - next).toFixed(1) + "%";
+        persist({ copilotPct: next });
+      });
+    }
+  }
+
   /* ---------- init ---------- */
   function init() {
     // restore mode from storage
@@ -394,6 +514,15 @@
       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); analyze(); }
     });
     $("btn-newcall").addEventListener("click", newCall);
+
+    // Font size: restore from storage + wire the cycle button
+    applyFontSize(store.get("triage_font_size") || "m");
+    var btnFs = $("btn-fontsize");
+    if (btnFs) btnFs.addEventListener("click", cycleFontSize);
+
+    // 3-pane drag-resize
+    attachSplitterListeners();
+
     $("live-facts").addEventListener("input", function () {
       state.liveFacts = this.value;
       store.set("triage_livefacts", state.liveFacts);
