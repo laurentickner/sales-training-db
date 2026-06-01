@@ -320,32 +320,39 @@ body {
   border-bottom: 0 !important;  /* override the .stage-ref li default 1px border-bottom */
 }
 
-/* ---- Tickable SAY rows (v=58 port) ----
-   Whole row is clickable: 20px square checkbox on the left + text. Hover
-   = cyan border + tint. Ticked = green fill, ✓ inside, row tinted green,
-   text strikethrough. Bigger touch target for live-call use. */
+/* ---- Tickable SAY rows ----
+   Whole row clickable. Lighter card background so each row pops against
+   the dark page bg. Brighter checkbox border (cyan-tinted) so the click
+   target is obvious before hover. */
 .sr-say-li {
-  display: flex; gap: 10px; align-items: flex-start;
-  padding: 7px 10px 7px 10px;
-  border: 1px solid transparent;
-  border-radius: 7px;
+  display: flex; gap: 11px; align-items: flex-start;
+  padding: 9px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 2px;
-  transition: background .12s ease, border-color .12s ease;
+  margin-bottom: 5px;
+  transition: background .12s ease, border-color .12s ease, transform .08s ease;
 }
 .sr-say-li:hover {
-  background: rgba(0, 191, 241, 0.06);
-  border-color: rgba(0, 191, 241, 0.4);
+  background: rgba(0, 191, 241, 0.12);
+  border-color: rgba(0, 191, 241, 0.55);
 }
+.sr-say-li:active { transform: translateY(1px); }
 .sr-say-box {
-  flex-shrink: 0; width: 18px; height: 18px;
-  border: 2px solid var(--text-dim); border-radius: 4px;
-  background: transparent; margin-top: 2px;
+  flex-shrink: 0; width: 20px; height: 20px;
+  border: 2px solid rgba(0, 191, 241, 0.55);   /* brighter cyan-tinted border — pops on dark */
+  border-radius: 5px;
+  background: rgba(0, 191, 241, 0.05);
+  margin-top: 1px;
   display: inline-flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 900; color: transparent;
+  font-size: 14px; font-weight: 900; color: transparent;
   transition: background .12s ease, border-color .12s ease;
 }
-.sr-say-li:hover .sr-say-box { border-color: var(--cyan); }
+.sr-say-li:hover .sr-say-box {
+  border-color: var(--cyan);
+  background: rgba(0, 191, 241, 0.18);
+}
 .sr-say-text { flex: 1; color: var(--text); }
 .sr-say-li.on {
   background: rgba(69, 209, 138, 0.08);
@@ -693,22 +700,31 @@ body {
   text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px;
 }
 .greenlight-chip {
-  display: inline-flex; align-items: center; gap: 7px;
+  display: inline-flex; align-items: center; gap: 9px;
   margin: 4px 7px 4px 0;
   font-size: 13px; font-weight: 600; font-family: inherit;
-  padding: 7px 14px; border-radius: 22px; cursor: pointer;
-  background: var(--bg-card); color: var(--text);
-  border: 1px solid var(--border);
-  transition: background .12s ease, border-color .12s ease;
+  padding: 8px 15px; border-radius: 22px; cursor: pointer;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: background .12s ease, border-color .12s ease, transform .08s ease;
 }
 .greenlight-chip::before {
-  content: ""; width: 18px; height: 18px; flex-shrink: 0;
-  border: 2px solid var(--text-dim); border-radius: 4px;
-  background: transparent;
+  content: ""; width: 20px; height: 20px; flex-shrink: 0;
+  border: 2px solid rgba(0, 191, 241, 0.55);
+  border-radius: 5px;
+  background: rgba(0, 191, 241, 0.05);
   transition: border-color .12s ease, background .12s ease;
 }
-.greenlight-chip:hover { border-color: var(--cyan); }
-.greenlight-chip:hover::before { border-color: var(--cyan); }
+.greenlight-chip:hover {
+  background: rgba(0, 191, 241, 0.10);
+  border-color: rgba(0, 191, 241, 0.5);
+}
+.greenlight-chip:hover::before {
+  border-color: var(--cyan);
+  background: rgba(0, 191, 241, 0.18);
+}
+.greenlight-chip:active { transform: translateY(1px); }
 .greenlight-chip.on {
   background: #15402c; color: var(--green); border-color: #1e5e40;
 }
