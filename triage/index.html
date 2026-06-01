@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Scale Systems Triage Call Copilot</title>
-<link rel="stylesheet" href="styles.css?v=4" />
+<link rel="stylesheet" href="styles.css?v=5" />
 </head>
 <body>
 
@@ -62,7 +62,10 @@
       <p class="hint">Enter = analyze · Shift+Enter = new line</p>
     </div>
     <div class="facts-zone">
-      <label class="facts-label" for="live-facts">Triage notes — capture for the closer</label>
+      <label class="facts-label" for="live-facts">
+        <span>Triage notes — capture for the closer</span>
+        <span id="facts-save-pip" class="save-pip" role="status" aria-live="polite">Saved</span>
+      </label>
       <textarea id="live-facts" rows="6"
         placeholder="goal = $20k/mo  ·  current = $4k/mo&#10;platform = LinkedIn (62k followers)  ·  audience = real&#10;past attempts = tried Mariah's course, no result&#10;time/day = ~45 min  ·  urgency = wants help this month&#10;budget = 2-6k aligns  ·  decision-maker = spouse involved&#10;notes for closer: stalled on urgency, watch for that"></textarea>
     </div>
@@ -96,7 +99,7 @@
 
 </main>
 
-<script src="data/data.js?v=16"></script>
-<script src="app.js?v=16"></script>
+<script src="data/data.js?v=17"></script>
+<script src="app.js?v=17"></script>
 </body>
 </html>

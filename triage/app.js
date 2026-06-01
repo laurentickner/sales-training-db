@@ -43,6 +43,39 @@
     set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   };
 
+  /* ---------- schema version (for future state migrations) ----------
+     Lightweight marker so future migrations can branch on stored version.
+     Today everything is simple strings + one tiny JSON blob — no migration
+     needed yet. Bump SCHEMA_VERSION + add a branch here when a localStorage
+     shape changes incompatibly. */
+  var SCHEMA_VERSION = 1;
+  (function migrateSchema() {
+    var stored = parseInt(store.get("triage_schema_version") || "0", 10);
+    if (stored >= SCHEMA_VERSION) return;
+    // (future migrations would branch on `stored` here)
+    store.set("triage_schema_version", String(SCHEMA_VERSION));
+  })();
+
+  /* ---------- save-state pip (P0 #2) — flash "Saving…" amber, then
+     settle to "Saved" green; idle to invisible after 1.2s. */
+  function flashSavePip(elId) {
+    var el = document.getElementById(elId);
+    if (!el) return;
+    el.classList.remove("saved");
+    el.classList.add("on", "saving");
+    el.textContent = "Saving…";
+    clearTimeout(el._savedTimer);
+    clearTimeout(el._fadeTimer);
+    el._savedTimer = setTimeout(function () {
+      el.classList.remove("saving");
+      el.classList.add("saved");
+      el.textContent = "Saved";
+      el._fadeTimer = setTimeout(function () {
+        el.classList.remove("on", "saved");
+      }, 1200);
+    }, 180);
+  }
+
   /* ---------- state ---------- */
   var state = {
     mode: store.get("triage_mode") || "call",  // "call" or "dm"
@@ -280,6 +313,9 @@
     if (result.anyHit) {
       // Objections (from the closer's bank) lead — Cole's rule: handle
       // every objection on appearance. Stage pushback comes after.
+      // ARIA: assertive so screen readers interrupt — this is a deal-
+      // breaking signal the rep can't miss (WCAG SC 4.1.3).
+      c.setAttribute("aria-live", "assertive");
       var html = "";
       if (result.objectionHits && result.objectionHits.length) {
         html += result.objectionHits.map(objectionCard).join("");
@@ -289,6 +325,8 @@
       }
       c.innerHTML = html;
     } else {
+      // ARIA: polite — no urgency, just an FYI the line was clean.
+      c.setAttribute("aria-live", "polite");
       c.innerHTML = noneCard();
     }
     c.scrollTop = 0;
@@ -561,6 +599,7 @@
     $("live-facts").addEventListener("input", function () {
       state.liveFacts = this.value;
       store.set("triage_livefacts", state.liveFacts);
+      flashSavePip("facts-save-pip");
     });
     $("stage-strip").addEventListener("click", function (e) {
       var b = e.target.closest ? e.target.closest(".stage-pill") : null;
