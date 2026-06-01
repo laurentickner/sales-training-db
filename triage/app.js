@@ -49,6 +49,8 @@
     stage: CALL_STAGES[0].id,
     log: [],
     liveFacts: store.get("triage_livefacts") || "",
+    sayLineDone: {},       // { [stageId]: { [key]: true } } — ticked SAY lines per stage
+    advanceReady: {},      // { [stageId]: true } — "advance when" callout ticked
     greenLightDone: {}   // "stageId|index" -> true
   };
   var nextId = 1;
@@ -313,13 +315,38 @@
     if (s.tone) { bar.hidden = false; bar.textContent = s.tone; }
     else { bar.hidden = true; bar.textContent = ""; }
   }
+  // Stable key for a SAY line — combines stage id, index, and a text
+  // signature so re-ordering the JSON doesn't carry ticks to the wrong line.
+  function sayLineKey(stageId, index, text) {
+    var sig = String(text || "").slice(0, 60).replace(/\s+/g, " ").trim();
+    return stageId + "|" + index + "|" + sig;
+  }
+  function renderSayLi(stageId, index, line) {
+    var key = sayLineKey(stageId, index, line);
+    var done = !!(state.sayLineDone[stageId] && state.sayLineDone[stageId][key]);
+    return '<li class="sr-say-li' + (done ? " on" : "") +
+      '" data-stage="' + esc(stageId) + '" data-key="' + esc(key) + '">' +
+      '<span class="sr-say-box" aria-hidden="true"></span>' +
+      '<span class="sr-say-text">' + esc(line) + "</span></li>";
+  }
   function renderStageRef() {
     var s = currentStage();
     var h = "<h3>" + esc(s.name) + " — what to do</h3>";
     h += '<div class="sr-goal"><strong>Goal:</strong> ' + esc(s.goal) + "</div>";
-    h += '<div class="sr-say-label">Say</div><ul>';
-    (s.say || []).forEach(function (line) { h += "<li>" + esc(line) + "</li>"; });
+    h += '<div class="sr-say-label">Say</div><ul class="sr-say-list">';
+    (s.say || []).forEach(function (line, idx) { h += renderSayLi(s.id, idx, line); });
     h += "</ul>";
+
+    // "Advance when:" callout — clickable, cascades to green-light chips.
+    // Pulls the advance criterion from the stage's goal field.
+    var advReady = !!state.advanceReady[s.id];
+    h += '<button class="sr-advance' + (advReady ? " on" : "") +
+      '" data-stage="' + esc(s.id) + '" aria-pressed="' + advReady + '">' +
+      '<span class="sr-advance-box" aria-hidden="true"></span>' +
+      '<span class="sr-advance-text">' +
+      '<strong>Advance when:</strong> ' + esc(s.goal) +
+      "</span></button>";
+
     if (s.green_light && s.green_light.length) {
       h += '<div class="greenlight-zone">';
       h += '<div class="greenlight-title">Green-light — tick before moving on</div>';
@@ -348,9 +375,11 @@
 
   /* ---------- new call ---------- */
   function newCall() {
-    if (state.log.length && !confirm("Start a fresh session? This clears the log + green-lights.")) return;
+    if (state.log.length && !confirm("Start a fresh session? This clears the log, ticks, and green-lights.")) return;
     state.log = [];
     state.greenLightDone = {};
+    state.sayLineDone = {};
+    state.advanceReady = {};
     nextId = 1;
     renderLog();
     setStage(STAGES()[0].id);
@@ -532,11 +561,44 @@
       if (b) setStage(b.getAttribute("data-id"));
     });
     $("stage-ref").addEventListener("click", function (e) {
-      var b = e.target.closest ? e.target.closest(".greenlight-chip") : null;
-      if (!b) return;
-      var k = b.getAttribute("data-key");
-      state.greenLightDone[k] = !state.greenLightDone[k];
-      renderStageRef();
+      if (!e.target.closest) return;
+      // SAY line tick
+      var sayLi = e.target.closest(".sr-say-li");
+      if (sayLi) {
+        var sid = sayLi.getAttribute("data-stage");
+        var sk = sayLi.getAttribute("data-key");
+        if (!state.sayLineDone[sid]) state.sayLineDone[sid] = {};
+        if (state.sayLineDone[sid][sk]) delete state.sayLineDone[sid][sk];
+        else state.sayLineDone[sid][sk] = true;
+        renderStageRef();
+        return;
+      }
+      // Advance-when callout tick (cascades to all green-light chips for this stage)
+      var adv = e.target.closest(".sr-advance");
+      if (adv) {
+        var advStageId = adv.getAttribute("data-stage");
+        var nowOn = !state.advanceReady[advStageId];
+        state.advanceReady[advStageId] = nowOn;
+        if (nowOn) {
+          // Forward cascade: tick all green-light chips for this stage.
+          // Unticking advance does NOT clear chips — preserves manual work.
+          var stage = stageById(advStageId);
+          if (stage && stage.green_light) {
+            stage.green_light.forEach(function (_, idx) {
+              state.greenLightDone[advStageId + "|" + idx] = true;
+            });
+          }
+        }
+        renderStageRef();
+        return;
+      }
+      // Green-light chip tick
+      var chip = e.target.closest(".greenlight-chip");
+      if (chip) {
+        var k = chip.getAttribute("data-key");
+        state.greenLightDone[k] = !state.greenLightDone[k];
+        renderStageRef();
+      }
     });
     $("input").focus();
   }
