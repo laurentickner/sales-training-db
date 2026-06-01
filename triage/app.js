@@ -83,7 +83,9 @@
     log: [],
     liveFacts: store.get("triage_livefacts") || "",
     sayLineDone: {},       // { [stageId]: { [key]: true } } — ticked SAY lines per stage
-    greenLightDone: {}     // "stageId|index" -> true
+    greenLightDone: {},    // "stageId|index" -> true
+    focusMode: store.get("triage_focus_mode") === "1",  // hide-most-things mode for live calls
+    showAllSay: false      // when focus is on, "Show all N more lines" toggle per stage view
   };
   var nextId = 1;
 
@@ -370,9 +372,17 @@
     var s = currentStage();
     var h = "<h3>" + esc(s.name) + " — what to do</h3>";
     h += '<div class="sr-goal"><strong>Goal:</strong> ' + esc(s.goal) + "</div>";
-    h += '<div class="sr-say-label">Say</div><ul class="sr-say-list">';
-    (s.say || []).forEach(function (line, idx) { h += renderSayLi(s.id, idx, line); });
+    h += '<div class="sr-say-label">Say</div>';
+    // Focus mode: show first 3 SAY lines by default; "Show all N more" expands.
+    var sayLines = s.say || [];
+    var listClass = "sr-say-list" + (state.showAllSay ? " expanded" : "");
+    h += '<ul class="' + listClass + '">';
+    sayLines.forEach(function (line, idx) { h += renderSayLi(s.id, idx, line); });
     h += "</ul>";
+    if (sayLines.length > 3 && !state.showAllSay) {
+      h += '<button class="sr-show-more-say" data-action="show-all-say">+ Show ' +
+        (sayLines.length - 3) + ' more lines</button>';
+    }
 
     // "Advance when:" callout — bidirectional cascade with green-light chips.
     // advReady is DERIVED from chip state: green when (and only when) every
@@ -407,6 +417,7 @@
   }
   function setStage(id) {
     state.stage = stageById(id).id;
+    state.showAllSay = false;  // each new stage starts with the focus-mode 3-line view
     renderStageStrip();
     renderToneBanner();
     renderStageRef();
@@ -430,6 +441,29 @@
     $("copilot").innerHTML = '<div class="empty-state"><p class="empty-big">Ready.</p>' +
       '<p>Type what the prospect just said on the left.</p></div>';
     $("input").focus();
+  }
+
+  /* ---------- focus mode (hide everything except live-call essentials) ---------- */
+  function applyFocusMode() {
+    document.body.classList.toggle("focus-mode", !!state.focusMode);
+    var lbl = $("focus-label");
+    if (lbl) lbl.textContent = state.focusMode ? "End call" : "Start call";
+    var btn = $("btn-focus");
+    if (btn) {
+      btn.title = state.focusMode
+        ? "Exit focus mode — show all panels"
+        : "Hide everything except what you need for the live call";
+      // Swap glyph too
+      var glyph = btn.querySelector("span[aria-hidden]");
+      if (glyph) glyph.textContent = state.focusMode ? "■" : "▶";
+    }
+  }
+  function toggleFocusMode() {
+    state.focusMode = !state.focusMode;
+    state.showAllSay = false;  // reset on enter/exit so the truncation re-applies
+    store.set("triage_focus_mode", state.focusMode ? "1" : "0");
+    applyFocusMode();
+    renderStageRef();
   }
 
   /* ---------- font size cycle (S / M / L / XL on <body>) ---------- */
@@ -588,6 +622,11 @@
     });
     $("btn-newcall").addEventListener("click", newCall);
 
+    // Focus mode: restore from storage + wire the toggle button
+    applyFocusMode();
+    var btnFocus = $("btn-focus");
+    if (btnFocus) btnFocus.addEventListener("click", toggleFocusMode);
+
     // Font size: restore from storage + wire the cycle button
     applyFontSize(store.get("triage_font_size") || "m");
     var btnFs = $("btn-fontsize");
@@ -607,6 +646,13 @@
     });
     $("stage-ref").addEventListener("click", function (e) {
       if (!e.target.closest) return;
+      // "Show all N more lines" toggle (focus mode SAY truncation)
+      var showMore = e.target.closest('[data-action="show-all-say"]');
+      if (showMore) {
+        state.showAllSay = true;
+        renderStageRef();
+        return;
+      }
       // SAY line tick
       var sayLi = e.target.closest(".sr-say-li");
       if (sayLi) {

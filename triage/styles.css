@@ -951,3 +951,84 @@ body.fs-s .empty-state p { font-size: 13px; }
     scroll-behavior: auto !important;
   }
 }
+
+/* =====================================================================
+   FOCUS MODE — strips everything except what's needed during a live call.
+   Toggled by `body.focus-mode` class. See FOCUS-MODE-PLAN.md.
+   ===================================================================== */
+
+/* Hide topbar noise (mode-switch, font, sales-call link, new-session) */
+body.focus-mode .mode-switch,
+body.focus-mode #btn-fontsize,
+body.focus-mode .topbar-actions a.btn,
+body.focus-mode #btn-newcall { display: none; }
+
+/* Hide stage strip + style banner + tone banner */
+body.focus-mode .stage-strip,
+body.focus-mode .style-banner,
+body.focus-mode .tone-banner { display: none; }
+
+/* Left panel: hide log + facts (notes promoted to expand-on-tap; commit 3 adds the sheet) */
+body.focus-mode .facts-zone,
+body.focus-mode .log,
+body.focus-mode #log { display: none; }
+
+/* Hide drag handles in focus mode — no splitting allowed */
+body.focus-mode .vsplitter,
+body.focus-mode .hsplitter { display: none; }
+
+/* Centre + cap width so the column reads naturally on big monitors */
+body.focus-mode .layout {
+  max-width: 720px;
+  margin: 0 auto;
+  flex-direction: column;
+}
+body.focus-mode .panel-left,
+body.focus-mode .panel-right {
+  flex: 1 1 auto !important;
+  border-right: none;
+  background: var(--bg);
+}
+body.focus-mode .panel-right { padding-top: 0; }
+
+/* Make the input the hero — bigger, more prominent */
+body.focus-mode .input-zone { margin-bottom: 18px; }
+body.focus-mode #input {
+  min-height: 96px; font-size: 16px;
+}
+body.focus-mode #btn-analyze {
+  width: 100%; padding: 14px 18px; font-size: 15px; min-height: 50px;
+}
+body.focus-mode .input-row { margin-top: 12px; }
+
+/* Stage reference in focus mode: stays bordered + readable */
+body.focus-mode #stage-ref {
+  flex: 1 1 auto !important; min-height: 0;
+  border-top: 1px solid var(--border); padding-top: 14px; margin-top: 6px;
+}
+
+/* Focus-mode topbar: "End call" button styled red for explicit exit */
+body.focus-mode #btn-focus {
+  background: var(--red); color: #2a0d0d; border-color: #c41818;
+}
+
+/* SAY truncation — show first 3, hide the rest behind "Show all" */
+body.focus-mode .sr-say-list:not(.expanded) > .sr-say-li:nth-child(n+4) {
+  display: none;
+}
+.sr-show-more-say {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 4px; padding: 6px 12px;
+  background: transparent; border: 1px dashed var(--border);
+  color: var(--text-dim); border-radius: 18px;
+  font-family: inherit; font-size: 12px; cursor: pointer;
+}
+.sr-show-more-say:hover { color: var(--cyan); border-color: var(--cyan); }
+body:not(.focus-mode) .sr-show-more-say { display: none; }
+
+/* Mobile in focus mode: full bleed, comfortable thumb-reach */
+@media (max-width: 820px) {
+  body.focus-mode .layout { max-width: 100%; padding: 0 8px; }
+  body.focus-mode .topbar { padding: 10px 12px; }
+  body.focus-mode #btn-focus { padding: 8px 10px; font-size: 12px; }
+}

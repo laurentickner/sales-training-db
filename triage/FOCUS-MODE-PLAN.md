@@ -178,15 +178,12 @@ Total: ~2.5 hours. Low risk because everything's additive (existing dense mode u
 
 ---
 
-## Open questions Lauren needs to answer
+## Locked decisions (Lauren, 2026-06-01)
 
-1. **"Top 3 SAY lines"** — how does the tool know WHICH 3? Options:
-   - First 3 in order (simple)
-   - The 3 that aren't yet ticked (smart but harder)
-   - Manually flagged "priority" in the JSON (most flexible but requires data edit)
-2. **"Help" button content** — just the objection bank? Or also the per-stage pushback_script? Or also the "standing moves" cheat-card? (Recommend: all three, in tabs.)
-3. **Does Triage Notes stay accessible in focus mode** via expand-on-tap, or hidden entirely until End call? (Recommend: expand-on-tap — she'll want to capture facts mid-call.)
-4. **Does the Help button surface the objection bank automatically when a card matches** (so she doesn't have to ask), or only on her tap? (Recommend: automatic — same as today's behaviour, just rendered in the drawer instead of the bottom panel.)
+1. **SAY truncation:** first 3 lines in order. Triage script is sequential — whatever's first in the JSON's `say` array.
+2. **Help drawer content:** all 3 tabs — objection bank (29 closer objections) + current stage's PUSH BACK script + standing moves cheat-card.
+3. **Triage Notes:** expand-on-tap bottom-sheet. Tiny indicator at top of focus mode; tap expands to full-width sheet with the textarea; tap outside collapses.
+4. **Card auto-surface:** automatic — same as today's behaviour. When analyze fires a PUSH BACK / objection card, it renders in the copilot zone of focus mode (not in the Help drawer). The drawer is for manual lookup only.
 
 ---
 
