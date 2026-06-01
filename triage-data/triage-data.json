@@ -355,12 +355,14 @@
       "advance_label": "decision-makers"
     },
     {
-      "id": "fit-qualified",
-      "name": "9a. Fit — Pass to Closer",
+      "id": "fit",
+      "name": "9. Fit",
       "tone": "[SLOW + CONFIDENT TONALITY]",
-      "goal": "Book the strategy call with Lauren (the closer) and hold them accountable to watching the pre-call doc.",
+      "goal": "Decide: pass to Lauren for a strategy call (qualified) OR DM follow-up (not qualified). Then hold them accountable to the next step.",
+      "advance_label": "the booking or the DM follow-up — passed to Lauren",
       "say": [
         "Cool. So with what you're looking to do, it's a pretty straightforward problem for us to solve.",
+        "— IF QUALIFIED — book the strategy call with Lauren",
         "Now I am going to get you to have a 1:1 interview with Lauren directly, to go through the details and specifics on how it'll work for you, to ensure you [overcome the problem they have].",
         "(*Act like you are looking at a jam-packed calendar with 0 availability*)",
         "So I'm just looking at Lauren's calendar here… Okk… hmm.. So Lauren's calendar is really full…",
@@ -376,34 +378,8 @@
         "Ok cool — I will hold you accountable to that. So expect a call or text from me right around then!",
         "Just a note, your strategy session will take place on a google meet link, not a phone call. So please make sure you are somewhere quiet, where you can focus. Sounds ok?",
         "It's been great chatting today — I'll be waiting for your reply to that email confirming you've been through the doc.",
-        "IDENTITY LOCK before hand-off: 'Honestly, sounds like you're the type of person who, once they see something that actually fits, they MOVE on it. Would I be right?' Get the YES. Now when Lauren (the closer) gets them, they've already committed to the identity of 'I'm the kind of person who moves when I see fit' — much harder to stall."
-      ],
-      "green_light": [
-        "Strategy call booked + on the calendar",
-        "Confirmation email received + they checked",
-        "They committed to a specific time they'll watch the doc",
-        "They confirmed they can be on a google meet (not phone)"
-      ],
-      "pushback_triggers": [
-        "i'll try",
-        "if i have time",
-        "i'll see",
-        "maybe",
-        "i'll do my best",
-        "we'll see how it goes",
-        "i'll get to it",
-        "no promises"
-      ],
-      "pushback_script": "They just gave you a soft commitment on watching the doc. Don't accept it. Push: 'Lauren is really busy — so if you can't go through that before your call with her, can you let me know now?' Get a hard yes or move the call. A soft yes here = a no-show or unprepared prospect, which wastes Lauren's time and burns the opportunity.",
-      "advance_label": "the booking — pass to Lauren"
-    },
-    {
-      "id": "fit-disqualified",
-      "name": "9b. Fit — Lauren Follow-up (not qualified)",
-      "tone": "Warm — they're not getting a strategy call, but Lauren will reach out personally.",
-      "goal": "Pass them to Lauren via DM follow-up. Confirm they're following her on the right platform and they'll be on phone to receive her message.",
-      "say": [
-        "Cool. So with what you're looking to do, it's a pretty straightforward problem for us to solve.",
+        "IDENTITY LOCK before hand-off: 'Honestly, sounds like you're the type of person who, once they see something that actually fits, they MOVE on it. Would I be right?' Get the YES. Now when Lauren (the closer) gets them, they've already committed to the identity of 'I'm the kind of person who moves when I see fit' — much harder to stall.",
+        "— IF NOT QUALIFIED — Lauren reaches out personally via DM",
         "Now, what I'm going to do for you is, I'll have a conversation with Lauren later today about everything we discussed here, and she'll personally reach out to you to send you the solution that's more aligned with what you're looking to do, which is [X, Y, Z].",
         "I understand you are more active on [SOCIAL MEDIA PLATFORM], so she'll be reaching out there, just to confirm and make sure you'll get her message — you know that sometimes it can land in the request folder, are you following her there?",
         "(Let them reply — and make sure you check on your end in case they're lying about it.)",
@@ -411,20 +387,31 @@
         "Lauren checks her DMs a couple of times per day. What times later today could you be on your phone to have a chat with her?"
       ],
       "green_light": [
-        "Confirmed they follow Lauren on the right platform (you verified)",
-        "They sent Lauren a DM during the call",
-        "They named a time later today they'll be on their phone"
+        "[QUALIFIED] Strategy call booked + on the calendar",
+        "[QUALIFIED] Confirmation email received + they checked",
+        "[QUALIFIED] They committed to a specific time they'll watch the doc",
+        "[QUALIFIED] They confirmed they can be on a google meet (not phone)",
+        "[NOT QUALIFIED] Confirmed they follow Lauren on the right platform (you verified)",
+        "[NOT QUALIFIED] They sent Lauren a DM during the call",
+        "[NOT QUALIFIED] They named a time later today they'll be on their phone"
       ],
       "pushback_triggers": [
-        "i'll follow her later",
-        "i'll find her",
-        "i'll search",
-        "yeah i think so",
         "probably",
         "maybe",
-        "i should be"
+        "yeah i think so",
+        "i'll search",
+        "i'll find her",
+        "i'll follow her later",
+        "i'll try",
+        "no promises",
+        "i'll see",
+        "i'll get to it",
+        "if i have time",
+        "i'll do my best",
+        "i should be",
+        "we'll see how it goes"
       ],
-      "pushback_script": "Make them do it NOW — don't let 'I'll do it later' slide. 'Cool — can you follow her right now while we're on, just so I know it's done?' Then verify on your end. People who say they'll do it later don't."
+      "pushback_script": "QUALIFIED PATH:\nThey just gave you a soft commitment on watching the doc. Don't accept it. Push: 'Lauren is really busy — so if you can't go through that before your call with her, can you let me know now?' Get a hard yes or move the call. A soft yes here = a no-show or unprepared prospect, which wastes Lauren's time and burns the opportunity.\n\nNOT-QUALIFIED PATH:\nMake them do it NOW — don't let 'I'll do it later' slide. 'Cool — can you follow her right now while we're on, just so I know it's done?' Then verify on your end. People who say they'll do it later don't."
     }
   ],
   "uncertainty_globals": {

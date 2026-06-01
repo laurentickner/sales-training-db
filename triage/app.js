@@ -361,6 +361,12 @@
     return stageId + "|" + index + "|" + sig;
   }
   function renderSayLi(stageId, index, line) {
+    // Lines starting with "— " (em-dash + space) are section dividers,
+    // not tickable script. Used for branching stages like "9. Fit" where
+    // the merged stage has separate IF QUALIFIED / IF NOT QUALIFIED paths.
+    if (/^[—–-]\s/.test(line)) {
+      return '<li class="sr-say-divider">' + esc(line) + "</li>";
+    }
     var key = sayLineKey(stageId, index, line);
     var done = !!(state.sayLineDone[stageId] && state.sayLineDone[stageId][key]);
     return '<li class="sr-say-li' + (done ? " on" : "") +
