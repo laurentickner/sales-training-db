@@ -989,23 +989,46 @@ body.focus-mode .panel-right {
   border-right: none;
   background: var(--bg);
 }
-body.focus-mode .panel-right { padding-top: 0; }
 
-/* Make the input the hero — bigger, more prominent */
-body.focus-mode .input-zone { margin-bottom: 18px; }
+/* Order flip: script (panel-right) at TOP, input (panel-left) at BOTTOM.
+   The eye reads the script, the brain reacts, the hand types. Default
+   left-then-right order makes Mariana type before she reads. */
+body.focus-mode .panel-right { order: 1; padding-top: 16px; }
+body.focus-mode .panel-left  { order: 2; border-top: 1px solid var(--border); }
+
+/* Inside the right panel, also flip: stage-ref FIRST (the script she's
+   reading), then copilot output (cards that fire from analyze). */
+body.focus-mode .panel-right { display: flex; flex-direction: column; }
+body.focus-mode .panel-right .panel-title { display: none; }  /* "Copilot says…" title — redundant in focus mode */
+body.focus-mode #stage-ref {
+  order: 1; flex: 0 0 auto !important;
+  border: 0; padding-top: 0; margin-top: 0;
+}
+body.focus-mode #copilot {
+  order: 2; flex: 0 0 auto !important; min-height: 0;
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+/* Hide the copilot empty-state in focus mode — the stage-ref above is
+   already showing the script. Only show the copilot panel when a card
+   actually fires from analyze. */
+body.focus-mode #copilot .empty-state { display: none; }
+body.focus-mode #copilot:not(:has(.card)) { display: none; }
+
+/* Input zone at the BOTTOM in focus mode — smaller, focused, less hero */
+body.focus-mode .panel-left { padding-top: 14px; }
+body.focus-mode .panel-left .panel-title {
+  font-size: 11px; letter-spacing: 0.7px; color: var(--text-dim); margin-bottom: 8px;
+}
+body.focus-mode .input-zone { margin-bottom: 4px; }
 body.focus-mode #input {
-  min-height: 96px; font-size: 16px;
+  min-height: 72px; font-size: 15px;
 }
 body.focus-mode #btn-analyze {
-  width: 100%; padding: 14px 18px; font-size: 15px; min-height: 50px;
+  width: 100%; padding: 12px 18px; font-size: 14px; min-height: 46px;
 }
-body.focus-mode .input-row { margin-top: 12px; }
-
-/* Stage reference in focus mode: stays bordered + readable */
-body.focus-mode #stage-ref {
-  flex: 1 1 auto !important; min-height: 0;
-  border-top: 1px solid var(--border); padding-top: 14px; margin-top: 6px;
-}
+body.focus-mode .input-row { margin-top: 10px; }
+body.focus-mode .hint { display: none; }  /* "Enter = analyze · Shift+Enter = new line" — clutter in focus mode */
 
 /* Focus-mode topbar: "End call" button styled red for explicit exit */
 body.focus-mode #btn-focus {
