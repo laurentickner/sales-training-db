@@ -1012,7 +1012,25 @@ body.focus-mode .panel-right { display: flex; flex-direction: column; }
 body.focus-mode .panel-right .panel-title { display: none; }  /* "Copilot says…" title — redundant in focus mode */
 body.focus-mode #stage-ref {
   order: 1; flex: 0 0 auto !important;
-  border: 0; padding-top: 0; margin-top: 0;
+  border: 1px solid var(--border) !important;
+  border-left: 4px solid var(--amber) !important;
+  border-radius: var(--radius) !important;
+  padding: 14px !important;
+  margin-top: 0 !important;
+  /* Override the dense-mode max-height: 38vh — let content expand fully so
+     green-light chips + "I got their X, next →" button + route chips
+     aren't clipped. */
+  max-height: none !important;
+  height: auto !important;
+  /* Keep overflow-y: auto so user can drag-resize and content scrolls
+     inside the box if they shrink it. */
+  overflow-y: auto !important;
+  /* Lauren's request: drag-to-resize the script block. Native browser
+     resize handle in the bottom-right corner. User can grow it taller
+     for more reading room, or shrink it to make room for the input. */
+  resize: vertical;
+  min-height: 200px;
+  max-block-size: 80vh;  /* sanity cap so they can't accidentally fill the screen */
 }
 body.focus-mode #copilot {
   order: 2; flex: 0 0 auto !important; min-height: 0;
