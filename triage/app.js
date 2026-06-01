@@ -413,7 +413,59 @@
       });
       h += "</div>";
     }
+
+    // Focus-mode action zone — non-linear routing chips (if defined) +
+    // a primary "I got their X, next →" button + a "jump to another
+    // stage" picker. Hidden in dense mode (existing advance-when callout
+    // is the dense-mode equivalent).
+    if (state.focusMode) {
+      h += '<div class="sr-focus-actions">';
+
+      // Conditional routing (Opening + Results have these — discovery isn't linear)
+      if (s.routes && s.routes.length) {
+        h += '<div class="sr-routes">';
+        h += '<div class="sr-routes-label">What did they mention first?</div>';
+        h += '<div class="sr-routes-chips">';
+        s.routes.forEach(function (r) {
+          h += '<button class="sr-route" data-stage="' + esc(r.next_stage) + '" ' +
+            'title="' + esc(r.hint || "") + '">→ ' + esc(r.label) + "</button>";
+        });
+        h += "</div></div>";
+      }
+
+      // Primary "I got their X, next →" button — ticks all green-lights
+      // for the current stage AND advances to next stage in order.
+      var next = nextStageInOrder(s.id);
+      var advanceLabel = s.advance_label || "what I need";
+      var btnText = next
+        ? "✓ I got their " + advanceLabel + ", next →"
+        : "✓ I got their " + advanceLabel + " — done";
+      h += '<button class="sr-move-on" data-action="move-on">' +
+        esc(btnText) + "</button>";
+
+      // Jump-to picker — collapsed by default; click to expand.
+      h += '<details class="sr-jump-picker"><summary>↗ Jump to another stage</summary>';
+      h += '<div class="sr-jump-chips">';
+      STAGES().forEach(function (other) {
+        if (other.id === s.id) return;
+        h += '<button class="sr-jump-chip" data-stage="' + esc(other.id) +
+          '">' + esc(other.name) + "</button>";
+      });
+      h += "</div></details>";
+
+      h += "</div>";
+    }
+
     $("stage-ref").innerHTML = h;
+  }
+
+  // Returns the next stage object in the current mode's array, or null if last.
+  function nextStageInOrder(currentId) {
+    var stages = STAGES();
+    for (var i = 0; i < stages.length - 1; i++) {
+      if (stages[i].id === currentId) return stages[i + 1];
+    }
+    return null;
   }
   function setStage(id) {
     state.stage = stageById(id).id;
@@ -651,6 +703,35 @@
       if (showMore) {
         state.showAllSay = true;
         renderStageRef();
+        return;
+      }
+      // Focus-mode "I got their X, next →" — cascade-tick all green-lights
+      // for the current stage, then advance to the next stage in order.
+      var moveOn = e.target.closest('[data-action="move-on"]');
+      if (moveOn) {
+        var s = currentStage();
+        if (s.green_light) {
+          s.green_light.forEach(function (_, idx) {
+            state.greenLightDone[s.id + "|" + idx] = true;
+          });
+        }
+        var next = nextStageInOrder(s.id);
+        if (next) setStage(next.id);
+        else renderStageRef();
+        return;
+      }
+      // Focus-mode route chip — non-linear discovery jump (e.g. Opening → Results)
+      var route = e.target.closest(".sr-route");
+      if (route) {
+        var routeStageId = route.getAttribute("data-stage");
+        if (routeStageId) setStage(routeStageId);
+        return;
+      }
+      // Focus-mode jump-to-stage chip — pick any other stage
+      var jump = e.target.closest(".sr-jump-chip");
+      if (jump) {
+        var jumpStageId = jump.getAttribute("data-stage");
+        if (jumpStageId) setStage(jumpStageId);
         return;
       }
       // SAY line tick

@@ -73,7 +73,25 @@
         "take me off",
         "remove me"
       ],
-      "pushback_script": "OPENING DEFENSIVE — pick the right branch: — STALL ('idk' / 'just curious' / 'just to learn' / 'not sure'): 'Got it — and just so I know we're using your time well, what was the SPECIFIC reason you booked this call? Like what's the problem we'd be solving for you?' (Drop your tone at the end. Don't lift.) If they still hedge: 'IDK what you guys do — how did you end up on this call then? Ok cool no worries then, in an ideal world what would you like to get out of this call?' — 'JUST TO LEARN MORE ABOUT ___': 'Got it, and I can imagine you're quite busy right?' (PAUSE — let them say yes.) Then half laughing with a smile: 'Yeah. And just so we can see what could best help… Do you go around jumping on calls to learn more all day? Or are you here because you're interested in potentially working with us, if you think it could help?' — MONEY BLURT ('no money' / 'cant afford' / 'no budget' / 'im broke' / 'tight on cash'): 'Oh no worries at all — we haven't even talked numbers, and I don't even know if we're a fit yet. This call is just for me to understand what you're working on. Is that cool?' Then redirect: 'So what made you book this call in the first place?' — 'WHAT IS THIS' / 'NOT INTERESTED' (weird on a scheduled call — they BOOKED it): 'Wait — you booked the call though, right? So something brought you here. What was that? Even if you're not 100% sure right now, just throw out what was on your mind when you booked.' — 'IM BUSY' / 'NOT A GOOD TIME': 'Totally — we can keep this tight, 15 min max. Or if now genuinely isn't the right window, want me to send you 2 other times that work better?' — 'TAKE ME OFF' / 'REMOVE ME': 'Of course — but can I ask, what changed since you booked? Just so I can flag whatever wasn't useful so we don't keep sending the same thing.' KEY: this is a SCHEDULED call — they showed up, so SOMETHING brought them here. Your job in the opening is to surface that something. NO PAIN = NO MORE TALKING — don't move on until you know WHY they're here."
+      "pushback_script": "OPENING DEFENSIVE — pick the right branch: — STALL ('idk' / 'just curious' / 'just to learn' / 'not sure'): 'Got it — and just so I know we're using your time well, what was the SPECIFIC reason you booked this call? Like what's the problem we'd be solving for you?' (Drop your tone at the end. Don't lift.) If they still hedge: 'IDK what you guys do — how did you end up on this call then? Ok cool no worries then, in an ideal world what would you like to get out of this call?' — 'JUST TO LEARN MORE ABOUT ___': 'Got it, and I can imagine you're quite busy right?' (PAUSE — let them say yes.) Then half laughing with a smile: 'Yeah. And just so we can see what could best help… Do you go around jumping on calls to learn more all day? Or are you here because you're interested in potentially working with us, if you think it could help?' — MONEY BLURT ('no money' / 'cant afford' / 'no budget' / 'im broke' / 'tight on cash'): 'Oh no worries at all — we haven't even talked numbers, and I don't even know if we're a fit yet. This call is just for me to understand what you're working on. Is that cool?' Then redirect: 'So what made you book this call in the first place?' — 'WHAT IS THIS' / 'NOT INTERESTED' (weird on a scheduled call — they BOOKED it): 'Wait — you booked the call though, right? So something brought you here. What was that? Even if you're not 100% sure right now, just throw out what was on your mind when you booked.' — 'IM BUSY' / 'NOT A GOOD TIME': 'Totally — we can keep this tight, 15 min max. Or if now genuinely isn't the right window, want me to send you 2 other times that work better?' — 'TAKE ME OFF' / 'REMOVE ME': 'Of course — but can I ask, what changed since you booked? Just so I can flag whatever wasn't useful so we don't keep sending the same thing.' KEY: this is a SCHEDULED call — they showed up, so SOMETHING brought them here. Your job in the opening is to surface that something. NO PAIN = NO MORE TALKING — don't move on until you know WHY they're here.",
+      "advance_label": "reason",
+      "routes": [
+        {
+          "label": "Their goal",
+          "next_stage": "results",
+          "hint": "They mentioned what they want"
+        },
+        {
+          "label": "Their problem",
+          "next_stage": "past-attempts",
+          "hint": "They mentioned what's not working"
+        },
+        {
+          "label": "Both / vague",
+          "next_stage": "icp",
+          "hint": "Standard flow — continue to ICP Check"
+        }
+      ]
     },
     {
       "id": "icp",
@@ -100,7 +118,8 @@
         "a bit of everything",
         "all over"
       ],
-      "pushback_script": "Don't accept 'a bit of everything' here. Pin it down: 'Got it — but if you had to point to the ONE platform that's bringing in the most revenue right now, which one would it be?' You need a clear answer so the closer knows where they're at."
+      "pushback_script": "Don't accept 'a bit of everything' here. Pin it down: 'Got it — but if you had to point to the ONE platform that's bringing in the most revenue right now, which one would it be?' You need a clear answer so the closer knows where they're at.",
+      "advance_label": "platform + audience"
     },
     {
       "id": "results",
@@ -146,7 +165,20 @@
         "probably about",
         "best case"
       ],
-      "pushback_script": "HEDGE-WORD detected — flip it NOW before it caps the rest of the call: 'Can I make a suggestion on a word I just heard you say that could be holding US back? You said [their hedge word]. When we focus on the [least / just / what we'd be happy with], what do we typically get? And you don't come across to me as the type of person who wants the LEAST things in life. Would I be right?... So what do you really want?' Lower your tone, soft delivery. NEVER 'YOU back' — always 'US back'. Never accuse."
+      "pushback_script": "HEDGE-WORD detected — flip it NOW before it caps the rest of the call: 'Can I make a suggestion on a word I just heard you say that could be holding US back? You said [their hedge word]. When we focus on the [least / just / what we'd be happy with], what do we typically get? And you don't come across to me as the type of person who wants the LEAST things in life. Would I be right?... So what do you really want?' Lower your tone, soft delivery. NEVER 'YOU back' — always 'US back'. Never accuse.",
+      "advance_label": "goal",
+      "routes": [
+        {
+          "label": "Now their problem",
+          "next_stage": "past-attempts",
+          "hint": "Now ask what they've tried + why it didn't stick"
+        },
+        {
+          "label": "Continue in order",
+          "next_stage": "revenue",
+          "hint": "Standard flow — Current Revenue"
+        }
+      ]
     },
     {
       "id": "revenue",
@@ -183,7 +215,8 @@
         "doing about",
         "year we did"
       ],
-      "pushback_script": "Don't accept vague here. The closer needs a real number. Push gently: 'Totally get it varies — but over the last 6 months on average, what would you say it's been per month? Doesn't have to be exact, just a real ballpark so I can match you to the right level of support.' Hold for the answer."
+      "pushback_script": "Don't accept vague here. The closer needs a real number. Push gently: 'Totally get it varies — but over the last 6 months on average, what would you say it's been per month? Doesn't have to be exact, just a real ballpark so I can match you to the right level of support.' Hold for the answer.",
+      "advance_label": "real revenue number"
     },
     {
       "id": "past-attempts",
@@ -217,7 +250,8 @@
         "we just heard",
         "lauren's posts"
       ],
-      "pushback_script": "If they can't articulate what attracted them to us, that's a soft answer. Push: 'Got it — but specifically, was it the AI content angle, the revenue focus, something Lauren said? Just so I know what most resonated with you.' This helps the closer hit the right angle."
+      "pushback_script": "If they can't articulate what attracted them to us, that's a soft answer. Push: 'Got it — but specifically, was it the AI content angle, the revenue focus, something Lauren said? Just so I know what most resonated with you.' This helps the closer hit the right angle.",
+      "advance_label": "past attempts + pain"
     },
     {
       "id": "time",
@@ -248,7 +282,8 @@
         "no specific timeline",
         "when's good for you"
       ],
-      "pushback_script": "STALLING on urgency — TWO moves: (1) INVERSION (mishear the hedge as a no): 'So it sounds like you don't think this will actually work for you?' 9/10 they snap back: 'no no, I do think it'll work.' Lower tone: 'Hold on — why do you think it'll work?' Now they're DEFENDING the buy, not stalling it. (2) qualifier (only if not financially qualified): 'Got it — and if you were certain this would add decent revenue to your business on a monthly basis, would that change things?' Even if still stalling, pass through to closer — but make sure the closer KNOWS they aren't rushing."
+      "pushback_script": "STALLING on urgency — TWO moves: (1) INVERSION (mishear the hedge as a no): 'So it sounds like you don't think this will actually work for you?' 9/10 they snap back: 'no no, I do think it'll work.' Lower tone: 'Hold on — why do you think it'll work?' Now they're DEFENDING the buy, not stalling it. (2) qualifier (only if not financially qualified): 'Got it — and if you were certain this would add decent revenue to your business on a monthly basis, would that change things?' Even if still stalling, pass through to closer — but make sure the closer KNOWS they aren't rushing.",
+      "advance_label": "urgency + time/day"
     },
     {
       "id": "budget",
@@ -287,7 +322,8 @@
         "even just",
         "at least"
       ],
-      "pushback_script": "Hhhhmmm okay OR Got it — and so we can see which of our options could be feasible, on a monthly basis, what are you willing to invest to be sure you'd get this working? If they STILL won't give a number — push once more: 'Just throw out a real number, even if it's a rough one. There's no wrong answer — it just helps me match you to the right tier.' Don't move on without a number you can pass to the closer."
+      "pushback_script": "Hhhhmmm okay OR Got it — and so we can see which of our options could be feasible, on a monthly basis, what are you willing to invest to be sure you'd get this working? If they STILL won't give a number — push once more: 'Just throw out a real number, even if it's a rough one. There's no wrong answer — it just helps me match you to the right tier.' Don't move on without a number you can pass to the closer.",
+      "advance_label": "budget alignment"
     },
     {
       "id": "authority",
@@ -316,7 +352,8 @@
         "i'd want to consult",
         "i'd discuss"
       ],
-      "pushback_script": "They just surfaced a hidden decision-maker. Pin it down NOW so the closer isn't ambushed: 'Got it — who specifically, and what would they need to be comfortable with for this to be a yes?' Note it for the closer. A hidden stakeholder kills the close."
+      "pushback_script": "They just surfaced a hidden decision-maker. Pin it down NOW so the closer isn't ambushed: 'Got it — who specifically, and what would they need to be comfortable with for this to be a yes?' Note it for the closer. A hidden stakeholder kills the close.",
+      "advance_label": "decision-makers"
     },
     {
       "id": "fit-qualified",
@@ -358,7 +395,8 @@
         "i'll get to it",
         "no promises"
       ],
-      "pushback_script": "They just gave you a soft commitment on watching the doc. Don't accept it. Push: 'Lauren is really busy — so if you can't go through that before your call with her, can you let me know now?' Get a hard yes or move the call. A soft yes here = a no-show or unprepared prospect, which wastes Lauren's time and burns the opportunity."
+      "pushback_script": "They just gave you a soft commitment on watching the doc. Don't accept it. Push: 'Lauren is really busy — so if you can't go through that before your call with her, can you let me know now?' Get a hard yes or move the call. A soft yes here = a no-show or unprepared prospect, which wastes Lauren's time and burns the opportunity.",
+      "advance_label": "the booking — pass to Lauren"
     },
     {
       "id": "fit-disqualified",
