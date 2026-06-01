@@ -49,8 +49,8 @@
     stage: CALL_STAGES[0].id,
     log: [],
     liveFacts: store.get("triage_livefacts") || "",
-    sayLineDone: {}        // { [stageId]: { [key]: true } } — ticked SAY lines per stage
-    greenLightDone: {}   // "stageId|index" -> true
+    sayLineDone: {},       // { [stageId]: { [key]: true } } — ticked SAY lines per stage
+    greenLightDone: {}     // "stageId|index" -> true
   };
   var nextId = 1;
 
