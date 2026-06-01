@@ -1030,10 +1030,14 @@ body.focus-mode {
 }
 
 /* Order flip: script (panel-right) at TOP, input (panel-left) at BOTTOM.
-   The eye reads the script, the brain reacts, the hand types. Default
-   left-then-right order makes Mariana type before she reads. */
-body.focus-mode .panel-right { order: 1; padding-top: 16px; }
-body.focus-mode .panel-left  { order: 2; border-top: 1px solid var(--border); }
+   The eye reads the script, the brain reacts, the hand types. */
+body.focus-mode .panel-right { order: 1; padding-top: 16px; padding-bottom: 0; }
+body.focus-mode .panel-left  {
+  order: 2;
+  border-top: 0;          /* drop the visual separator — script-block border already provides one */
+  padding-top: 6px;       /* tighter to the script block above */
+  margin-top: -6px;       /* pull it up so input sits right below the action buttons */
+}
 
 /* Inside the right panel, also flip: stage-ref FIRST (the script she's
    reading), then copilot output (cards that fire from analyze). */
@@ -1073,9 +1077,9 @@ body.focus-mode #copilot .empty-state { display: none; }
 body.focus-mode #copilot:not(:has(.card)) { display: none; }
 
 /* Input zone at the BOTTOM in focus mode — smaller, focused, less hero */
-body.focus-mode .panel-left { padding-top: 14px; }
 body.focus-mode .panel-left .panel-title {
-  font-size: 11px; letter-spacing: 0.7px; color: var(--text-dim); margin-bottom: 8px;
+  font-size: 11px; letter-spacing: 0.7px; color: var(--text-dim);
+  margin-bottom: 6px; margin-top: 4px;
 }
 body.focus-mode .input-zone { margin-bottom: 4px; }
 body.focus-mode #input {
@@ -1148,6 +1152,16 @@ body:not(.focus-mode) .sr-focus-actions { display: none; }
 }
 .sr-move-on:hover { filter: brightness(1.05); }
 .sr-move-on:active { transform: translateY(1px); }
+/* When all green-light chips are ticked, the move-on button cascades to
+   green — visual "you're ready, click me" cue. Same gradient idea but
+   with the green palette, plus a check glyph that wasn't there before. */
+.sr-move-on.on {
+  background: linear-gradient(180deg, #5be2a3 0%, #2da566 100%);
+  color: #04222b;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.4) inset,
+    0 6px 20px rgba(69, 209, 138, 0.42);
+}
 
 /* Jump-to-stage picker (collapsible) */
 .sr-jump-picker {

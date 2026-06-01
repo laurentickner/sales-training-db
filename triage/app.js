@@ -441,13 +441,16 @@
 
       // Primary "I got their X, next →" button — ticks all green-lights
       // for the current stage AND advances to next stage in order.
+      // When `advReady` is true (all chips ticked), the button turns green
+      // so Mariana sees "you're ready to advance — click me" without
+      // double-checking the chips above.
       var next = nextStageInOrder(s.id);
       var advanceLabel = s.advance_label || "what I need";
       var btnText = next
         ? "✓ I got their " + advanceLabel + ", next →"
         : "✓ I got their " + advanceLabel + " — done";
-      h += '<button class="sr-move-on" data-action="move-on">' +
-        esc(btnText) + "</button>";
+      h += '<button class="sr-move-on' + (advReady ? " on" : "") +
+        '" data-action="move-on">' + esc(btnText) + "</button>";
 
       // Jump-to picker — collapsed by default; click to expand.
       h += '<details class="sr-jump-picker"><summary>↗ Jump to another stage</summary>';
