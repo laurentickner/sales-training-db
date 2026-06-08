@@ -117,6 +117,44 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
     });
   }
+
+  // Format a script string (PUSH BACK pushback_script or an OBJECTION
+  // response_step) with skim-friendly visual hooks:
+  //   - 'single-quoted' or "double-quoted" text → cyan inline quote box
+  //     (the actual verbatim words the rep says — must pop instantly)
+  //   - ALL-CAPS labels followed by ":" → bold colored label
+  //     (e.g. "STALL:", "MONEY BLURT:", "COLE INVERSION:")
+  //   - " — " (em-dash with spaces) branch markers → line-break + bullet
+  //     (so multi-branch pushback scripts read as a list, not a paragraph)
+  //   - "If X:" / "If they Y:" conditional prefixes → amber inline marker
+  //
+  // Lauren's feedback (via Mariana, Jun 8): "if you're live on a call,
+  // reading [the current wall of text] is hard. I would make sure it's
+  // divided into bullet points or sections with clear titles."
+  function formatScript(text) {
+    var s = esc(text);
+    // Promote em-dash branch markers to line break + bullet BEFORE label
+    // bolding — otherwise the bolded "STALL:" gets stranded inline.
+    // The em-dash separator pattern: lowercase letter, space, em-dash, space,
+    // capital letter (or apostrophe before a capital). Two flavors of dash
+    // (— and –) tolerated.
+    s = s.replace(/\s+[—–]\s+(?=['A-Z])/g, "<br>• ");
+    // ALL-CAPS labels followed by ":" — at start, after newline, or after a bullet
+    s = s.replace(
+      /(^|<br>|• |\.\s+)([A-Z][A-Z\s\/'()\-]{2,40}):/g,
+      '$1<strong class="say-label">$2:</strong>'
+    );
+    // 'quoted strings' (escaped to &#39;) → cyan-tinted verbatim box
+    s = s.replace(/&#39;([^&]+?)&#39;/g, '<span class="say-quote">"$1"</span>');
+    // "quoted strings" (escaped to &quot;) — same
+    s = s.replace(/&quot;([^&]+?)&quot;/g, '<span class="say-quote">"$1"</span>');
+    // "If X:" / "If they Y:" inline conditionals → amber marker
+    s = s.replace(
+      /(\.\s+|\?\s+|<br>• )(If\s[^:]{1,60}?:)/g,
+      '$1<span class="say-cond">$2</span>'
+    );
+    return s;
+  }
   function norm(s) {
     return " " + String(s).toLowerCase()
       .replace(/['’]/g, "")
@@ -242,12 +280,12 @@
     var lines = String(stage.pushback_script).split("\n");
     lines.forEach(function (line, i) {
       if (line.trim() === "") return;
-      h += '<div class="say-step"><span class="say-num">' + (i + 1) + "</span><span>" + esc(line) + "</span></div>";
+      h += '<div class="say-step"><span class="say-num">' + (i + 1) + "</span><span>" + formatScript(line) + "</span></div>";
     });
     h += "</div>";
     if (result.globalHits.length) {
       h += '<div class="say-block"><div class="say-label">Generic stall language</div>';
-      h += '<div class="say-step"><span class="say-num">↳</span><span>' + esc(GLOBAL_ALERT) + "</span></div></div>";
+      h += '<div class="say-step"><span class="say-num">↳</span><span>' + formatScript(GLOBAL_ALERT) + "</span></div></div>";
     }
     h += '<div class="pushback-trigger">matched: ' + esc(hits.slice(0, 4).join(", ")) + "</div>";
     h += "</div>";
@@ -272,10 +310,10 @@
     h += '<div class="handle-strip">↳ Run: <b>diffuse → isolate → temp-check → scale → double tie-down</b>, then:</div>';
     h += '<div class="say-block"><div class="say-label">Say this</div>';
     (o.response_steps || []).forEach(function (s, i) {
-      h += '<div class="say-step"><span class="say-num">' + (i + 1) + "</span><span>" + esc(s) + "</span></div>";
+      h += '<div class="say-step"><span class="say-num">' + (i + 1) + "</span><span>" + formatScript(s) + "</span></div>";
     });
     h += "</div>";
-    if (o.do_not) h += '<div class="donot"><strong>Don\'t:</strong> ' + esc(o.do_not) + "</div>";
+    if (o.do_not) h += '<div class="donot"><strong>Don\'t:</strong> ' + formatScript(o.do_not) + "</div>";
     h += '<div class="pushback-trigger">matched: ' + esc(m.hits.slice(0, 4).join(", ")) + "</div>";
     h += "</div>";
     return h;

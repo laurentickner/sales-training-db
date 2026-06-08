@@ -896,6 +896,69 @@ body.fs-s .log-entry .log-text { font-size: 11.5px; }
 body.fs-s .empty-state p { font-size: 13px; }
 
 /* =====================================================================
+   Mariana feedback (Jun 8): "if you're live on a call, reading [the wall
+   of text] is hard. divide it into bullet points or sections with clear
+   titles so it's easier to skim through and actually use."
+   formatScript() in app.js injects these classes — style them so the
+   verbatim quotes, section labels, and conditionals pop instantly.
+   ===================================================================== */
+
+/* The verbatim words the rep actually says — make them impossible to miss */
+.say-step .say-quote {
+  display: inline;
+  padding: 2px 7px; margin: 0 1px;
+  background: rgba(0, 191, 241, 0.16);
+  border-left: 2px solid var(--cyan);
+  border-radius: 4px;
+  color: #d6eef9;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.7;
+}
+
+/* ALL-CAPS section labels: "STALL:", "MONEY BLURT:", "COLE INVERSION:" etc */
+.say-step .say-label {
+  display: inline-block;
+  color: var(--cyan);
+  font-weight: 800;
+  font-size: 11.5px;
+  letter-spacing: 0.5px;
+  margin: 2px 4px 2px 0;
+}
+
+/* Inline "If X:" conditional markers */
+.say-step .say-cond {
+  color: var(--amber);
+  font-style: italic;
+  font-weight: 700;
+}
+
+/* Tighten the say-step containers so the formatted content has breathing
+   room without bloating overall card height. */
+.say-step {
+  padding: 10px 12px;
+  line-height: 1.6;
+}
+.say-step span:last-child {
+  flex: 1;
+  display: block;  /* let <br>s actually break inside the span */
+}
+
+/* PUSH BACK card overrides — its say-step text needs even more contrast
+   on the verbatim quote since the whole card is red-tinted. */
+.card-pushback .say-step .say-quote {
+  background: rgba(255, 234, 234, 0.14);
+  border-left-color: #ffeaea;
+  color: #fff5f5;
+}
+.card-pushback .say-step .say-label {
+  color: #ffbcbc;
+}
+.card-pushback .say-step .say-cond {
+  color: var(--amber);
+}
+
+/* =====================================================================
    P0 UI hygiene batch — sourced from UI-RESEARCH-2026-06.md
    ===================================================================== */
 
