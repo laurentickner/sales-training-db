@@ -903,5 +903,286 @@
     "past_pain_probe": "When they mention any past attempt: 'Take me back to the LAST time you tried to fix this — what SPECIFICALLY happened? What did it cost you?' Past-pain auto-generates future-fear: their brain projects 'this will happen again' without you saying it. More powerful than 'what if nothing changes' because the emotion is already loaded. Then re-meaning: 'You know what's interesting? That didn't break you — it led you HERE.' Then identity-shift: 'sounds like you're the type of entrepreneur who never gives up...'",
     "annualized_revenue_catch": "If they quote revenue annually ('we do about $1M/yr', 'half a million annually'), don't accept it. Verbatim follow: 'Got it — and just based on last month specifically, what did you do? And the month before?' small biz owners quote 'about $1M/yr' then concede '$40k last month' — the annual is the brag number, the monthly is the real run-rate. Anchor the math to the monthly, otherwise the closer pitches off fiction.",
     "high_revenue_no_pain": "If they're already at a healthy run-rate and downplay pain: don't build from pain — build from UNFULFILLED DESIRE. Playful disarm first: 'We never have companies come to us wanting to learn how to sell LESS — they always want to learn how to sell MORE. Is that why you came to us?' Then the feel-forward: 'If we came in and did [X], where do you FEEL you could get in 12 months?' (Use the word FEEL — keeps them emotional.) If they lob a humble number, call it: 'OK, 15 — is that your humble goal? You can tell me, we're not posting it on Instagram.'"
-  }
+  },
+  "dm_objections": [
+    {
+      "id": "dm-figure-out",
+      "label": "I'm trying to figure things out / before going into",
+      "bucket": "deflection",
+      "triggers": [
+        "figure things out",
+        "figuring things out",
+        "trying to figure",
+        "figure it out",
+        "before going into",
+        "before going",
+        "still figuring",
+        "sort it out myself",
+        "work it out myself",
+        "kind of trying"
+      ],
+      "response_steps": [
+        "no worries! quick one — what does 'figured out' look like for you specifically?",
+        "If they share specifics: 'gotcha. that's exactly the gap we close. want me to send a short walkthrough of how we do it?'",
+        "If they stay vague: 'all good. when you do get clarity, drop me a note — I'll send something tailored to where you've landed'",
+        "DO NOT: send another freebie. They've already consumed value — pushing more here cheapens the next ask."
+      ]
+    },
+    {
+      "id": "dm-give-it-a-go",
+      "label": "I want to give it a go myself / do it solo",
+      "bucket": "deflection",
+      "triggers": [
+        "give it a go",
+        "go it alone",
+        "try it myself",
+        "do it myself",
+        "going to try",
+        "want to try first",
+        "go alone",
+        "see how it goes",
+        "give it a try",
+        "have a go"
+      ],
+      "response_steps": [
+        "totally get it — and sounds like you've had some wins already.",
+        "if everything's working though, what were you actually hoping to find when you opted in?",
+        "want to see if there's something I can point you to that fits where you're actually at",
+        "DO NOT: bash their attempt. Validation comes first, curiosity second."
+      ]
+    },
+    {
+      "id": "dm-no-money",
+      "label": "No money / can't afford right now",
+      "bucket": "money",
+      "triggers": [
+        "no money",
+        "cant afford",
+        "broke",
+        "no budget",
+        "can't invest",
+        "cant invest",
+        "money is tight",
+        "tight on cash",
+        "dont have the money",
+        "not financially",
+        "out of budget",
+        "broke right now"
+      ],
+      "response_steps": [
+        "got it — quick one to make sure we're matching the right thing to you:",
+        "if money wasn't the issue at all right now, is this the kind of thing you'd actually want to do for yourself?",
+        "If YES: 'okay so it's a timing thing, not a fit thing — got it. let me know when the timing shifts'",
+        "If NO: 'all good — sounds like the fit isn't quite there. what would you actually want help with?'",
+        "DO NOT: discount or offer payment plan in DMs. That call happens on triage, not chat."
+      ]
+    },
+    {
+      "id": "dm-already-good",
+      "label": "Things are good / don't need help / getting results",
+      "bucket": "deflection",
+      "triggers": [
+        "things are good",
+        "doing fine",
+        "getting results",
+        "already getting",
+        "doing well",
+        "happy with",
+        "not really looking",
+        "not in the market",
+        "im good",
+        "im ok",
+        "i am ok",
+        "i'm ok"
+      ],
+      "response_steps": [
+        "amazing — what's working best for you right now?",
+        "Wait for their answer (don't rush past).",
+        "If they brag about a result: 'love that. what's the next level look like for you?'",
+        "Pull them into vision-building. 'I'm fine' becomes 'I'd be better with this' once you ask about the next ceiling."
+      ]
+    },
+    {
+      "id": "dm-think-about-it",
+      "label": "I'll think about it / let me get back to you",
+      "bucket": "stall",
+      "triggers": [
+        "think about it",
+        "let me think",
+        "let you know",
+        "get back to you",
+        "sleep on it",
+        "have a think",
+        "circle back",
+        "ill let you know",
+        "i'll think"
+      ],
+      "response_steps": [
+        "all good, no rush.",
+        "quick one — what specifically would you want to think through? if it's something I can clear up in 2 lines, I will. if not, you take your time.",
+        "Most reps run from this. Sit in it. The clarifying question pulls the real objection out (price, fit, timing, trust).",
+        "DO NOT: accept 'think about it' at face value. It's almost always a proxy."
+      ]
+    },
+    {
+      "id": "dm-just-send-info",
+      "label": "Just send me the info / details over DM",
+      "bucket": "deflection",
+      "triggers": [
+        "send me the info",
+        "send info",
+        "send me details",
+        "send me everything",
+        "send me a brochure",
+        "just send",
+        "send over the info",
+        "share the info",
+        "more info",
+        "send the details",
+        "share the details"
+      ],
+      "response_steps": [
+        "yes — and to make sure I send the right thing (not the generic version), what are you currently dealing with that you want help on?",
+        "If they answer: send a tailored video or case study + book a quick chat to walk through it.",
+        "If they push for 'just the info': 'okay — sending a bunch of formats isn't going to be useful for you. let's do this: 15 min chat, I'll show you the ONE relevant thing. ___ or ___?'",
+        "DO NOT: dump a PDF or full link. That ends the conversation."
+      ]
+    },
+    {
+      "id": "dm-not-ready",
+      "label": "Not ready yet / will reach out when ready",
+      "bucket": "stall",
+      "triggers": [
+        "not ready",
+        "not the right time",
+        "will reach out",
+        "reach out when",
+        "ready in a few",
+        "few months",
+        "when im ready",
+        "not yet",
+        "soon",
+        "down the line"
+      ],
+      "response_steps": [
+        "got it — out of curiosity, what would need to be true for it to feel like the right time?",
+        "Listen for the answer. It's usually fear, money, or 'I want to try one more thing first'.",
+        "Once they say it: handle THAT objection, not 'not ready'.",
+        "DO NOT: accept 'not ready' as the final answer. It's a proxy for the real concern."
+      ]
+    },
+    {
+      "id": "dm-how-much",
+      "label": "How much / what's the price (asked early)",
+      "bucket": "money",
+      "triggers": [
+        "how much",
+        "whats the price",
+        "what's the price",
+        "what does it cost",
+        "price point",
+        "how much is it",
+        "investment",
+        "price range",
+        "cost of"
+      ],
+      "response_steps": [
+        "good question — there's a few different options depending on where you're at.",
+        "to give you a number that's actually relevant: what are you most trying to solve right now?",
+        "If they share: 'okay, for that, options range from $X to $Y. the right number for YOU we'd nail down on a 15-min chat'",
+        "Then: book the call. Don't drop a final number in DMs.",
+        "DO NOT: give a single fixed price in DMs. It anchors before they see the value (per playbook)."
+      ]
+    },
+    {
+      "id": "dm-guarantee",
+      "label": "Can you guarantee results?",
+      "bucket": "trust",
+      "triggers": [
+        "guarantee",
+        "guaranteed",
+        "promise me",
+        "results guaranteed",
+        "promised results",
+        "money back",
+        "if it works",
+        "what if it doesnt work"
+      ],
+      "response_steps": [
+        "good question.",
+        "think of it like joining a gym — you get the program, the equipment, and the coaching. the results depend on how you show up.",
+        "we've had people make it back in 30 days. others take 6 months. depends on you.",
+        "if you want to see what the work actually looks like, let's do a quick call. ___ or ___?",
+        "DO NOT: promise specific results. The playbook handle: gym membership analogy + book the call."
+      ]
+    },
+    {
+      "id": "dm-spouse",
+      "label": "Need to check with my partner / spouse first",
+      "bucket": "authority",
+      "triggers": [
+        "check with my",
+        "talk to my husband",
+        "talk to my wife",
+        "ask my partner",
+        "check with partner",
+        "ask my husband",
+        "ask my wife",
+        "talk to my spouse",
+        "ask my spouse"
+      ],
+      "response_steps": [
+        "makes sense — for big decisions you want them on board.",
+        "quick one — when you bring it up, what do you think they'll ask?",
+        "If they share concerns: 'happy to be on the next chat with both of you — that way they get the answers in real time vs through you'",
+        "Get BOTH on the call before the price drops, per Lauren's playbook (Section 6.0)."
+      ]
+    },
+    {
+      "id": "dm-just-enjoying",
+      "label": "Just enjoying your content / nurture lead",
+      "bucket": "interest",
+      "triggers": [
+        "just enjoying",
+        "love your content",
+        "love your posts",
+        "just following",
+        "just here to learn",
+        "just consuming",
+        "great content",
+        "enjoying the content",
+        "love what you do"
+      ],
+      "response_steps": [
+        "appreciate the support! what would you actually like to see more of from me that'd be helpful for YOU specifically?",
+        "Take their answer → send ONE targeted resource that addresses it.",
+        "Then: 'when do you think you'll get to check it out? i'll be around to cover questions'",
+        "This is the nurture funnel. Don't pitch — set up pre-call homework (playbook Section 5.0)."
+      ]
+    },
+    {
+      "id": "dm-thanks-but-no",
+      "label": "Polite decline / thanks but no thanks",
+      "bucket": "exit",
+      "triggers": [
+        "thanks but",
+        "appreciate it but",
+        "appreciate the offer",
+        "thanks for the offer",
+        "thank you for the offer",
+        "not for me",
+        "kindly decline",
+        "no thank you",
+        "i pass",
+        "ill pass",
+        "thank you though"
+      ],
+      "response_steps": [
+        "all good, no worries.",
+        "if anything changes, you've got my DMs. wishing you the best!",
+        "DO NOT: try to convince. Graceful exit keeps the door open. Pushy convince slams it.",
+        "Add to Long-Term Hit List for monthly check-ins (playbook Section 6.0)."
+      ]
+    }
+  ]
 }

@@ -958,6 +958,46 @@ body.fs-s .empty-state p { font-size: 13px; }
   color: var(--amber);
 }
 
+/* DM-mode objection card — same structure as the closer's card-obj but
+   cyan-tinted instead of red. DM context is lower-stakes than a live call,
+   so red would be too aggressive. Cyan signals "here's a playbook reply"
+   without panic. */
+.card-obj-dm {
+  border-left: 5px solid var(--cyan) !important;
+  background: linear-gradient(180deg, #102530 0%, #0c1a22 100%) !important;
+  box-shadow: 0 0 0 1px rgba(0, 191, 241, 0.2), 0 4px 14px rgba(0, 191, 241, 0.12) !important;
+}
+.card-obj-dm .card-kicker {
+  color: var(--cyan);
+}
+.card-obj-dm .card-title {
+  color: #e0f4fc;
+}
+.card-obj-dm .card-bucket {
+  background: rgba(0, 0, 0, 0.4);
+  color: #a8d8ea;
+}
+.card-obj-dm .handle-strip {
+  color: var(--text-dim);
+}
+.card-obj-dm .handle-strip b {
+  color: var(--cyan);
+}
+.card-obj-dm .say-block { background: rgba(0, 0, 0, 0.18); }
+.card-obj-dm .say-label { color: var(--cyan); }
+.card-obj-dm .say-step { background: rgba(0, 0, 0, 0.3); color: #e0f4fc; }
+.card-obj-dm .say-num { color: var(--cyan); }
+.card-obj-dm .pushback-trigger {
+  color: #a8d8ea;
+  border-top: 1px solid rgba(0, 191, 241, 0.18);
+}
+.card-obj-dm .donot {
+  background: #0d2030;
+  color: #ffd4d4;
+  border-left-color: var(--amber);
+}
+.card-obj-dm .donot strong { color: var(--amber); }
+
 /* =====================================================================
    P0 UI hygiene batch — sourced from UI-RESEARCH-2026-06.md
    ===================================================================== */

@@ -26,10 +26,18 @@
   var OB_STAGES = (DATA.outbound_workflow && DATA.outbound_workflow.stages) || [];
   var GLOBAL_SIGNALS = (DATA.uncertainty_globals && DATA.uncertainty_globals.signals) || [];
   var GLOBAL_ALERT = (DATA.uncertainty_globals && DATA.uncertainty_globals.alert) || "";
-  // Closer's 29 objection handlers — wired in so triage catches the same
-  // patterns (think-about-it, spouse, been-burned, price, etc.). Source:
-  // app-data/objection-responses.json, bundled by build_triage_data.py.
+  // Closer's 29 objection handlers — wired in so triage Call mode catches
+  // the same patterns (think-about-it, spouse, been-burned, price, etc.).
+  // Source: app-data/objection-responses.json, bundled by build_triage_data.py.
   var OBJECTIONS = (DATA.objections && DATA.objections.objections) || [];
+
+  // DM-mode-specific objection library — built from Lauren's DM playbook
+  // (Daniel's Drive folder: comprehensive playbook + cheatsheet + 31 coaching
+  // sessions). DM objections need different handles than call objections —
+  // shorter, lowercase, no "I'd love to", no Cole-style verbal inversions
+  // (those don't work over text). Source: triage-data/triage-data.json
+  // dm_objections array.
+  var DM_OBJECTIONS = DATA.dm_objections || [];
   if (!Array.isArray(CALL_STAGES) || !CALL_STAGES.length) fail("triage data has no call stages.");
   function STAGES() {
     if (state.mode === "dm") return DM_STAGES;
@@ -242,9 +250,10 @@
     var stage = currentStage();
     var stageHits = matchTriggers(n, stage.pushback_triggers || []);
     var globalHits = matchTriggers(n, GLOBAL_SIGNALS);
-    // Also score against the closer's 29 objection handlers. Only used on
-    // call mode (DM + Outbound have their own stage triggers + don't carry
-    // the closer's full objection bank).
+    // Score against the right objection library for the current mode:
+    //   - call mode: closer's 29-objection bank (Cole's funnel)
+    //   - DM mode:   Lauren's DM playbook library (12 DM-specific patterns)
+    //   - outbound:  no objection library (its own stage triggers handle it)
     var objectionHits = [];
     if (state.mode === "call") {
       OBJECTIONS.forEach(function (o) {
@@ -257,6 +266,14 @@
         var rb = b.item.bucket === "uncertainty" ? 0 : 1;
         return ra !== rb ? ra - rb : b.hits.length - a.hits.length;
       });
+      objectionHits = objectionHits.slice(0, 3);
+    } else if (state.mode === "dm") {
+      DM_OBJECTIONS.forEach(function (o) {
+        var hits = matchTriggers(n, o.triggers || []);
+        if (hits.length) objectionHits.push({ item: o, hits: hits });
+      });
+      // sort: by hit count desc (most-specific match first)
+      objectionHits.sort(function (a, b) { return b.hits.length - a.hits.length; });
       objectionHits = objectionHits.slice(0, 3);
     }
     return {
@@ -300,15 +317,24 @@
       "</div>";
   }
 
-  /* ---------- render: objection card (from closer's 29-objection bank) ---------- */
+  /* ---------- render: objection card (closer bank in Call mode, DM playbook in DM mode) ---------- */
   function objectionCard(m) {
     var o = m.item, h = "";
-    h += '<div class="card card-obj">';
-    h += '<div class="card-head"><span class="card-kicker">▲ Objection detected</span>';
+    var isDm = state.mode === "dm";
+    h += '<div class="card card-obj' + (isDm ? " card-obj-dm" : "") + '">';
+    // Kicker: clear label + bucket pill
+    h += '<div class="card-head"><span class="card-kicker">' +
+      (isDm ? "💬 DM objection detected" : "▲ Objection detected") + "</span>";
     h += '<span class="card-bucket">' + esc(o.bucket || "") + "</span></div>";
     h += '<div class="card-title">' + esc(o.label) + "</div>";
-    h += '<div class="handle-strip">↳ Run: <b>diffuse → isolate → temp-check → scale → double tie-down</b>, then:</div>';
-    h += '<div class="say-block"><div class="say-label">Say this</div>';
+    // Handle strip: different methodology in DM vs Call
+    if (isDm) {
+      h += '<div class="handle-strip">↳ <b>Acknowledge → Compliment → Ask (open-ended)</b>. Match their casing. No "I\'d love to" / "happy to" / "Hi" / "Hey".</div>';
+    } else {
+      h += '<div class="handle-strip">↳ Run: <b>diffuse → isolate → temp-check → scale → double tie-down</b>, then:</div>';
+    }
+    h += '<div class="say-block"><div class="say-label">' +
+      (isDm ? "DM reply (adapt to fit their tone)" : "Say this") + "</div>";
     (o.response_steps || []).forEach(function (s, i) {
       h += '<div class="say-step"><span class="say-num">' + (i + 1) + "</span><span>" + formatScript(s) + "</span></div>";
     });
