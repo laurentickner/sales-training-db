@@ -3256,12 +3256,15 @@
   ];
 
   function shouldRunWelcomeWizard() {
-    try {
-      if (localStorage.getItem(WIZARD_DONE_KEY) === "1") return false;
-    } catch (e) { return false; }
-    var m = state.myOffer || {};
-    if (m.offerName && m.pillar1) return false;  // existing user, skip
-    return true;
+    // INTERNAL-ONLY KILL — Lauren / Daniel / Mariana already know the tool;
+    // the first-call walk-through is a client-distribution feature, not
+    // something Lauren wants firing every time she opens the copilot
+    // before a real Scale Systems call. The client fork
+    // (sales-training-db-client) keeps the original behavior — do NOT
+    // copy this short-circuit there. Wizard machinery + the Settings
+    // "Replay first-call walk-through" entry point still work, so Lauren
+    // can still trigger it manually if she ever wants to.
+    return false;
   }
 
   // v=102: autosave draft on every step transition + on textarea input
