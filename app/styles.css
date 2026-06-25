@@ -1014,6 +1014,22 @@ body.call-active .panel-right { flex: 1 1 100% !important; }
 }
 .stage-banner-goal { color: var(--text-dim); flex: 1; min-width: 0; }
 .stage-banner:empty { display: none; }
+/* v=143 Lauren: sticky Back + intro-toggle in the banner so a mis-click on
+   Pain-first / Vision-first is always one tap to undo. */
+.stage-banner-nav {
+  display: inline-flex;
+  gap: 6px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+.stage-banner-back,
+.stage-banner-toggle {
+  white-space: nowrap;
+  font-size: 12px;
+  padding: 4px 10px;
+}
+.stage-banner-back { background: rgba(255,255,255,0.06); }
+.stage-banner-back:hover { background: rgba(255,255,255,0.12); }
 @media (max-width: 820px) {
   .stage-banner { padding: 8px 14px; font-size: 12px; }
 }

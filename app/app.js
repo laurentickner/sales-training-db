@@ -885,7 +885,38 @@
     var el = $("stage-banner");
     if (!el) return;
     var getCopy = STAGE_GET[s.id] || s.goal || "";
+    // v=143 Lauren: sticky Back + intro-option toggle in the banner so a
+    // mis-click on "Pain first / Vision first" (or the auto-picked intro
+    // option being wrong) is always one tap to undo. Reuses the existing
+    // .sr-back-stage + .sr-toggle-option classes — handlers below delegate
+    // on document.body so they fire from the banner too.
+    var curIdx = STAGES.findIndex(function (st) { return st.id === s.id; });
+    var prevStage = curIdx > 0 ? STAGES[curIdx - 1] : null;
+    var backBtn = prevStage
+      ? '<button type="button" class="btn btn-ghost btn-sm sr-back-stage stage-banner-back" ' +
+        'data-prev="' + esc(prevStage.id) + '" title="Go back to ' + esc(prevStage.name) + '">' +
+        "← Back to " + esc(prevStage.name) + "</button>"
+      : "";
+    var introToggle = "";
+    if (s.id === "introduction" && s.options && s.options.length === 2) {
+      var hasPrep = !!(state.prospect && (state.prospect.prep || state.prospect.triage ||
+        state.prospect.business || state.prospect.situation || state.prospect.source ||
+        state.prospect.goal));
+      var autoIdx = hasPrep ? 0 : 1;
+      var overrideIdx = state.introOptionOverride;
+      var chosenIdx = (overrideIdx === 0 || overrideIdx === 1) ? overrideIdx : autoIdx;
+      var otherIdx = chosenIdx === 0 ? 1 : 0;
+      var other = s.options[otherIdx];
+      var otherShort = other.title.split("—")[1]
+        ? other.title.split("—")[1].trim().split("(")[0].trim()
+        : other.title;
+      introToggle = '<button type="button" id="sb-toggle-option" class="btn btn-ghost btn-sm stage-banner-toggle sr-toggle-option-banner" ' +
+        'data-target="' + otherIdx + '" title="Switch to the other intro approach">' +
+        "↻ Switch to: " + esc(otherShort) +
+        "</button>";
+    }
     el.innerHTML =
+      (backBtn || introToggle ? '<span class="stage-banner-nav">' + backBtn + introToggle + "</span>" : "") +
       '<span class="stage-banner-num">' + esc(s.name.split(".")[0]) + ".</span>" +
       '<span class="stage-banner-name">' + esc(s.name.split(".").slice(1).join(".").trim()) + "</span>" +
       '<span class="stage-banner-label">Get out of them:</span>' +
@@ -2901,6 +2932,31 @@
       if (b) setStage(b.getAttribute("data-id"));
     });
     // Stage-ref ticks — SAY lines (v=58) + Advance-when checkbox (v=59)
+    // v=143 Lauren: delegate the same Back + intro-toggle click handlers to
+    // the stage-banner too, so the buttons we now render at the top of the
+    // banner work without duplicating logic (renderStageRef already binds
+    // the same classes below).
+    $("stage-banner").addEventListener("click", function (e) {
+      var backBtn = e.target.closest ? e.target.closest(".sr-back-stage") : null;
+      if (backBtn) {
+        var prevId = backBtn.getAttribute("data-prev");
+        if (prevId) {
+          var prevName = stageById(prevId).name;
+          setStage(prevId);
+          toast("← Back to " + prevName, "ok");
+        }
+        return;
+      }
+      var optBtn = e.target.closest ? e.target.closest(".sr-toggle-option-banner") : null;
+      if (optBtn) {
+        var target = parseInt(optBtn.getAttribute("data-target"), 10);
+        state.introOptionOverride = (target === 0 || target === 1) ? target : null;
+        renderStageBanner();
+        renderStageRef();
+        toast("↻ Switched intro approach", "ok");
+        return;
+      }
+    });
     $("stage-ref").addEventListener("click", function (e) {
       // Advance-when checkbox cascades into the stage's top-tracker chips
       var adv = e.target.closest ? e.target.closest(".sr-advance") : null;
