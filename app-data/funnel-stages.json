@@ -57,14 +57,18 @@
     {
       "id": "transition",
       "name": "3. Transition",
-      "goal": "Move from questions to pitch with zero sales resistance — get the prospect to ask you to pitch them.",
-      "listen_for": "Confirmation they feel understood.",
+      "goal": "Pre-pitch — reframe their real problem, install the new belief about HOW the solution must work, get explicit agreement, THEN have them ask you to pitch. By the end of this stage their other booked calls are irrelevant and remaining objections become logistical, not real (Cole Gordon).",
+      "listen_for": "The 'yes' on the belief tie-down (line 5). That agreement IS the belief installed — without it, the pitch lands on sand. Cole Gordon: 'an agreement is a belief installed, and stacked beliefs make the close easy.' Watch their tonality — 'dude absolutely' = real agreement; 'I think so' = no, loop back into the reframe.",
       "say": [
-        "I don't think I have any more questions — is there anything else you feel like we haven't covered that you feel like I need to know?",
-        "Based on what you've told me, we can definitely help.",
-        "Cool — and there are 3 things that you're going to do, whether you work with me or not, to go from [where they are now] to [where they want to be]. So where do you want to go from here? I can walk you through what those 3 things are and how we'd do it together if you want — but you tell me where you want to go."
+        "CONFIRM GAP: I don't think I have any more questions — is there anything else you feel like we haven't covered that you feel like I need to know?",
+        "CONSULTING FRAME: Look — I work with a lot of people just like you, at your level. Do you want my honest take on what's actually going on, before we get into how we work together? ... Great.",
+        "REFRAME THE REAL PROBLEM (Cole Gordon — pre-pitch): Based on what you just told me, and based on what I see across [tier of client — e.g. 7-figure founders / coaches / advisors] at this level, the real issue isn't [what they came on for, e.g. 'more ads' / 'a content team' / 'a better strategy']. The real issue is [the deeper constraint — e.g. 'your offer isn't being communicated in a way your ideal client understands' / 'you're posting content that's discovered, but not content that converts to revenue']. So yes, you do need [X], but it has to be done in this specific way, otherwise it won't work.",
+        "RUN-THE-OTHER-DIRECTION ANCHOR (Cole Gordon): And independent if you work with us or not — if anybody tells you different, I'd run the other direction. They're just not being honest with you. You don't have to work with us. But this is what you actually need. ... What are your thoughts on that?",
+        "BELIEF TIE-DOWN (Cole Gordon — agreement = belief installed): So do you agree with what I just laid out? ... Great — because once you believe the SOLUTION needs to look like this, everyone else you'd talk to who can't deliver it this way becomes irrelevant.",
+        "PAST-ATTEMPT TIE-IN (Cole Gordon — domino belief): And do you know how you told me earlier that [past attempt didn't work / current strategy is stalling]? It's probably because that approach didn't address [the deeper constraint], isn't it? ... Exactly.",
+        "PERMISSION TO PITCH: Cool — so there are 3 things you're going to do, whether you work with me or not, to go from [where they are now] to [where they want to be]. I can walk you through what those 3 things are and how we'd do it together if you want — but you tell me where you want to go."
       ],
-      "advance_when": "They ask you to walk them through it."
+      "advance_when": "They've explicitly agreed with the reframe (line 5), tied it back to a past attempt (line 6), AND asked you to walk them through it (line 7)."
     },
     {
       "id": "pitch",
