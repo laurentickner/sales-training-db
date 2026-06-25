@@ -7,8 +7,8 @@
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.anthropic.com https://script.google.com https://script.googleusercontent.com; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
-<title>Scale Systems Sales Call Copilot</title>
-<link rel="stylesheet" href="styles.css?v=45" />
+<title>Sales Call Copilot</title>
+<link rel="stylesheet" href="styles.css?v=141" />
 </head>
 <body>
 
@@ -23,7 +23,7 @@
       </svg>
     </span>
     <div>
-      <h1>Scale Systems <span class="brand-accent">Sales Call Copilot</span></h1>
+      <h1><span class="brand-accent">Sales Call</span> Copilot</h1>
       <p class="brand-sub">Real-time sales-call assistant</p>
     </div>
   </div>
@@ -34,6 +34,10 @@
     <button id="btn-calls" class="btn btn-ghost" title="Past calls + outcomes"><span aria-hidden="true">▤</span> Calls</button>
     <button id="btn-review" class="btn btn-ghost" title="Paste a finished-call transcript and get a scored review"><span aria-hidden="true">◇</span> Review</button>
     <button id="btn-offer" class="btn btn-ghost" title="Customise your pillars, upside math, and price"><span aria-hidden="true">◆</span> My offer</button>
+    <button id="btn-help" class="btn btn-help" title="Panic mode — buy yourself 30 seconds and get a copilot move" aria-label="Help — panic mode"><span aria-hidden="true">🆘</span> HELP</button>
+    <button id="btn-startcall" class="btn btn-startcall" title="Start the call — focus the UI on what you need mid-call (hides Prep / Past calls / Settings clutter)"><span aria-hidden="true">▶</span> Start call</button>
+    <button id="btn-endcall" class="btn btn-endcall hidden" title="End the call — return to full view"><span aria-hidden="true">■</span> End call</button>
+    <button id="btn-fontsize" class="btn btn-ghost" title="Cycle font size: Small / Medium / Large / Extra Large" aria-label="Font size"><span aria-hidden="true">A↕</span> <span id="fontsize-label">M</span></button>
     <button id="btn-settings" class="btn btn-ghost" title="Settings"><span aria-hidden="true">⚙</span> Settings</button>
     <button id="btn-newcall" class="btn btn-ghost" title="Start a fresh call"><span aria-hidden="true">↻</span> New call</button>
   </div>
@@ -43,43 +47,57 @@
 <nav class="stage-strip" id="stage-strip" aria-label="Funnel stage"></nav>
 
 <!-- 7-beliefs checklist (discovery only) -->
-<div class="belief-tracker" id="belief-tracker" hidden aria-label="Cole's 7 beliefs — covered in discovery"></div>
+<div class="belief-tracker" id="belief-tracker" hidden aria-label="7 beliefs — covered in discovery"></div>
 
-<main class="layout">
+<!-- Stage banner — Lauren feedback v=60: compact "what to get out of them" summary
+     at the top of the screen, replacing the redundant "X. Stage — what to do" block
+     that was at the bottom of the right panel. -->
+<div class="stage-banner" id="stage-banner"></div>
+
+<main class="layout" id="layout">
 
   <!-- LEFT: input + call log -->
-  <section class="panel panel-left" aria-label="Call input and log">
+  <section class="panel panel-left" id="panel-left" aria-label="Call input and log">
     <h2 class="panel-title">Call Log</h2>
     <div class="input-zone">
       <textarea id="input" rows="3" maxlength="2000"
         placeholder="Type what the prospect just said (or paste it) and press Enter…"></textarea>
       <div class="input-row">
         <button id="btn-analyze" class="btn btn-primary">Analyze <span aria-hidden="true">⏎</span></button>
-        <button id="btn-snapshot" class="btn btn-ghost btn-sm" title="After the call: copy prep + facts + log + objections as markdown, then paste into the Notes-by-Gemini Doc so the auto-review picks them up"><span aria-hidden="true">⧉</span> Copy call snapshot</button>
-        <button id="btn-export" class="btn btn-ghost btn-sm" title="Download the call log as a .txt"><span aria-hidden="true">↓</span> Export log</button>
+        <button id="btn-snapshot" class="btn btn-ghost btn-sm" title="Copy the in-call snapshot (prep + facts + log + objections) — auto-syncs to the Notes-by-Gemini Doc if the Apps Script URL is set"><span aria-hidden="true">⧉</span> Copy call snapshot</button>
+        <button id="btn-export" class="btn btn-ghost btn-sm" title="Download the call log"><span aria-hidden="true">↓</span> Export log</button>
       </div>
       <p class="hint">Enter = analyze · Shift+Enter = new line</p>
       <div class="situation-bar" id="situation-bar" aria-label="Non-verbal situations"></div>
     </div>
     <div class="facts-zone">
-      <label class="facts-label" for="live-facts">Prospect facts — jot the goal &amp; numbers as you get them</label>
+      <label class="facts-label" for="live-facts">📝 Your notes — type the prospect's goal, numbers &amp; key quotes here as you hear them</label>
       <textarea id="live-facts" rows="3"
-        placeholder="goal = 100k/mo&#10;last month revenue = 32k · client LTV = 6k&#10;partner involved in the decision"></textarea>
+        placeholder="Your scratchpad — what THEY said. Example: goal = lose 30lb by summer · weight 182 → 150 · husband supportive but not bought in · tried Noom 3 mo, gained back · catalyst = beach trip cancelled. Smart Mode reads this. Review uses it post-call."></textarea>
     </div>
+    <div class="log-label" style="font-size:11px; color:var(--text-dim); margin-top:14px; margin-bottom:4px; letter-spacing:0.3px; text-transform:uppercase;">🗂 Call log — auto-history of every quote you typed into HELP (read-only)</div>
     <div id="log" class="log"></div>
   </section>
 
+  <!-- Drag-handle: resize left vs right (Daniel feedback #6 — 3 panes independently resizable) -->
+  <div class="vsplitter" id="vsplitter" role="separator" aria-orientation="vertical"
+       aria-label="Drag to resize left and right panels" tabindex="0"></div>
+
   <!-- RIGHT: copilot guidance -->
-  <section class="panel panel-right" aria-label="Copilot guidance">
+  <section class="panel panel-right" id="panel-right" aria-label="Copilot guidance">
     <h2 class="panel-title">Copilot says…</h2>
     <div id="copilot" class="copilot" role="region" aria-live="polite"
          aria-label="Copilot guidance" tabindex="-1">
       <div class="empty-state">
         <p class="empty-big">Ready.</p>
-        <p>Type what the prospect just said on the left. The copilot will tell you
-           what to say back, flag what to probe, and keep you on the funnel.</p>
+        <p><strong>How this works:</strong> When the prospect says something tricky (objection / soft yes / something you didn't expect), type the exact quote into the <strong>input box on the left</strong> and hit <strong>Enter</strong> (or the 🆘 HELP button). The copilot will surface the next move + (if Smart Mode is on) Claude's adapted reply.</p>
+        <p style="margin-top:10px; font-size:13px; color:var(--text-dim);">Most of the call you won't need this panel — just read the <strong>Stage script</strong> below. Use the input only when you're stuck.</p>
       </div>
     </div>
+
+    <!-- Drag-handle: resize copilot vs stage-ref (Daniel feedback #6) -->
+    <div class="hsplitter" id="hsplitter" role="separator" aria-orientation="horizontal"
+         aria-label="Drag to resize Copilot says and Stage reference" tabindex="0"></div>
 
     <div class="stage-ref" id="stage-ref" tabindex="0" aria-label="Current stage reference">
       <!-- current funnel stage reference, filled by JS -->
@@ -87,6 +105,37 @@
   </section>
 
 </main>
+
+<!-- HELP / Panic-mode modal (Lauren feedback v=62) — big red emergency
+     button on the topbar opens this. Top: 3 buy-time lines the rep reads
+     verbatim to the prospect. Middle: breathe reminder. Bottom: textarea
+     + analyze button that runs the same keyword + smart engine and
+     returns the next move directly inside this modal. -->
+<div id="help-modal" class="modal hidden" role="dialog" aria-modal="true"
+     aria-labelledby="help-title">
+  <div class="modal-card modal-card-help">
+    <h3 id="help-title">🆘 Buy yourself 30 seconds</h3>
+    <p class="help-buytime-label">Read ONE of these to your prospect — verbatim, no hesitation:</p>
+    <ul class="help-buytime-lines">
+      <li>"Oh sorry — someone's at my door, give me <strong>30 seconds</strong> and I'm right back with you."</li>
+      <li>"Hold on — the service is cutting out, can you still hear me OK? Let me reconnect."</li>
+      <li>"Apologies — my browser just hiccupped, one sec to reload and I'm with you."</li>
+      <li>"One second — let me grab my notes on what you just said so I get it exactly right for you."</li>
+    </ul>
+    <div class="help-breathe">
+      <strong>Breathe.</strong> In for 4, hold for 4, out for 4. You've run this call before. The prospect doesn't know what you don't know.
+    </div>
+    <label class="field">
+      <span>What did the prospect just say? What do you need help with?</span>
+      <textarea id="help-input" rows="3" placeholder="e.g. 'they said price is way more than they expected and I'm stuck — what do I say?'"></textarea>
+    </label>
+    <div id="help-output" class="help-output" hidden></div>
+    <div class="modal-actions">
+      <button id="btn-help-analyze" class="btn btn-primary">Get the move</button>
+      <button id="btn-help-close" class="btn btn-ghost">Back to call</button>
+    </div>
+  </div>
+</div>
 
 <!-- Settings modal -->
 <div id="settings-modal" class="modal hidden" role="dialog" aria-modal="true"
@@ -100,26 +149,27 @@
     </label>
     <p class="field-note">
       With a key, the copilot also asks Claude (Haiku, low-latency) to read the call live —
-      it catches objections &amp; flags phrased in ways the keyword engine misses. Leave blank
-      to run 100% offline on the built-in keyword engine. Your key is stored in this
-      browser's localStorage and sent only to Anthropic — anyone with access to this device
-      can recover it, so use a dedicated key with a low spend limit and clear it on shared machines.
+      it catches objections phrased in ways the keyword engine misses (the engine matches
+      exact phrases; smart mode catches paraphrases). Leave blank to run 100% offline on
+      the built-in keyword engine. Your key is stored in this browser's localStorage and
+      sent only to Anthropic — anyone with access to this device can recover it, so use a
+      dedicated key with a low spend limit and clear it on shared machines.
     </p>
     <label class="field field-inline">
       <input type="checkbox" id="smart-toggle" />
       <span>Use smart mode when a key is set</span>
     </label>
 
-    <hr class="settings-divider" />
+    <hr class="settings-rule" />
     <h4 class="settings-subhead">Auto-sync snapshot to the Notes-by-Gemini Doc (optional)</h4>
     <p class="field-note">
-      Paste the URL of your Apps Script Web App here and the
-      <strong>⧉ Copy call snapshot</strong> button will ALSO auto-insert the
-      snapshot at the top of the matching Notes-by-Gemini Doc — no manual
-      paste step. Get the URL from your <code>Scale Systems Sales Coach</code>
-      Apps Script: <strong>Deploy → New deployment → Web App → Execute as:
-      Me / Who has access: Anyone with the link → Deploy → copy the URL</strong>.
-      Leave blank to keep the manual paste flow.
+      Paste the URL of your Apps Script Web App here and the ⧉ <strong>Copy call
+      snapshot</strong> button will ALSO auto-insert the snapshot at the top of
+      the matching Notes-by-Gemini Doc — no manual paste step. Get the URL from
+      your Scale Systems Sales Coach Apps Script:
+      <strong>Deploy → New deployment → Web App → Execute as: Me / Who has
+      access: Anyone with the link → Deploy → copy the URL</strong>. Leave
+      blank to keep the manual paste flow.
     </p>
     <label class="field">
       <span>Apps Script Web App URL</span>
@@ -219,44 +269,28 @@
       <textarea id="prep-triage" rows="6" placeholder="Paste the triage call transcript or your notes from it — the copilot mines this for the prep. The fields below are optional if you paste this in."></textarea>
     </label>
     <label class="field">
-      <span>Their business — what they sell, who for, how long running it</span>
-      <textarea id="prep-business" rows="2" placeholder="e.g. B2B lead-gen agency, 3 years, mostly local trades clients"></textarea>
+      <span>Their context — who they are, what they do, how long they've been at it</span>
+      <textarea id="prep-business" rows="2" placeholder="e.g. fitness coach selling 12-week programs, 2 years in / or 38yo dad with desk job who wants to lose 30lb / or B2B agency, 3 years"></textarea>
     </label>
     <label class="field">
-      <span>Current situation — revenue, team, how they get clients now</span>
-      <textarea id="prep-situation" rows="2" placeholder="e.g. ~$30k/mo, plateaued, all clients from referrals + cold outreach, team of 2"></textarea>
+      <span>Current situation — the numbers / baseline / where they're at right now</span>
+      <textarea id="prep-situation" rows="2" placeholder="e.g. ~$30k/mo plateau, all referrals / or 220lb, tried 4 diets, lost-found-lost / or 8 clients, all paid in full, stuck at $20k/mo"></textarea>
     </label>
     <label class="field">
       <span>Lead source — where they came from / what of yours they've consumed</span>
-      <textarea id="prep-source" rows="2" placeholder="e.g. booked from a LinkedIn post on the AI content system, watched the webinar"></textarea>
+      <textarea id="prep-source" rows="2" placeholder="e.g. booked from a LinkedIn post / watched your webinar / came via a referral / saw your IG transformation reel"></textarea>
     </label>
     <label class="field">
       <span>Their goal, if known</span>
-      <input type="text" id="prep-goal" placeholder="e.g. wants to hit $100k/mo and stop doing delivery" />
+      <input type="text" id="prep-goal" placeholder="e.g. hit $100k/mo and stop doing delivery / or lose 30lb in 90 days / or stop pulling 12hr days" />
     </label>
     <label class="field">
       <span>Anything else — risks, past attempts, red flags</span>
-      <textarea id="prep-extra" rows="2" placeholder="e.g. mentioned they got burned by an agency last year; partner involved in decisions"></textarea>
+      <textarea id="prep-extra" rows="2" placeholder="e.g. got burned by an agency last year / tried 3 coaches before / spouse involved in the decision"></textarea>
     </label>
-    <div class="outcome-zone">
-      <div class="outcome-title">After the call — mark the outcome</div>
-      <label class="field">
-        <span>Outcome</span>
-        <select id="prep-outcome">
-          <option value="">— pending —</option>
-          <option value="closed-pif">Closed (paid in full)</option>
-          <option value="closed-plan">Closed (payment plan)</option>
-          <option value="followup">Follow-up booked</option>
-          <option value="not-closed">Not closed</option>
-          <option value="no-show">No-show</option>
-          <option value="other">Other</option>
-        </select>
-      </label>
-      <label class="field">
-        <span>Outcome notes — what happened, what to do next</span>
-        <textarea id="prep-outcome-notes" rows="2" placeholder="e.g. closed PIF · partner follow-up needed · onboarding call set for Friday"></textarea>
-      </label>
-    </div>
+    <p class="field-note" style="font-size:11.5px; color:var(--text-dim); margin-top:6px; margin-bottom:0;">
+      <strong>After the call</strong> — mark the outcome inside <strong>◇ Review</strong>, not here. Prep is pre-call only; Review handles the post-call scoring + outcome together.
+    </p>
     <div class="modal-actions">
       <button id="btn-generate-prep" class="btn btn-primary">Generate prep</button>
       <button id="btn-close-prep" class="btn btn-ghost">Close</button>
@@ -282,19 +316,36 @@
      aria-labelledby="offer-title">
   <div class="modal-card modal-card-wide">
     <h3 id="offer-title">My offer — template fields</h3>
+    <!-- v=141: bracket explainer added per Ken (KTFitLife) confusion. He kept
+         the [X] / [your client's name] EXAMPLE placeholders in his saved
+         values and thought they'd auto-fill. They don't — they're slots HE
+         was meant to overwrite. Disambiguates from [[OFFER_*]] tokens which
+         he should NOT touch. Plain English, 12-year-old reading level. -->
+    <div class="offer-bracket-help">
+      <strong>💡 Quick heads-up about brackets in this form</strong>
+      <ul>
+        <li>If you see <strong>ONE</strong> square bracket like <code>[X]</code> or <code>[your client's name]</code>, that's a placeholder. <strong>YOU</strong> need to swap it for your real number or name (like <code>$1,500</code> or <code>Sarah</code>).</li>
+        <li>If you see <strong>TWO</strong> square brackets like <code>[[OFFER_NAME]]</code>, that's a magic word the tool fills in automatically from what you save here. Leave it alone.</li>
+      </ul>
+      <div class="offer-bracket-help-rule">Easy way to remember: <strong>ONE bracket = your job. TWO brackets = the tool's job.</strong></div>
+    </div>
     <p class="field-note">
       The discovery framework + objection handling are universal. Your pillars, upside math
       and price are the parts that change per offer. Fill these in once — they save in this
       browser only and show up on the Pitch + Committing tabs whenever you run a call.
-      Leave a field empty to fall back to the default Scale Systems script.
+      Leave a field empty and that slot in the script renders an amber prompt reminding you to fill it in.
     </p>
     <label class="field">
-      <span>Offer name (e.g. "AI Content System", "Lean Body Method")</span>
+      <span>Offer name (e.g. "Lean Body Method", "Agency Accelerator", "Ads Engine")</span>
       <input type="text" id="offer-name" placeholder="What you call your offer" />
     </label>
     <label class="field">
+      <span>Delivery model — how clients actually work with you</span>
+      <input type="text" id="offer-delivery" placeholder="e.g. '1:1 coaching' / 'group cohort, 12 ppl max' / 'course + weekly group Q&amp;A' / 'DWY with my team' / 'self-paced + community'" />
+    </label>
+    <label class="field">
       <span>Pre-frame "what this IS" — what the client is buying (vs not buying)</span>
-      <textarea id="offer-preframe" rows="3" placeholder="e.g. 'What this IS is a step-by-step system where we roll up the sleeves, get in the trenches with you, and build [your offer] into your business with you — and drag you across the finish line.'"></textarea>
+      <textarea id="offer-preframe" rows="3" placeholder="e.g. 'What this IS is a step-by-step system where we roll up the sleeves and build [your offer] into your [business / health / life] together — until you hit the outcome.' Lead with what differentiates YOUR delivery model from the generic version your prospect already discounted (modules-only, $97 group calls, generic coaching, etc)."></textarea>
     </label>
     <label class="field">
       <span>Pillar 1 — paradigm shift (why their past attempts failed) + your solution</span>
@@ -308,6 +359,22 @@
       <span>Pillar 3 — the payoff (what they're left with)</span>
       <textarea id="offer-pillar3" rows="4" placeholder="The last thing we'll do… What's the outcome / system / asset they walk away with? End with a tie-down."></textarea>
     </label>
+    <label class="field">
+      <span>Case studies / proof — 1-3 short specific client wins you reference in the pitch</span>
+      <textarea id="offer-casestudy" rows="3" placeholder="e.g. 'Jordan went from 14 to 28 booked calls in 6 weeks — same number of hours.' · 'Aisha dropped 18lb in 12 weeks, kept it off 9 months later — first time after 4 failed diets.' · 'Sam closed 3 new retainers in 60 days using only the outbound openers we built together.' Specific name + before number + after number + time. The copilot splices these into Pitch + Review prompts so they're at hand mid-call."></textarea>
+    </label>
+    <label class="field">
+      <span>3-4 key components of how you deliver — the system gen­erates ana­logies from these</span>
+      <textarea id="offer-components" rows="3" placeholder="List 3-4 SPECIFIC things you do / give them / what they get. e.g. for a fitness coach: 'macros tracking · 3 weekly strategic sessions · daily Voxer accountability · weekly progress photo review'. For a B2B agency: 'ICP-tight outbound list · openers in their voice · AI for scale + human for closes · weekly pipeline review'. Specific verbs + nouns. The copilot uses these to auto-generate analogies you can drop into your Pitch."></textarea>
+    </label>
+    <div class="field" id="analogies-field">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px;">
+        <span style="font-weight:600; font-size:13px;">Auto-generated analogies — used in Pitch tab when you need a quick metaphor</span>
+        <button type="button" id="btn-generate-analogies" class="btn btn-sm btn-primary" title="Use Claude to write 3-5 analogies from your components (requires Anthropic API key)">✨ Generate analogies</button>
+      </div>
+      <textarea id="offer-analogies" rows="6" placeholder="Click ✨ Generate analogies above (after filling Components, with an Anthropic API key in Settings) — OR write your own. Each analogy should connect a component of your offer to a common-knowledge metaphor your prospect will instantly understand. e.g. 'You wouldn't expect to be fluent in Japanese after watching one YouTube video — the macros tracking is the daily reps that compound, not the one-off insight.'"></textarea>
+      <p id="analogies-status" class="field-note" style="font-size:11.5px; margin-top:4px; color:var(--text-dim);"></p>
+    </div>
     <label class="field">
       <span>Onboarding line (before price) — who delivers, in what format, over what timeframe</span>
       <textarea id="offer-onboarding" rows="3" placeholder="e.g. 'next steps — you'll process the investment, then we set up an onboarding call, give you some homework, and lay out when we meet and what we'll give you, so you have clarity on the next 12 weeks.'"></textarea>
@@ -336,7 +403,207 @@
   </div>
 </div>
 
-<script src="data/data.js?v=45"></script>
-<script src="app.js?v=45"></script>
+<!-- v=104 Welcome Wizard, fires once for first-time users.
+     v=104 changes per Lauren's walkthrough: "My offer" jargon -> "settings",
+     NEW pillar explainer between textarea and review, review screen reframed
+     with Lauren's verbatim copy referencing her own scripting, NEW tour
+     screen before tool opens. Step count 3 -> 5. -->
+<div id="welcome-wizard" class="wiz-overlay hidden" aria-hidden="true">
+  <div class="wiz-card" role="dialog" aria-modal="true" aria-labelledby="wiz-step1-h">
+    <!-- Step 1: Welcome -->
+    <div id="wiz-step1" class="wiz-step">
+      <div class="wiz-pill">Step 1 of 7 · Setup</div>
+      <h2 class="wiz-h" id="wiz-step1-h" tabindex="-1">Before you start taking calls, provide details about your offer and prospects so we can build your script.</h2>
+      <p class="wiz-sub">First we&#39;ll connect Claude AI (the brain that builds your pitch). Then you paste your sales page or describe your business, we extract the details, you confirm, and the tool opens.</p>
+      <div class="wiz-meta">
+        <span><strong>⏱</strong> ~2 minutes end to end</span>
+        <span><strong>↵</strong> editable later in settings</span>
+      </div>
+      <button id="wiz-go-step2" type="button" class="wiz-btn-primary">Continue →</button>
+      <p class="wiz-foot">The tool can&#39;t surface the right script without these details. You can revise any answer later in settings.</p>
+    </div>
+
+    <!-- v=109 NEW: API key step. Lauren UX: "if we tell them to add a key in
+         settings later, but settings was never part of onboarding, that's
+         broken. Put it first." -->
+    <div id="wiz-step-api" class="wiz-step hidden">
+      <div class="wiz-pill">Step 2 of 7 · AI access</div>
+      <h2 class="wiz-h" id="wiz-step-api-h" tabindex="-1">Connect Claude AI for smart pitch extraction.</h2>
+      <p class="wiz-sub">We use Anthropic&#39;s Claude to turn your offer description into a sharp 3-pillar pitch in your voice, generate pre-call briefs from your triage notes, and score your call transcripts afterward. Setup costs about <strong>$0.01 to $0.05 per call</strong> in API usage, billed directly to you by Anthropic.</p>
+      <details id="wiz-api-howto" style="margin-bottom:16px; background:rgba(0,191,241,0.06); border-left:3px solid #00BFF1; border-radius:6px; padding:12px 14px;">
+        <summary style="font-size:13px; font-weight:700; color:#2A0D77; cursor:pointer; list-style:none;">
+          <span style="display:inline-block; vertical-align:middle;">📘 First time? Click here for the 4 steps to get your key</span>
+        </summary>
+        <ol style="font-size:13px; color:#4A4366; line-height:1.65; margin:12px 0 4px 18px; padding:0;">
+          <li>Go to <a href="https://console.anthropic.com/login" target="_blank" rel="noopener noreferrer" style="color:#2A0D77; font-weight:600;">console.anthropic.com</a> and create an account (you get free credit on signup, no card required to start).</li>
+          <li>Once you&#39;re in, click <strong>API Keys</strong> in the left sidebar.</li>
+          <li>Click <strong>Create Key</strong>, give it a name like <em>&quot;Sales Call Copilot&quot;</em>, then <strong>Copy</strong> it to your clipboard. It starts with <code style="background:rgba(42,13,119,0.08); padding:1px 5px; border-radius:3px; font-family:Menlo,monospace; font-size:12px;">sk-ant-</code>.</li>
+          <li>Paste it below.</li>
+        </ol>
+        <p style="font-size:12px; color:#6B6480; margin:10px 0 0 0; line-height:1.5;">Full official walkthrough with screenshots: <a href="https://docs.anthropic.com/en/api/getting-started" target="_blank" rel="noopener noreferrer" style="color:#2A0D77; font-weight:600;">Anthropic&#39;s &ldquo;Getting started&rdquo; guide →</a></p>
+      </details>
+      <label for="wiz-api-key-input" style="display:block; font-size:13px; color:#4A4366; font-weight:600; margin-bottom:6px;">Your Anthropic API key</label>
+      <input id="wiz-api-key-input" type="password" class="wiz-textarea" style="min-height:auto; padding:14px 16px; font-family:Menlo, Monaco, monospace;" placeholder="sk-ant-..." autocomplete="off" spellcheck="false" />
+      <div id="wiz-api-key-status" class="wiz-status hidden"></div>
+      <p style="font-size:12px; color:#6B6480; margin:10px 0 16px 0; line-height:1.5;">🔒 Your key is stored only in your browser, never on our servers.</p>
+      <div class="wiz-actions-row">
+        <button id="wiz-back-from-api" type="button" class="wiz-btn-ghost">← Back</button>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button id="wiz-skip-api" type="button" class="wiz-btn-ghost">Skip, use template pillars</button>
+          <button id="wiz-save-api" type="button" class="wiz-btn-primary" style="width:auto;">Save key and continue →</button>
+        </div>
+      </div>
+      <p class="wiz-foot">Without a key, we&#39;ll only extract the basics and show you template pillars to fill in by hand. You can add a key any time in ⚙ Settings.</p>
+    </div>
+
+    <!-- Step 3: Textarea (was Step 2 before v=109) -->
+    <div id="wiz-step2" class="wiz-step hidden">
+      <div class="wiz-pill">Step 3 of 7</div>
+      <h2 class="wiz-h" id="wiz-step2-h" tabindex="-1">Tell us about your offer and your prospects.</h2>
+      <p class="wiz-sub">Paste your sales page, program outline, offer doc, or write it yourself in plain English. We pull out the details we need (offer name, what you sell, who you sell to, how long it runs, your pricing). Polish does not matter.</p>
+      <p class="wiz-rescue"><strong>If you don&#39;t have it yet, don&#39;t worry, we&#39;ll help you build it.</strong> Write a paragraph about who you&#39;d love to sell to and what you&#39;d love to do for them. We&#39;ll draft a starting point you can revise on the next screen.</p>
+      <textarea id="wiz-text" class="wiz-textarea" placeholder="Paste anything that describes your offer: a sales page, a Google doc, a Notion outline, a Loom transcript, an RFP, a brochure. OR describe your business in your own words. (We rotate the example below so you can see how different niches sound.)"></textarea>
+      <p class="wiz-privacy">🔒 Stored only in this browser. Sent to Anthropic (the company behind Claude AI) to parse fields, nothing else. Never sent to us or any third party.</p>
+      <button id="wiz-extract" type="button" class="wiz-btn-primary">Continue →</button>
+      <div id="wiz-extract-status" class="wiz-status hidden"></div>
+    </div>
+
+    <!-- v=106: Step 3 NOW is offer review (was explainer). Lauren feedback:
+         after submitting offer text, the rep should FIRST see what we
+         extracted (so they can confirm/edit) before learning about pillars. -->
+    <div id="wiz-step3" class="wiz-step hidden">
+      <div class="wiz-pill">Step 4 of 7 · review your offer</div>
+      <h2 class="wiz-h" id="wiz-step3-h" tabindex="-1">Review what we extracted.</h2>
+      <p class="wiz-sub">Here&#39;s what we pulled from what you wrote. Tap any row to edit. The more accurate this is, the sharper your script will be on real calls. Some reps paste a few sentences, some paste a 30-page sales page, this captures the parts the live script uses.</p>
+      <div id="wiz-offer-grid" class="wiz-grid"></div>
+      <div class="wiz-actions-row">
+        <button id="wiz-back-step3" type="button" class="wiz-btn-ghost">← Back</button>
+        <button id="wiz-step3-next" type="button" class="wiz-btn-primary" style="width:auto;">Continue →</button>
+      </div>
+      <p class="wiz-foot">Revise any answer later in settings.</p>
+    </div>
+
+    <!-- v=106: Step 4 NOW is the pillar explainer (was Step 3 in v=105).
+         Now sits AFTER the offer review and BEFORE the pillars review,
+         so the rep learns what pillars are right before reviewing theirs. -->
+    <div id="wiz-step4" class="wiz-step hidden">
+      <div class="wiz-pill">Step 5 of 7 · what are pillars?</div>
+      <h2 class="wiz-h" id="wiz-step4-h" tabindex="-1">What are pillars, and why do we use them?</h2>
+      <p class="wiz-sub">When you&#39;re on a sales call, the pitch isn&#39;t a list of features ("you get 12 calls + Voxer + workbook"). Features get compared on price. The pitches that land are built on <strong>3 pillars</strong>, each carrying an analogy that helps your prospect <em>finally see</em> why what they&#39;ve been doing hasn&#39;t worked, and why your way changes everything for them.</p>
+      <div class="wiz-explainer-list">
+        <div class="wiz-explainer-item">
+          <span class="wiz-explainer-num">1</span>
+          <div>
+            <div class="wiz-explainer-item-label">Pillar 1, the mechanism shift</div>
+            <div class="wiz-explainer-item-text">Names the wrong model your prospect is operating on, and the right one. e.g. "you think weight loss is willpower, it&#39;s actually hormonal calibration."</div>
+          </div>
+        </div>
+        <div class="wiz-explainer-item">
+          <span class="wiz-explainer-num">2</span>
+          <div>
+            <div class="wiz-explainer-item-label">Pillar 2, the method, with proof</div>
+            <div class="wiz-explainer-item-text">Your specific approach plus a real client win that demonstrates it works. e.g. "Sarah came in at X, we did Y, she ended at Z in 90 days."</div>
+          </div>
+        </div>
+        <div class="wiz-explainer-item">
+          <span class="wiz-explainer-num">3</span>
+          <div>
+            <div class="wiz-explainer-item-label">Pillar 3, the future they walk into</div>
+            <div class="wiz-explainer-item-text">Who they become once this works. The identity shift, the version of themselves that lives on the other side of your program.</div>
+          </div>
+        </div>
+      </div>
+      <p class="wiz-sub">We&#39;ve taken what you wrote and turned it into <strong>your</strong> version of these 3 pillars. Review them on the next screen, edit anything that doesn&#39;t feel like you, then we open the tool.</p>
+      <div class="wiz-actions-row">
+        <button id="wiz-back-step4" type="button" class="wiz-btn-ghost">← Back</button>
+        <button id="wiz-step4-next" type="button" class="wiz-btn-primary" style="width:auto;">Show my pillars →</button>
+      </div>
+    </div>
+
+    <!-- v=105 Step 5: Review PILLARS only (was step 4 in v=104). -->
+    <div id="wiz-step5" class="wiz-step hidden">
+      <div class="wiz-pill">Step 6 of 7 · review my pillars</div>
+      <h2 class="wiz-h" id="wiz-step5-h" tabindex="-1">Review my pillars.</h2>
+      <p class="wiz-sub">We&#39;ve turned what you do into a pitch for your sales calls. Please compare it to the scripting <strong>Lauren Tickner</strong> uses on her own sales calls. Each pillar should be an <strong>analogy your prospect resonates with</strong>, which helps them see <strong>why what they&#39;ve been doing before hasn&#39;t worked</strong>, and <strong>how working with you will change everything once and for all</strong>.</p>
+      <div id="wiz-pillar-grid" class="wiz-grid"></div>
+      <div class="wiz-actions-row">
+        <button id="wiz-back-step4-from-pillars" type="button" class="wiz-btn-ghost">← Back</button>
+        <button id="wiz-finish" type="button" class="wiz-btn-primary" style="width:auto;">Open the tool →</button>
+      </div>
+      <p class="wiz-foot">Revise any answer later in settings.</p>
+    </div>
+
+    <!-- v=105 Step 6: Brief tour text (was step 5 in v=104).
+         After this, in-app guidance fires on the live dashboard. -->
+    <div id="wiz-step6" class="wiz-step hidden">
+      <div class="wiz-pill">Step 7 of 7 · quick tour</div>
+      <h2 class="wiz-h" id="wiz-step6-h" tabindex="-1">Here&#39;s how you&#39;ll actually use the tool.</h2>
+      <p class="wiz-sub">3 things to know before your first call. Once you click below, we&#39;ll guide you through them in the live tool.</p>
+      <div class="wiz-tour-tip">
+        <div class="wiz-tour-tip-label">📜 The Stage script (left, big panel)</div>
+        <div class="wiz-tour-tip-text">Read this line by line on your call. Tick each line as you say it. That&#39;s the call. There are 7 stages, the tool walks you through them in order.</div>
+      </div>
+      <div class="wiz-tour-tip">
+        <div class="wiz-tour-tip-label">📝 The Call log (right side)</div>
+        <div class="wiz-tour-tip-text">When the prospect says something you didn&#39;t expect, type their exact words into the box and hit Enter. The tool surfaces the next move ("your prospect is hedging, here&#39;s the script for that").</div>
+      </div>
+      <div class="wiz-tour-tip">
+        <div class="wiz-tour-tip-label">🆘 The HELP button (top, red)</div>
+        <div class="wiz-tour-tip-text">If a call goes sideways, hit HELP. The tool pauses, surfaces 3 buy-yourself-time lines you read verbatim, then helps you get back on track.</div>
+      </div>
+      <div class="wiz-tour-tip">
+        <div class="wiz-tour-tip-label">▶ Start call (top, green)</div>
+        <div class="wiz-tour-tip-text">When you&#39;re actually on a call, hit this. The tool collapses into a focused mid-call view, only the live script, call log, and HELP are visible. No Prep / Settings / My offer clutter. Hit End call when you&#39;re done to get the full toolkit back.</div>
+      </div>
+      <p class="wiz-foot">We&#39;ll point at each one in the live tool now. The last step will drop you straight into focused call mode.</p>
+      <button id="wiz-tour-finish" type="button" class="wiz-btn-primary">Got it, show me in the tool →</button>
+    </div>
+  </div>
+</div>
+
+<!-- v=105 NEW: In-app guidance overlay that fires after the wizard closes.
+     Pulsing ring + floating tooltip points at each key element in sequence:
+     Stage script panel, Call log input, HELP button, Prep call, My offer. -->
+<div id="in-app-tour" class="iat-overlay hidden" aria-hidden="true">
+  <div id="iat-ring" class="iat-ring"></div>
+  <div id="iat-tooltip" class="iat-tooltip" role="dialog" aria-modal="false" aria-labelledby="iat-tooltip-h">
+    <div id="iat-step-pill" class="iat-step-pill">Step 1 of 5</div>
+    <h3 id="iat-tooltip-h" class="iat-tooltip-h"></h3>
+    <p id="iat-tooltip-body" class="iat-tooltip-body"></p>
+    <div class="iat-actions">
+      <button id="iat-skip" type="button" class="iat-btn-ghost">Skip tour</button>
+      <div style="display:flex; gap:8px;">
+        <button id="iat-prev" type="button" class="iat-btn-ghost">← Back</button>
+        <button id="iat-next" type="button" class="iat-btn-primary">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- v=141: simulated first-call walk-through. Fires after Prep auto-closes on
+     the first ▶ Start Call. Walks the rep through Notes → input box → Discovery
+     belief loop → Pitch → Committing → End Call using an example prospect (Tara,
+     fitness coach mum). Auto-fills the live UI as it goes so the rep SEES what
+     real-call usage looks like before they take a real one. Locked Next-only
+     (Esc + click-outside disabled, Skip requires confirm). One-shot via
+     localStorage copilot_sim_done_v125. -->
+<div id="sim-overlay" class="sim-overlay hidden" aria-hidden="true">
+  <div id="sim-ring" class="sim-ring"></div>
+  <div id="sim-tooltip" class="sim-tooltip" role="dialog" aria-modal="true" aria-labelledby="sim-tooltip-h">
+    <div id="sim-step-pill" class="sim-step-pill">Sit back and relax</div>
+    <h3 id="sim-tooltip-h" class="sim-tooltip-h"></h3>
+    <p id="sim-tooltip-body" class="sim-tooltip-body"></p>
+    <div class="sim-actions">
+      <button id="sim-skip" type="button" class="sim-btn-ghost">Skip walk-through</button>
+      <div style="display:flex; gap:8px;">
+        <button id="sim-prev" type="button" class="sim-btn-ghost">← Back</button>
+        <button id="sim-next" type="button" class="sim-btn-primary">Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="data/data.js?v=141"></script>
+<script src="app.js?v=141"></script>
 </body>
 </html>

@@ -1,7 +1,7 @@
-/* Call Copilot — Scale Systems. Dark, high-contrast, built for fast reading on a live call. */
+/* Sales Call Copilot — client edition. Dark, high-contrast, built for fast reading on a live call. */
 
 :root {
-  /* Scale Systems brand — dark theme */
+  /* Dark theme — high contrast, low eye-fatigue for long calls */
   --bg:         #0E0A1F;
   --bg-panel:   #15102B;
   --bg-card:    #1C1640;
@@ -96,16 +96,79 @@ body {
 }
 
 /* ---- Layout ---- */
+/* 3-pane layout with drag-resize (Daniel feedback #6). Left + right panels
+   resizable via vsplitter; right panel's copilot + stage-ref resizable via
+   hsplitter. Widths/heights persist in localStorage so the rep keeps their
+   preferred ratio across sessions. */
 .layout {
-  flex: 1; display: grid; grid-template-columns: 40% 60%;
+  /* v=70 Lauren: swap left/right — script becomes the primary panel on the
+     left where eyes go first during a live call; notes/input live on the
+     right. Achieved with row-reverse instead of renaming panel IDs (so all
+     the JS + focus-mode CSS that targets #panel-left / #panel-right still
+     works). */
+  flex: 1; display: flex; flex-direction: row-reverse;
   gap: 0; overflow: hidden;
+  min-height: 0;
 }
 .panel {
   display: flex; flex-direction: column;
   overflow: hidden; padding: 16px 18px;
+  min-width: 0; min-height: 0;
 }
-.panel-left { border-right: 1px solid var(--border); background: var(--bg); }
-.panel-right { background: var(--bg-panel); }
+.panel-left {
+  /* v=72: with row-reverse the visible seam is on panel-left's LEFT edge,
+     not its right — so swap the border. */
+  border-left: 1px solid var(--border); background: var(--bg);
+  flex: 0 0 40%;
+}
+.panel-right {
+  background: var(--bg-panel);
+  flex: 1 1 60%;
+}
+
+/* Drag handles. Hover + active states make them obvious. Keyboard focus
+   shows the same active style for keyboard-only users. */
+.vsplitter {
+  flex: 0 0 6px;
+  background: var(--border);
+  cursor: col-resize;
+  position: relative;
+  transition: background .12s ease;
+  user-select: none;
+}
+.vsplitter:hover,
+.vsplitter:focus-visible,
+.vsplitter.dragging { background: var(--cyan); outline: none; }
+.vsplitter::before {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px; height: 32px; background: var(--text-dim);
+  border-radius: 1px; opacity: 0.6;
+}
+.vsplitter:hover::before,
+.vsplitter.dragging::before { background: #04222b; opacity: 1; }
+
+.hsplitter {
+  flex: 0 0 6px;
+  background: var(--border);
+  cursor: row-resize;
+  position: relative;
+  transition: background .12s ease;
+  user-select: none;
+  margin: 6px 0;
+  border-radius: 3px;
+}
+.hsplitter:hover,
+.hsplitter:focus-visible,
+.hsplitter.dragging { background: var(--cyan); outline: none; }
+.hsplitter::before {
+  content: ""; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px; height: 2px; background: var(--text-dim);
+  border-radius: 1px; opacity: 0.6;
+}
+.hsplitter:hover::before,
+.hsplitter.dragging::before { background: #04222b; opacity: 1; }
 .panel-title {
   font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px;
   color: var(--text-dim); margin-bottom: 12px; flex-shrink: 0;
@@ -144,7 +207,7 @@ body {
 .tag-none { background: #243; color: var(--green); }
 
 /* ---- Copilot output ---- */
-.copilot { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
+.copilot { flex: 1 1 60%; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
 .empty-state { color: var(--text-dim); padding: 30px 10px; }
 .empty-big { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
 .empty-state p { font-size: 14px; line-height: 1.55; }
@@ -211,10 +274,10 @@ body {
 
 /* ---- Stage reference ---- */
 .stage-ref {
-  flex-shrink: 0; margin-top: 12px; padding: 12px 14px;
+  flex: 0 0 38%; padding: 12px 14px;
   background: var(--bg-card); border: 1px solid var(--border);
   border-left: 4px solid var(--amber); border-radius: var(--radius);
-  max-height: 38vh; overflow-y: auto;
+  overflow-y: auto; min-height: 0;
 }
 .stage-ref h3 { font-size: 14px; color: var(--amber); margin-bottom: 4px; }
 .stage-ref .sr-goal { font-size: 12.5px; color: var(--text-dim); line-height: 1.5; margin-bottom: 8px; }
@@ -264,12 +327,33 @@ body {
 
 @media (max-width: 820px) {
   body { overflow: auto; height: auto; min-height: 100vh; }
-  .layout { grid-template-columns: 1fr; grid-template-rows: auto auto; overflow: visible; }
-  .panel { overflow: visible; }
+  .layout { flex-direction: column; overflow: visible; }
+  .panel { overflow: visible; flex: 0 0 auto !important; }
   .panel-left { border-right: none; border-bottom: 1px solid var(--border); }
+  .vsplitter, .hsplitter { display: none; }
   .log { max-height: 30vh; }
-  .copilot { max-height: none; }
-  .stage-ref { max-height: none; }
+  .copilot { max-height: none; flex: 0 0 auto; }
+  .stage-ref { max-height: none; flex: 0 0 auto; }
+  /* Topbar: at 820px+ the 6 buttons + brand + 2 badges easily overflow off
+     the right edge with no scroll cue. Allow horizontal scroll + fade
+     gradient so the rep can swipe to the hidden buttons. Per Daniel QA #6. */
+  .topbar {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .topbar-actions {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    width: 100%;
+    padding-bottom: 4px;
+    mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 24px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 24px), transparent 100%);
+  }
+  .topbar-actions::-webkit-scrollbar { display: none; }
+  .topbar-actions .btn { flex-shrink: 0; }
 }
 
 /* ---- Accessibility: skip link + focus rings ---- */
@@ -331,7 +415,80 @@ body {
 #live-facts::placeholder { color: var(--text-dim); }
 
 /* ---- Side-by-side stage options (e.g. Intro Option A / Option B) ---- */
-.sr-options { display: flex; gap: 12px; margin-top: 8px; }
+.sr-options { display: flex; gap: 12px; margin-top: 8px; flex-direction: column; }  /* v=66: stack solo option + toggle row */
+.sr-option-solo { flex: 1 1 100%; }
+.sr-option-auto {
+  font-size: 11.5px; color: var(--text-dim); font-style: italic;
+  margin-bottom: 8px;
+}
+.sr-option-override { font-size: 11px; color: var(--amber); font-weight: 600; }
+.sr-option-toggle {
+  display: flex; justify-content: flex-end;
+  margin-top: 4px;
+}
+.sr-option-toggle .btn { font-size: 11.5px; padding: 5px 10px; }
+
+/* v=70 Lauren: stage nav (Next + Back) buttons at the bottom of stage-ref.
+   The Back button is small + neutral. The Next button(s) are prominent
+   green so the rep sees the "ready to move on" signal clearly. */
+.sr-stage-nav {
+  margin-top: 14px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.sr-back-stage {
+  align-self: flex-start;
+  font-size: 12px; padding: 6px 10px;
+  color: var(--text-dim);
+}
+.sr-back-stage:hover { color: var(--text); }
+.sr-next-stage {
+  background: var(--green) !important;
+  color: #04230f !important;
+  border-color: var(--green) !important;
+  font-weight: 700;
+  padding: 11px 16px;
+  font-size: 14px;
+  box-shadow: 0 0 0 3px rgba(35, 218, 132, 0.18);
+}
+.sr-next-stage:hover { filter: brightness(1.08); }
+.sr-intro-routes {
+  display: flex; flex-direction: column; gap: 8px;
+  background: rgba(35, 218, 132, 0.06);
+  border: 1px solid rgba(35, 218, 132, 0.35);
+  border-radius: 10px;
+  padding: 12px;
+}
+.sr-route-label {
+  font-size: 12px; color: var(--text-dim); font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+/* v=72: Pain leads the methodology (Issue is the most common Discovery
+   anchor) — boost its glow so it wins the eye-race vs Vision-first. UI-QA
+   agent flagged that with equal glow Vision was reading first. */
+.sr-route-pain { background: var(--red) !important; border-color: var(--red) !important; color: #240606 !important; box-shadow: 0 0 0 4px rgba(255,107,107,0.40); font-weight: 800 !important; }
+.sr-route-vision { background: var(--cyan) !important; border-color: var(--cyan) !important; color: #04222b !important; box-shadow: 0 0 0 3px rgba(0,191,241,0.22); font-weight: 700 !important; }
+/* v=124: explainer text inside each intro-route button so reps see WHY they'd
+   pick Pain vs Vision before they click. Stacked under the headline. */
+.sr-route-pain, .sr-route-vision {
+  display: flex; flex-direction: column; align-items: stretch; text-align: left;
+  white-space: normal; gap: 6px; line-height: 1.35;
+}
+.sr-route-why {
+  font-size: 12.5px; font-weight: 500; opacity: 0.86;
+}
+/* v=124: first-time explainer banner inside the Prep modal. Amber tint nudge
+   so the rep knows why the modal opened on its own + that it goes away after
+   5 calls. */
+.prep-first-time-explainer {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  background: #FFF6E0;
+  border-left: 4px solid #F5C04A;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #6B4A12;
+}
 .sr-option {
   flex: 1; padding: 12px 14px; border-radius: var(--radius);
   border: 1px solid; min-width: 0;
@@ -419,15 +576,823 @@ body {
 /* ---- Belief-prompts card ---- */
 .card-belief { border-left: 4px solid var(--cyan); }
 .card-belief .card-kicker { color: var(--cyan); }
+/* Mark covered button — larger + green so it's an obvious action on a live call.
+   Per Daniel's QA: the original 11px pill was too easy to miss mid-call. */
 .belief-cover-btn {
-  font-size: 11px; font-weight: 700; font-family: inherit;
-  padding: 4px 11px; border-radius: 20px; cursor: pointer;
-  background: var(--bg-input); color: var(--text-dim);
-  border: 1px solid var(--border);
+  font-size: 13px; font-weight: 700; font-family: inherit;
+  padding: 8px 16px; border-radius: 8px; cursor: pointer;
+  background: #15402c; color: var(--green);
+  border: 1.5px solid #1e5e40;
+  display: inline-flex; align-items: center; gap: 6px;
 }
-.belief-cover-btn:hover { color: var(--text); }
+.belief-cover-btn::before { content: "✓"; font-size: 14px; line-height: 1; opacity: 0.7; }
+.belief-cover-btn:hover { background: #1e5e40; color: #b8ffd1; }
 .belief-cover-btn.on {
-  background: #15402c; color: var(--green); border-color: #1e5e40;
+  background: var(--green); color: #04230f; border-color: var(--green);
+}
+.belief-cover-btn.on::before { opacity: 1; }
+/* v=131 + v=133: "ready, mark covered" — glow state when loop-depth ≥ 5 OR
+   identity surfaced. Signals to the rep that they've gone deep enough to
+   advance. v=133: pulse fades after 3 iterations (~6 seconds) instead of
+   running forever — Sagi-grade UX feedback. */
+.belief-cover-btn.ready {
+  background: #1e5e40; color: var(--green); border-color: var(--green);
+  box-shadow: 0 0 0 0 rgba(80, 220, 145, 0.5);
+  animation: belief-cover-pulse 2s ease-in-out 3;
+}
+.belief-cover-btn.ready::before { opacity: 1; }
+@keyframes belief-cover-pulse {
+  0%   { box-shadow: 0 0 0 0   rgba(80, 220, 145, 0.55); }
+  60%  { box-shadow: 0 0 0 8px rgba(80, 220, 145, 0);    }
+  100% { box-shadow: 0 0 0 0   rgba(80, 220, 145, 0);    }
+}
+
+/* v=131: Per-Discovery-letter affordance widgets (Ken KTFitLife ask). Sits
+   below the "Ask this to surface it" probes. Two pieces:
+     1) Loop-back depth counter — visual tally + −/+1 controls. Goes green
+        when depth ≥ 5 (target met) and darker green when ≥ 7 (deep).
+     2) Identity-layer surfaced toggle — single button, fills when on.
+   When either threshold is met, the Mark covered button (above) pulses to
+   signal "ready to advance to next letter." */
+.belief-tools {
+  margin: 14px;
+  padding: 12px 14px;
+  background: rgba(0, 191, 241, 0.06);
+  border: 1px solid rgba(0, 191, 241, 0.22);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: inherit;
+}
+.loop-counter { display: flex; flex-direction: column; gap: 8px; }
+.loop-counter-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.loop-counter-label {
+  font-size: 13px; font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 0.02em;
+}
+.loop-count {
+  font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums;
+  padding: 4px 12px; border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #cfd8e3;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.loop-count.met {
+  background: rgba(80, 220, 145, 0.16);
+  color: #5fe8a5; border-color: rgba(80, 220, 145, 0.4);
+}
+.loop-count.deep {
+  background: rgba(80, 220, 145, 0.32);
+  color: #d8ffec; border-color: var(--green);
+}
+.loop-counter-controls { display: flex; align-items: center; gap: 8px; }
+.loop-incr, .loop-decr {
+  font-family: inherit; font-weight: 700; cursor: pointer;
+  border: 1.5px solid rgba(0, 191, 241, 0.5);
+  background: rgba(0, 191, 241, 0.1);
+  color: #cfeaff;
+  padding: 8px 14px; border-radius: 8px;
+  font-size: 13px;
+}
+.loop-incr:hover, .loop-decr:hover {
+  background: rgba(0, 191, 241, 0.2);
+  border-color: var(--cyan);
+  color: #fff;
+}
+.loop-decr {
+  padding: 8px 12px;
+  min-width: 36px;
+  font-size: 16px;
+}
+.loop-incr { flex: 1; }
+.loop-hint {
+  font-size: 12px;
+  color: #8da4b8;
+  line-height: 1.5;
+}
+.identity-toggle {
+  font-family: inherit; font-weight: 700; cursor: pointer;
+  padding: 10px 14px; border-radius: 8px;
+  border: 1.5px solid rgba(245, 192, 74, 0.5);
+  background: rgba(245, 192, 74, 0.08);
+  color: #f5c04a;
+  font-size: 13px;
+  text-align: left;
+}
+.identity-toggle:hover {
+  background: rgba(245, 192, 74, 0.18);
+  color: #ffd980;
+}
+.identity-toggle.on {
+  background: rgba(80, 220, 145, 0.2);
+  color: #5fe8a5;
+  border-color: var(--green);
+}
+.belief-advance-hint {
+  font-size: 12px;
+  color: #5fe8a5;
+  padding: 8px 10px;
+  background: rgba(80, 220, 145, 0.08);
+  border-left: 3px solid var(--green);
+  border-radius: 0 6px 6px 0;
+  line-height: 1.5;
+}
+.belief-advance-hint strong { color: #d8ffec; }
+
+/* v=133: per-probe tickable rows on every Discovery letter card. Closes
+   Ken's original ask ("check off boxes like the other sections — Transitions,
+   Pitch"). Modelled on the .sr-say-li pattern (styles.css:712-764) used in
+   Pitch + Transitions. Each probe becomes a clickable row with a checkbox
+   button on the left + line-through styling when ticked. */
+.say-step-tickable {
+  display: flex; align-items: flex-start; gap: 9px;
+  padding: 8px 10px; margin-bottom: 6px;
+  background: rgba(35, 218, 132, 0.05);
+  border: 1px solid rgba(35, 218, 132, 0.20);
+  border-radius: 7px;
+  font-size: 14px; line-height: 1.5;
+  cursor: pointer;
+  transition: background .12s ease, border-color .12s ease, transform .08s ease;
+}
+.say-step-tickable:hover {
+  background: rgba(35, 218, 132, 0.13);
+  border-color: rgba(35, 218, 132, 0.5);
+  transform: translateX(2px);
+}
+.say-step-tickable.on {
+  background: rgba(35, 218, 132, 0.12);
+  border-color: rgba(35, 218, 132, 0.5);
+}
+/* v=134 Sarah P1: line-through was obscuring the [TONE] cue prefix on every
+   probe, killing the v=132 training value. Soften to dim color + subtle
+   strikethrough so the [TONE] hint stays readable when the rep glances
+   back at a ticked probe. */
+.say-step-tickable.on .say-step-text {
+  color: var(--text-dim);
+  opacity: 0.78;
+}
+.say-step-tick {
+  flex-shrink: 0; margin-top: 1px;
+  width: 20px; height: 20px;
+  border: 2px solid rgba(35, 218, 132, 0.55);
+  background: rgba(35, 218, 132, 0.10);
+  border-radius: 4px;
+  font-size: 13px; font-weight: 900; color: transparent;
+  cursor: pointer;
+  transition: all .14s ease;
+  padding: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.say-step-tickable:hover .say-step-tick {
+  border-color: var(--green);
+  background: rgba(35, 218, 132, 0.22);
+}
+.say-step-tickable.on .say-step-tick {
+  background: var(--green); border-color: var(--green); color: #04230f;
+  box-shadow: 0 0 0 2px rgba(35, 218, 132, 0.30);
+}
+/* v=135 Priya P1: explicit focus-visible ring on tickable rows. Was missing
+   so keyboard-only users couldn't see where their focus was. WCAG 2.4.7. */
+.say-step-tickable:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 2px;
+  background: rgba(0, 191, 241, 0.10);
+}
+.say-step-text { flex: 1; }
+/* v=135 Marcus/Cole P1: HEADS UP prefix on math letter probe 1 (3-sub-question
+   warning) was inlined with [TONE] cue and got mistaken for tonality. Detect
+   the prefix at the data-rendering layer and wrap it in this amber span so
+   it visually separates from the spoken script. */
+.say-step-text .heads-up {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: rgba(245, 192, 74, 0.18);
+  color: #f5c04a;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* v=133: identity-toggle examples line — sits under the toggle and gives a
+   beginner (Sarah persona) 3 concrete patterns to listen for. Closes Sarah's
+   P0 "I don't know what identity layer sounds like in a live call." */
+.identity-examples {
+  font-size: 12px;
+  color: #8da4b8;
+  line-height: 1.5;
+  margin-top: -4px;
+  padding: 0 4px;
+  font-style: italic;
+}
+
+/* v=133: logistics-letter footer — shown on R/E/S/Y where the loop counter +
+   identity tick don't apply. Just a hint that ticking all probes triggers
+   the ready glow on Mark covered. */
+.belief-tools-logistics {
+  background: transparent;
+  border: none;
+  padding: 4px 14px 12px;
+}
+.belief-logistics-hint {
+  font-size: 12.5px;
+  color: #8da4b8;
+  line-height: 1.5;
+  text-align: center;
+  padding: 6px 0;
+}
+
+/* v=133: target-hint sits inline beside the +1 button so the rep sees the
+   methodology target without it dominating the visual hierarchy. */
+.loop-target-hint {
+  font-size: 12px;
+  color: #8da4b8;
+  margin-left: 6px;
+  align-self: center;
+}
+
+/* v=133: mobile stack — at narrow viewports (<420px) the counter +1/−1 row
+   wraps and the probe tickable rows get more touch-friendly padding. */
+@media (max-width: 420px) {
+  .loop-counter-controls {
+    flex-wrap: wrap;
+  }
+  .loop-incr {
+    flex: 1 0 100%;
+    order: 3;
+    margin-top: 6px;
+  }
+  .loop-decr {
+    order: 1;
+  }
+  .loop-target-hint {
+    order: 2;
+    margin-left: auto;
+  }
+  .say-step-tickable {
+    padding: 10px 10px;
+  }
+  .say-step-tick {
+    width: 24px; height: 24px;
+  }
+}
+
+/* Tickable SAY lines in stage-ref (Lauren feedback v=58 — every script line
+   the rep is supposed to say is a checkbox row they can tick mid-call so they
+   know what's been delivered vs what's left). Applies to ALL stages.
+   Click anywhere on the row toggles. State persists per-call in state.sayLineDone
+   and resets on New call. */
+.sr-say-list { list-style: none; padding: 0; margin: 4px 0 0 0; }
+.sr-say-li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 10px; margin: 4px 0;
+  border-radius: 8px;
+  /* v=72: backed off from v=70's 0.50 — unticked rows now read as "live /
+     click me" with a quieter outline. Ticked rows get the loud confirmation
+     (mega-green tick + glow). UI-QA agent flagged that unticked was louder
+     than ticked, which is backwards. */
+  background: rgba(35, 218, 132, 0.06);
+  border: 1px solid rgba(35, 218, 132, 0.30);
+  cursor: pointer;
+  transition: background .12s ease, border-color .12s ease, transform .08s ease;
+  font-size: 12.5px; line-height: 1.55; color: var(--text);
+}
+.sr-say-li:hover {
+  background: rgba(35, 218, 132, 0.18);
+  border-color: var(--green);
+  transform: translateX(2px);
+}
+.sr-say-li.on {
+  background: rgba(35, 218, 132, 0.14);
+  border-color: rgba(35, 218, 132, 0.55);
+}
+.sr-say-li.on .sr-say-text {
+  color: var(--text-dim);
+  text-decoration: line-through;
+  text-decoration-color: rgba(35, 218, 132, 0.5);
+}
+.sr-say-tick {
+  /* v=67 Lauren: light green when unticked (signals "click me"), mega green
+     when ticked. Faint outer glow on the ticked state for that satisfying
+     "done" confirmation. */
+  flex-shrink: 0; margin-top: 1px;
+  width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 2px solid rgba(35, 218, 132, 0.55);
+  background: rgba(35, 218, 132, 0.10);
+  border-radius: 5px;
+  font-size: 14px; font-weight: 900; line-height: 1;
+  color: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  transition: all .14s ease;
+}
+.sr-say-li:hover .sr-say-tick {
+  border-color: var(--green);
+  background: rgba(35, 218, 132, 0.22);
+}
+.sr-say-li.on .sr-say-tick {
+  background: var(--green); border-color: var(--green); color: #04230f;
+  box-shadow: 0 0 0 3px rgba(35, 218, 132, 0.35);
+}
+.sr-say-text { flex: 1; min-width: 0; }
+.sr-say-hint {
+  font-size: 10.5px; color: var(--text-dim); font-weight: 500;
+  text-transform: none; letter-spacing: 0;
+}
+
+/* HELP / panic-mode button (Lauren feedback v=62) — big red emergency
+   button on the topbar. Visually distinct so the rep can find it under
+   pressure without thinking. */
+.btn-help {
+  background: #c92a2a; color: #fff;
+  border: 1.5px solid #ff5555;
+  font-weight: 800; letter-spacing: 0.5px;
+  box-shadow: 0 0 0 0 rgba(255, 85, 85, 0.4);
+  animation: help-breathe 2.4s ease-in-out infinite;
+}
+.btn-help:hover {
+  background: #e03434; border-color: #ff7777;
+  filter: brightness(1.1);
+  animation: none;
+}
+@keyframes help-breathe {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 85, 85, 0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(255, 85, 85, 0); }
+}
+/* Help modal — buy-time lines + breathe + textarea + result */
+.modal-card-help { width: 580px; max-height: 88vh; overflow-y: auto; border-top: 4px solid #c92a2a; }
+.help-buytime-label {
+  font-size: 12px; color: var(--text-dim); margin: 0 0 6px 0;
+  text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;
+}
+.help-buytime-lines {
+  list-style: none; padding: 0; margin: 0 0 14px 0;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.help-buytime-lines li {
+  padding: 9px 14px; border-radius: 8px;
+  background: rgba(201, 42, 42, 0.08);
+  border: 1px solid rgba(255, 85, 85, 0.30);
+  font-size: 13px; line-height: 1.45; color: var(--text);
+}
+.help-buytime-lines li strong { color: #ff8888; }
+.help-breathe {
+  padding: 10px 14px; border-radius: 8px;
+  background: rgba(0, 191, 241, 0.08);
+  border: 1px solid rgba(0, 191, 241, 0.30);
+  font-size: 13px; line-height: 1.5; color: var(--text);
+  margin: 0 0 14px 0;
+}
+.help-breathe strong { color: var(--cyan); font-size: 14px; }
+.help-output {
+  margin: 14px 0 0 0; padding: 12px 14px;
+  background: var(--bg-card); border-radius: 8px;
+  border: 1px solid var(--border);
+  max-height: 40vh; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+/* Stage-focus mode (Lauren feedback v=61). On stages outside Discovery +
+   Objections AND when no card is currently rendered, hide the "Copilot
+   says…" panel entirely so the script takes the full right panel. The
+   moment analyze() fires a card or the rep clicks a DISCOVER chip, the
+   panel reappears (the class is removed). */
+.panel-right.stage-focus .panel-title { display: none; }
+.panel-right.stage-focus #copilot { display: none; }
+.panel-right.stage-focus .hsplitter { display: none; }
+.panel-right.stage-focus .stage-ref {
+  /* v=65: !important to beat the inline style.flex set by the hsplitter
+     drag-resize handler (otherwise stage-ref stays at its saved % and the
+     script content gets visually clipped — Lauren screenshot 2026-06-01). */
+  flex: 1 1 100% !important;
+  max-height: none;
+  border-left-color: var(--cyan); /* script becomes the primary panel */
+}
+/* Same fix for call-active mode — the saved hsplitter % can shrink the
+   script panel even though we hide the copilot panel. */
+body.call-active .stage-ref {
+  flex: 1 1 100% !important;
+  max-height: none;
+}
+body.call-active .panel-right { flex: 1 1 100% !important; }
+
+/* Stage banner — Lauren feedback v=60. Compact "what to get out of them"
+   summary at the top of the screen, replacing the verbose "X. Stage — what
+   to do" block that previously lived at the bottom of the right panel.
+   One line per stage. Always visible, sits between belief tracker + main
+   layout. Hidden on mobile to save space (mobile shows stage-ref inline
+   anyway). */
+.stage-banner {
+  background: linear-gradient(180deg, var(--bg-panel), var(--bg));
+  border-bottom: 1px solid var(--border);
+  padding: 10px 18px;
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  font-size: 13px; line-height: 1.4;
+  flex-shrink: 0;
+}
+.stage-banner-num {
+  color: var(--cyan); font-weight: 900; font-size: 14px;
+  flex-shrink: 0;
+}
+.stage-banner-name {
+  color: var(--text); font-weight: 700; font-size: 13.5px;
+  margin-right: 12px; flex-shrink: 0;
+}
+.stage-banner-label {
+  color: var(--amber); font-weight: 700; font-size: 11.5px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+.stage-banner-goal { color: var(--text-dim); flex: 1; min-width: 0; }
+.stage-banner:empty { display: none; }
+@media (max-width: 820px) {
+  .stage-banner { padding: 8px 14px; font-size: 12px; }
+}
+
+/* Per-stage colors (v=63 — UI research 2026-06). One distinct accent per
+   funnel stage so the rep has an instant peripheral cue for where they are
+   in the call. The stage banner's left edge + number colour + active pill
+   border + stage-ref top border all shift together. */
+:root {
+  --stage-intro:        #00BFF1;   /* cyan        — opener, low pressure */
+  --stage-discovery:    #F5C04A;   /* amber       — the heart of the call */
+  --stage-transition:   #7B5BD9;   /* lavender    — pivot */
+  --stage-pitch:        #B98CFF;   /* violet      — pitch */
+  --stage-committing:   #45d18a;   /* green       — money on the table */
+  --stage-objections:   #ff6b6b;   /* red         — handle resistance */
+  --stage-close:        #6FE3B5;   /* mint        — lock the sale */
+}
+body[data-stage="introduction"]    .stage-banner { box-shadow: inset 4px 0 0 var(--stage-intro); }
+body[data-stage="discovery"]       .stage-banner { box-shadow: inset 4px 0 0 var(--stage-discovery); }
+body[data-stage="transition"]      .stage-banner { box-shadow: inset 4px 0 0 var(--stage-transition); }
+body[data-stage="pitch"]           .stage-banner { box-shadow: inset 4px 0 0 var(--stage-pitch); }
+body[data-stage="committing"]      .stage-banner { box-shadow: inset 4px 0 0 var(--stage-committing); }
+body[data-stage="objections"]      .stage-banner { box-shadow: inset 4px 0 0 var(--stage-objections); }
+body[data-stage="close-confirmation"] .stage-banner { box-shadow: inset 4px 0 0 var(--stage-close); }
+
+body[data-stage="introduction"]    .stage-banner-num { color: var(--stage-intro); }
+body[data-stage="discovery"]       .stage-banner-num { color: var(--stage-discovery); }
+body[data-stage="transition"]      .stage-banner-num { color: var(--stage-transition); }
+body[data-stage="pitch"]           .stage-banner-num { color: var(--stage-pitch); }
+body[data-stage="committing"]      .stage-banner-num { color: var(--stage-committing); }
+body[data-stage="objections"]      .stage-banner-num { color: var(--stage-objections); }
+body[data-stage="close-confirmation"] .stage-banner-num { color: var(--stage-close); }
+
+body[data-stage="introduction"]    .stage-pill.active { background: var(--stage-intro);      color: #04222b; border-color: var(--stage-intro); }
+body[data-stage="discovery"]       .stage-pill.active { background: var(--stage-discovery);  color: #2a1d00; border-color: var(--stage-discovery); }
+body[data-stage="transition"]      .stage-pill.active { background: var(--stage-transition); color: #fff;    border-color: var(--stage-transition); }
+body[data-stage="pitch"]           .stage-pill.active { background: var(--stage-pitch);      color: #1d0d3a; border-color: var(--stage-pitch); }
+body[data-stage="committing"]      .stage-pill.active { background: var(--stage-committing); color: #04230f; border-color: var(--stage-committing); }
+body[data-stage="objections"]      .stage-pill.active { background: var(--stage-objections); color: #240606; border-color: var(--stage-objections); }
+body[data-stage="close-confirmation"] .stage-pill.active { background: var(--stage-close);   color: #04230f; border-color: var(--stage-close); }
+
+body[data-stage="introduction"]    .stage-ref { border-top: 2px solid var(--stage-intro); }
+body[data-stage="discovery"]       .stage-ref { border-top: 2px solid var(--stage-discovery); }
+body[data-stage="transition"]      .stage-ref { border-top: 2px solid var(--stage-transition); }
+body[data-stage="pitch"]           .stage-ref { border-top: 2px solid var(--stage-pitch); }
+body[data-stage="committing"]      .stage-ref { border-top: 2px solid var(--stage-committing); }
+body[data-stage="objections"]      .stage-ref { border-top: 2px solid var(--stage-objections); }
+body[data-stage="close-confirmation"] .stage-ref { border-top: 2px solid var(--stage-close); }
+
+/* Toast (v=63 — Save / Copy / Export confirmation). Top-right, 2s slide-in,
+   non-blocking — gives the rep instant feedback without modal interruption. */
+.toast {
+  position: fixed;
+  top: 76px; right: 18px;          /* v=64: below topbar so it doesn't overlap End-call button */
+  z-index: 99999;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px; font-weight: 600;
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity .15s ease, transform .15s ease;
+  pointer-events: none;
+  max-width: 280px;
+}
+.toast-show { opacity: 1; transform: translateY(0); }
+.toast-ok   { border-color: var(--green); color: var(--green); }
+.toast-warn { border-color: var(--amber); color: var(--amber); }
+.toast-err  { border-color: var(--red);   color: var(--red); }
+
+/* Start / End call buttons (v=63 — Lauren feedback). Start = bright cyan
+   pill so the rep can see it from across the room; End = restrained red. */
+.btn-startcall {
+  background: var(--cyan); color: #04222b; border-color: var(--cyan);
+  font-weight: 700;
+}
+.btn-startcall:hover { filter: brightness(1.08); }
+.btn-endcall {
+  background: transparent; color: var(--red); border-color: var(--red);
+  font-weight: 700;
+}
+.btn-endcall:hover { background: rgba(255,107,107,0.10); }
+.hidden { display: none !important; }
+
+/* Call-active mode — focused mid-call view (v=64 expanded per Lauren feedback).
+   Show ONLY what the rep needs mid-call: input, copilot guidance, stage script,
+   HELP, End call. Hide everything else: belief tracker, facts zone (toggle
+   instead), call log, situation bar, panel titles, mode badge, stage strip
+   pills (current stage is in the banner anyway), font-size button, new-call
+   button, even the brand wordmark — bigger script area = easier to read. */
+body.call-active #btn-prep,
+body.call-active #btn-calls,
+body.call-active #btn-review,
+body.call-active #btn-offer,
+body.call-active #btn-settings,
+body.call-active #btn-fontsize,
+body.call-active #btn-newcall,
+body.call-active #mode-badge,
+body.call-active .brand-sub,
+body.call-active .brand h1,
+body.call-active .stage-strip,
+body.call-active .belief-tracker,
+body.call-active .situation-bar,
+body.call-active #log,
+body.call-active .panel-title,
+body.call-active .hint {
+  display: none !important;
+}
+/* v=100 (Ken feedback 2026-06-06): keep Facts visible in call-active mode.
+   Original v=63 intent was to hide it for max script real estate, but Facts
+   IS where the rep takes notes mid-call (goal, numbers, partner name).
+   Hiding forced reps to either remember everything or End-call to jot.
+   Now: stays visible, compact 2-row, always accessible. */
+body.call-active .facts-zone {
+  margin-bottom: 8px;
+}
+body.call-active .facts-label {
+  font-size: 11.5px;
+  margin-bottom: 4px;
+  opacity: 0.75;
+}
+body.call-active #live-facts {
+  min-height: 56px;
+  max-height: 96px;
+  font-size: 13px;
+  line-height: 1.45;
+  padding: 6px 8px;
+}
+/* v=70 Lauren: keep the D-I-S-C-O-V-E-R-Y belief tracker visible during
+   Discovery in focus mode — the rep jumps between letters mid-call and
+   needs the chips one click away. */
+body.call-active[data-stage="discovery"] .belief-tracker {
+  display: flex !important;
+}
+body.call-active .topbar { padding-top: 8px; padding-bottom: 8px; }
+body.call-active #btn-endcall { box-shadow: 0 0 0 1px rgba(255,107,107,0.35); }
+/* Bump the input height + copilot/script readability — what's left needs to dominate. */
+body.call-active #input { min-height: 90px; font-size: 15px; }
+body.call-active .stage-ref { padding: 18px 20px; }
+body.call-active .stage-banner { padding-top: 12px; padding-bottom: 12px; font-size: 14px; }
+body.call-active .stage-banner-goal { font-size: 13.5px; }
+/* v=67 Lauren feedback: "font here looks a bit small" — bump everything inside
+   the script panel mid-call so it's properly readable from a normal seated
+   distance during a video call. */
+body.call-active .stage-ref h3 { font-size: 17px; }
+body.call-active .sr-listen { font-size: 13.5px; line-height: 1.6; }
+body.call-active .sr-option-title { font-size: 14.5px; }
+body.call-active .sr-option-auto { font-size: 12.5px; }
+body.call-active .sr-say-li { font-size: 15.5px; line-height: 1.6; padding: 12px 14px; }
+body.call-active .sr-say-tick { width: 26px; height: 26px; font-size: 16px; }
+body.call-active .sr-advance { padding: 14px 16px; }
+body.call-active .sr-advance-tick { width: 26px; height: 26px; font-size: 16px; }
+body.call-active .sr-advance-text { font-size: 14px; line-height: 1.55; }
+body.call-active .sr-option-toggle .btn { font-size: 13px; padding: 7px 13px; }
+/* v=72: bump the v=70 stage nav + Intro routing buttons in focus mode so
+   they don't render smaller than the SAY rows above them — UI-QA agent
+   flagged this visual drop-off mid-call. */
+body.call-active .sr-stage-nav { margin-top: 16px; gap: 10px; }
+body.call-active .sr-back-stage { font-size: 13.5px; padding: 8px 12px; }
+body.call-active .sr-next-stage { font-size: 16px; padding: 14px 18px; font-weight: 800 !important; }
+body.call-active .sr-intro-routes { padding: 14px; gap: 10px; }
+body.call-active .sr-route-label { font-size: 13px; }
+body.call-active .sr-route-pain,
+body.call-active .sr-route-vision { font-size: 15.5px !important; padding: 14px 18px !important; }
+
+/* Slim stage-ref h3 hint */
+.sr-h3-hint {
+  font-size: 11px; color: var(--text-dim); font-weight: 500;
+  text-transform: none; letter-spacing: 0;
+}
+.sr-listen-compact { font-size: 11.5px; margin-bottom: 8px; }
+
+/* "Advance when" tickable indicator — bottom of every stage-ref. Clicking
+   cascades a tick into the matching top-tracker chips for that stage so the
+   rep doesn't have to tick the same condition twice. Lauren feedback v=59. */
+.sr-advance {
+  margin-top: 12px; padding: 10px 12px;
+  border-radius: 8px;
+  background: rgba(245, 192, 74, 0.10);
+  border: 1.5px solid rgba(245, 192, 74, 0.45);
+  display: flex; align-items: flex-start; gap: 10px;
+  cursor: pointer;
+  transition: all .12s ease;
+}
+.sr-advance:hover {
+  background: rgba(245, 192, 74, 0.18);
+  border-color: var(--amber);
+}
+.sr-advance.on {
+  background: rgba(35, 218, 132, 0.12);
+  border-color: var(--green);
+}
+.sr-advance-tick {
+  flex-shrink: 0; margin-top: 1px;
+  width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 2px solid var(--amber); border-radius: 5px;
+  background: transparent;
+  font-size: 14px; font-weight: 900; line-height: 1;
+  color: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  transition: all .12s ease;
+}
+.sr-advance.on .sr-advance-tick {
+  background: var(--green); border-color: var(--green); color: #04230f;
+  box-shadow: 0 0 0 3px rgba(35, 218, 132, 0.35);   /* v=67: mega-green glow */
+}
+.sr-advance-text {
+  flex: 1; min-width: 0;
+  font-size: 12.5px; line-height: 1.5;
+  color: var(--amber); font-weight: 600;
+}
+.sr-advance.on .sr-advance-text {
+  color: var(--green);
+  text-decoration: line-through;
+  text-decoration-color: rgba(35, 218, 132, 0.4);
+}
+
+/* Empty offer-token line — keep amber warning even when tickable */
+.sr-say-li.say-empty-offer {
+  background: rgba(245, 192, 74, 0.06);
+  border-color: rgba(245, 192, 74, 0.30);
+  color: #f5c04a;
+}
+.sr-say-li.say-empty-offer .sr-say-text { color: #f5c04a; font-style: italic; }
+.sr-say-li.say-empty-offer.on {
+  background: rgba(35, 218, 132, 0.10);
+  border-color: rgba(35, 218, 132, 0.35);
+}
+
+/* Objections stage tracker — dynamic per-objection 3-loop tickbox set.
+   Lauren feedback: rep types each objection as it comes up; each gets 3
+   tickbox rounds for the loop-back pattern (ask -> they answer -> loop again
+   with "why though?" until the double-tie-down lands). */
+.obj-add-row {
+  display: flex; gap: 8px; align-items: center;
+  margin: 8px 0; width: 100%;
+}
+.obj-add-input {
+  flex: 1; min-width: 0;
+  padding: 7px 12px; border-radius: 8px;
+  background: var(--bg-input); color: var(--text);
+  border: 1.5px solid var(--border);
+  font-size: 13px; font-family: inherit;
+}
+.obj-add-input::placeholder { color: var(--text-dim); }
+.obj-add-input:focus {
+  outline: none; border-color: var(--cyan);
+  box-shadow: 0 0 0 2px rgba(0, 191, 241, 0.18);
+}
+.obj-rows {
+  display: flex; flex-direction: column; gap: 6px;
+  width: 100%; margin-top: 6px;
+}
+.obj-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 10px; border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  font-size: 12.5px;
+}
+.obj-row-label { font-weight: 700; color: var(--text); flex-shrink: 0; }
+.obj-row-loops { display: flex; gap: 6px; margin-left: auto; }
+.obj-loop-tick {
+  font-size: 11.5px; font-weight: 700; font-family: inherit;
+  padding: 4px 10px; border-radius: 14px;
+  background: var(--bg-input); color: var(--text-dim);
+  border: 1.5px solid var(--border); cursor: pointer;
+  min-width: 56px; text-align: center;
+  transition: all .12s ease;
+}
+.obj-loop-tick:hover { border-color: var(--cyan); color: var(--text); }
+.obj-loop-tick.on {
+  background: var(--green); color: #04230f;
+  border-color: var(--green); font-weight: 800;
+}
+.obj-row-remove {
+  background: transparent; color: var(--text-dim);
+  border: none; cursor: pointer; padding: 4px 8px;
+  font-size: 16px; line-height: 1;
+}
+.obj-row-remove:hover { color: #ffb3b3; }
+
+/* When a Discovery belief is open in the Copilot panel, the stage-ref SAY list
+   collapses to this focus pointer (per Lauren feedback — duplicate SAY lists
+   looked confusing). One click on "Show full Discovery script" brings the
+   full SAY list back. */
+.sr-belief-focus {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: rgba(0, 191, 241, 0.08);
+  border: 1px solid var(--cyan);
+  border-radius: 6px;
+  font-size: 12.5px; color: var(--text);
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.sr-belief-focus strong { color: var(--cyan); }
+.sr-belief-focus .btn { margin-left: auto; }
+
+/* Top-of-app warning when My Offer still contains install-template bracket
+   placeholders ([X], $[X], [your client's name] etc). Surfaces BEFORE a live
+   call so the rep doesn't read literal brackets at their prospect. */
+.placeholder-warning-bar {
+  /* v=129: expanded into a stacked layout (title → body → aside → CTA) so the
+     longer plain-English explanation reads cleanly. Was a single inline line. */
+  display: block;
+  padding: 12px 18px;
+  background: #4a1f1f; color: #ffcfcf;
+  border-bottom: 1.5px solid #8a3333;
+  font-size: 13px; line-height: 1.55;
+}
+.placeholder-warning-bar strong { color: #fff; }
+.placeholder-warning-bar code {
+  background: rgba(0,0,0,0.25); padding: 2px 6px; border-radius: 4px;
+  font-size: 12px; color: #ffe9b8;
+}
+.placeholder-warning-bar .pw-title { font-size: 13.5px; margin-bottom: 8px; }
+.placeholder-warning-bar .pw-body { margin: 4px 0 6px; }
+.placeholder-warning-bar .pw-aside {
+  margin: 8px 0 10px;
+  padding: 6px 10px;
+  background: rgba(0,0,0,0.18);
+  border-left: 3px solid #ffb86b;
+  border-radius: 0 4px 4px 0;
+  font-size: 12.5px;
+  color: #ffd9a8;
+}
+.placeholder-warning-bar .pw-cta { margin-top: 8px; }
+/* v=129: bracket-explainer box at top of the My Offer modal. Amber tint so it
+   reads as helpful tip, not a warning. Sits between the modal title + field
+   notes. Used to pre-empt Ken-style confusion about single vs double brackets. */
+.offer-bracket-help {
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  background: #FFF6E0;
+  border-left: 4px solid #F5C04A;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #6B4A12;
+}
+.offer-bracket-help strong { color: #5A3F0E; }
+.offer-bracket-help ul {
+  margin: 8px 0 8px 0;
+  padding-left: 20px;
+}
+.offer-bracket-help li { margin-bottom: 6px; }
+.offer-bracket-help code {
+  background: rgba(0,0,0,0.06);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+  color: #5A3F0E;
+}
+.offer-bracket-help-rule {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(245,192,74,0.6);
+  font-size: 13px;
+}
+
+/* Missing API key inline banner — shown when Generate prep / Generate review
+   is clicked but no sk-ant-... key is saved. Replaces the silent failure. */
+.missing-key-banner {
+  display: block; margin: 12px 0;
+  padding: 12px 14px; border-radius: 8px;
+  background: #4a1f1f; color: #ffcfcf;
+  border: 1.5px solid #8a3333;
+  font-size: 13px; line-height: 1.5;
+}
+.missing-key-banner strong { color: #fff; }
+.missing-key-banner code {
+  background: rgba(0,0,0,0.25); padding: 2px 6px; border-radius: 4px;
+  font-size: 12px;
 }
 
 /* ---- Prep button + prospect badge ---- */
@@ -454,16 +1419,50 @@ body {
   font-size: 11px; font-weight: 800; letter-spacing: 0.4px;
   text-transform: uppercase; color: var(--text-dim);
 }
+/* Belief / step chips — explicit checkbox affordance per Lauren feedback.
+   Bigger touch target, visible square checkbox on the left, big tick when on,
+   solid green when checked so a glance during a live call confirms what's done. */
 .belief-chip {
-  font-size: 12px; font-weight: 700; font-family: inherit;
-  padding: 4px 11px; border-radius: 20px;
+  font-size: 13px; font-weight: 700; font-family: inherit;
+  padding: 7px 14px; border-radius: 10px;
   background: var(--bg-card); color: var(--text-dim);
-  border: 1px solid var(--border); cursor: pointer;
+  border: 1.5px solid var(--border); cursor: pointer;
   transition: all .12s ease;
+  display: inline-flex; align-items: center; gap: 8px;
+  line-height: 1.3;
 }
-.belief-chip:hover { color: var(--text); }
+.belief-chip:hover { color: var(--text); border-color: var(--text-dim); }
+/* Visible empty checkbox on unchecked state. Sized to be obvious at a glance. */
+.belief-chip:not(.on)::before {
+  content: ""; display: inline-block;
+  width: 18px; height: 18px;
+  border: 2px solid var(--text-dim); border-radius: 4px;
+  background: transparent;
+  flex-shrink: 0;
+}
+.belief-chip:hover:not(.on)::before { border-color: var(--cyan); }
+/* Checked: solid green fill with a big ✓ inside the checkbox + green border + bold text. */
 .belief-chip.on {
-  background: #15402c; color: var(--green); border-color: #1e5e40;
+  background: rgba(35, 218, 132, 0.12); color: var(--green);
+  border-color: var(--green);
+  font-weight: 800;
+}
+/* v=72 Persona B review: ring the chip you're currently focused on in the
+   Copilot panel (set via Pain/Vision routing or letter chip click). Distinct
+   from .on (covered) — .viewing is "looking at right now", .on is "done". */
+.belief-chip.viewing {
+  box-shadow: 0 0 0 2px var(--cyan), 0 0 8px rgba(0, 191, 241, 0.4);
+  border-color: var(--cyan);
+}
+.belief-chip.viewing.on { box-shadow: 0 0 0 2px var(--cyan), 0 0 8px rgba(0, 191, 241, 0.4); }
+.belief-chip.on::before {
+  content: "✓"; display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 18px; height: 18px;
+  border: 2px solid var(--green); border-radius: 4px;
+  background: var(--green); color: #04230f;
+  font-size: 14px; font-weight: 900;
+  flex-shrink: 0;
 }
 .belief-hint { font-size: 10.5px; color: var(--text-dim); margin-left: auto; }
 
@@ -547,3 +1546,675 @@ body {
   text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
 .review-body h4 { font-size: 12.5px; margin: 10px 0 4px; color: var(--text-dim); }
 .review-body strong { color: var(--text); }
+
+/* ---- Adjustable font size (Daniel feedback — accessibility + reading on
+   different screen sizes). Cycle through S / M / L / XL via the topbar
+   A↕ button. Scale applied to the live-reading text areas the rep stares
+   at during a call: copilot say-blocks, stage-ref body, call log entries,
+   prospect input, prospect facts. Headlines/topbar/modals stay fixed to
+   preserve layout. */
+body.fs-l .copilot { font-size: 16px; }
+body.fs-l .stage-ref .sr-goal,
+body.fs-l .stage-ref .sr-listen,
+body.fs-l .stage-ref ul li { font-size: 14.5px; line-height: 1.7; }
+body.fs-l .card-text,
+body.fs-l .say-step,
+body.fs-l .say-block { font-size: 15px; line-height: 1.65; }
+body.fs-l #input,
+body.fs-l #live-facts { font-size: 15px; line-height: 1.6; }
+body.fs-l .log-entry .log-text { font-size: 14px; }
+body.fs-l .empty-state p { font-size: 16px; }
+
+body.fs-xl .copilot { font-size: 18px; }
+body.fs-xl .stage-ref .sr-goal,
+body.fs-xl .stage-ref .sr-listen,
+body.fs-xl .stage-ref ul li { font-size: 16.5px; line-height: 1.75; }
+body.fs-xl .card-text,
+body.fs-xl .say-step,
+body.fs-xl .say-block { font-size: 17px; line-height: 1.7; }
+body.fs-xl #input,
+body.fs-xl #live-facts { font-size: 17px; line-height: 1.6; }
+body.fs-xl .log-entry .log-text { font-size: 16px; }
+body.fs-xl .empty-state p { font-size: 18px; }
+
+body.fs-s .copilot { font-size: 12.5px; }
+body.fs-s .stage-ref .sr-goal,
+body.fs-s .stage-ref .sr-listen,
+body.fs-s .stage-ref ul li { font-size: 11.5px; line-height: 1.5; }
+body.fs-s .card-text,
+body.fs-s .say-step,
+body.fs-s .say-block { font-size: 12.5px; line-height: 1.55; }
+body.fs-s #input,
+body.fs-s #live-facts { font-size: 12.5px; line-height: 1.5; }
+body.fs-s .log-entry .log-text { font-size: 11.5px; }
+body.fs-s .empty-state p { font-size: 13px; }
+
+/* ============================================
+   v=101 Welcome Wizard — first-time-user setup flow.
+   Fires once via shouldRunWelcomeWizard() in app.js.
+   Existing users with myOffer.offerName + .pillar1 skip it.
+   White card on dark overlay, sentence case, no em dashes.
+   ============================================ */
+.wiz-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 10, 31, 0.92);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 9000;
+  overflow-y: auto;
+  padding: 40px 20px;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.wiz-overlay.hidden { display: none; }
+.wiz-card {
+  background: #FAF7F2;
+  color: #1A1530;
+  max-width: 640px;
+  width: 100%;
+  border-radius: 12px;
+  padding: 44px 38px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  /* v=102: CJK font fallbacks so Korean / Japanese / Chinese chars render in proper face */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Pretendard", "Apple SD Gothic Neo", "PingFang SC",
+               "Hiragino Sans", "Noto Sans CJK", "Noto Sans", sans-serif;
+  margin-top: 4vh;
+  margin-bottom: 4vh;
+}
+.wiz-step.hidden { display: none; }
+.wiz-pill {
+  display: inline-block;
+  background: rgba(245, 192, 74, 0.18);
+  color: #946C0F;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 11px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+.wiz-h {
+  /* v=103: append CJK serif fallbacks so Japanese / Chinese / Korean headlines
+     render in a proper serif face matching Fraunces' intent (Kenji flagged
+     missing fallback). */
+  font-family: "Fraunces", Georgia, "Times New Roman",
+               "Hiragino Mincho ProN", "Yu Mincho",
+               "Source Han Serif", "Noto Serif CJK", serif;
+  font-size: 28px;
+  line-height: 1.2;
+  color: #2A0D77;
+  margin: 0 0 14px 0;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+.wiz-sub {
+  font-size: 14.5px;
+  color: #4A4366;
+  line-height: 1.6;
+  margin: 0 0 22px 0;
+}
+.wiz-meta {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  font-size: 12.5px;
+  color: #8B8499;
+}
+.wiz-meta strong {
+  color: #F5C04A;
+  font-weight: 800;
+  margin-right: 4px;
+}
+.wiz-textarea {
+  width: 100%;
+  min-height: 220px;
+  padding: 16px 18px;
+  border: 1.5px solid rgba(42, 13, 119, 0.18);
+  border-radius: 8px;
+  font-size: 16px; /* v=102: 14px -> 16px kills iOS Safari focus-zoom */
+  line-height: 1.55;
+  color: #1A1530;
+  font-family: inherit;
+  resize: vertical;
+  background: white;
+  margin-bottom: 8px;
+  box-sizing: border-box;
+}
+.wiz-textarea::placeholder { color: #A8A0BA; font-style: italic; }
+.wiz-textarea:focus { outline: none; border-color: #2A0D77; }
+.wiz-btn-primary {
+  background: #2A0D77;
+  color: white;
+  border: none;
+  font-weight: 700;
+  font-size: 14.5px;
+  padding: 13px 24px;
+  border-radius: 7px;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  transition: background 0.12s ease;
+}
+.wiz-btn-primary:hover { background: #3D1F8C; }
+.wiz-btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+.wiz-btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(42, 13, 119, 0.20);
+  color: #4A4366;
+  font-size: 13px;
+  padding: 10px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.wiz-btn-ghost:hover { background: rgba(42, 13, 119, 0.04); }
+.wiz-foot {
+  margin-top: 22px;
+  font-size: 12px;
+  color: #8B8499;
+  border-top: 1px solid rgba(42, 13, 119, 0.10);
+  padding-top: 14px;
+  line-height: 1.55;
+}
+.wiz-status {
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  text-align: center;
+}
+.wiz-status.loading {
+  background: rgba(0, 191, 241, 0.10);
+  color: #2A0D77;
+}
+.wiz-status.error {
+  background: rgba(219, 0, 139, 0.12);
+  color: #DB008B;
+}
+.wiz-status.hidden { display: none; }
+.wiz-grid {
+  border: 1px solid rgba(42, 13, 119, 0.14);
+  border-radius: 9px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.wiz-grid-row {
+  display: grid;
+  /* v=102: minmax instead of fixed 130px so CJK / French / German labels do not clip */
+  grid-template-columns: minmax(130px, max-content) 1fr auto;
+  gap: 12px;
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(42, 13, 119, 0.08);
+  align-items: start;
+}
+.wiz-grid-row:last-child { border-bottom: none; }
+.wiz-grid-label {
+  font-size: 11px;
+  color: #8B8499;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-top: 2px;
+}
+.wiz-grid-value {
+  font-size: 13.5px;
+  color: #1A1530;
+  line-height: 1.45;
+  word-break: break-word;
+}
+.wiz-grid-value.empty {
+  color: #B8B0C8;
+  font-style: italic;
+}
+/* v=115: soft warning chip under a field whose sanitizer flagged a slip
+   (banned hype word, Pillar 3 outcome language, upside-line case-name leak,
+   "just" minimizer before price). Amber to nudge, not block. */
+.wiz-grid-warn {
+  margin-top: 6px;
+  padding: 6px 10px;
+  background: #FFF6E0;
+  border-left: 3px solid #F5C04A;
+  border-radius: 4px;
+  font-size: 12.5px;
+  color: #6B4A12;
+  line-height: 1.45;
+}
+.wiz-grid-warn + .wiz-grid-warn { margin-top: 4px; }
+/* v=118: inline action button shown inside the heuristic notice when the rep
+   added a Claude API key after a draft was extracted under template stubs.
+   Sits on the right of the notice paragraph, picks up the aubergine accent. */
+.wiz-inline-btn {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 6px 12px;
+  background: #2A0D77;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.wiz-inline-btn:hover:not(:disabled) { background: #3B1499; }
+.wiz-inline-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.wiz-grid-edit {
+  background: transparent;
+  border: none;
+  color: #2A0D77;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0;
+  font-family: inherit;
+}
+.wiz-grid-edit:hover { text-decoration: underline; }
+.wiz-grid-input {
+  width: 100%;
+  border: 1.5px solid #2A0D77;
+  padding: 6px 10px;
+  font-size: 16px; /* v=102: bumped to kill iOS zoom on edit */
+  border-radius: 5px;
+  font-family: inherit;
+  color: #1A1530;
+  box-sizing: border-box;
+  background: white;
+  resize: vertical;
+}
+/* v=102: privacy reassurance line + rescue copy + loading spinner */
+.wiz-privacy {
+  font-size: 12px;
+  color: #6B6480;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+  padding: 6px 0;
+  border-top: 1px dashed rgba(42, 13, 119, 0.10);
+}
+.wiz-rescue {
+  background: rgba(245, 192, 74, 0.10);
+  border-left: 3px solid #F5C04A;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #4A4366;
+  border-radius: 4px;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+.wiz-rescue strong { color: #946C0F; }
+.wiz-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #00BFF1;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: wiz-spin 0.7s linear infinite;
+  vertical-align: -2px;
+  margin-right: 8px;
+}
+@keyframes wiz-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .wiz-spinner { animation: none; border-top-color: #00BFF1; }
+}
+/* v=102: suppress HELP button breathe pulse while wizard or any modal is open
+   (Iris flagged sensory bleed-through). :has() lands in all modern browsers. */
+@supports selector(:has(*)) {
+  body:has(#welcome-wizard:not(.hidden)) #btn-help,
+  body:has(.modal:not(.hidden)) #btn-help { animation: none !important; }
+}
+
+/* v=104: pillar explainer list (Step 3 new screen) */
+.wiz-explainer-list {
+  background: white;
+  border: 1px solid rgba(42, 13, 119, 0.10);
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin: 0 0 16px 0;
+}
+.wiz-explainer-item {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 11px 0;
+  border-bottom: 1px dashed rgba(42, 13, 119, 0.10);
+}
+.wiz-explainer-item:last-child { border-bottom: none; }
+.wiz-explainer-num {
+  background: #2A0D77;
+  color: white;
+  font-weight: 800;
+  width: 32px;
+  height: 32px;
+  border-radius: 99px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.wiz-explainer-item-label {
+  font-size: 13px;
+  color: #2A0D77;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.wiz-explainer-item-text {
+  font-size: 13px;
+  color: #4A4366;
+  line-height: 1.5;
+}
+/* v=110: collapsible "how to get a key" panel inside the API step.
+   <details> default has a triangle marker; we hide it for a custom emoji label.
+   When the summary is clicked the details expand to show the 4 numbered steps. */
+#wiz-api-howto[open] > summary > span::after { content: ' (expanded — click to hide)'; opacity: 0.7; font-weight: 400; font-size: 11.5px; }
+#wiz-api-howto:not([open]) > summary > span::after { content: ' →'; opacity: 0.7; }
+#wiz-api-howto > summary::-webkit-details-marker { display: none; }
+#wiz-api-howto > summary { outline: none; }
+#wiz-api-howto > summary:focus-visible > span { text-decoration: underline; }
+#wiz-api-howto ol code { background: rgba(42, 13, 119, 0.08); padding: 1px 5px; border-radius: 3px; font-family: Menlo, Monaco, monospace; font-size: 12px; }
+
+/* v=108: heuristic-extraction notice on Step 3 when no API key set */
+.wiz-heuristic-notice {
+  margin: 8px 0 16px 0;
+  padding: 12px 14px;
+  background: rgba(245, 192, 74, 0.12);
+  border-left: 3px solid #F5C04A;
+  border-radius: 4px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #4A4366;
+}
+.wiz-heuristic-notice strong { color: #946C0F; }
+.wiz-heuristic-notice a {
+  color: #2A0D77;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.wiz-heuristic-notice a:hover { color: #DB008B; }
+
+/* v=104: tour tips (Step 5 new screen) */
+.wiz-tour-tip {
+  background: white;
+  border-left: 3px solid #F5C04A;
+  padding: 12px 14px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 4px rgba(42, 13, 119, 0.05);
+}
+.wiz-tour-tip-label {
+  font-size: 13px;
+  color: #2A0D77;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.wiz-tour-tip-text {
+  font-size: 13px;
+  color: #4A4366;
+  line-height: 1.5;
+}
+
+/* v=105 IN-APP TOUR (iat-*) overlay that fires after wizard closes.
+   Pulsing ring on target element + floating tooltip with Next/Back/Skip. */
+.iat-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8500;
+}
+.iat-overlay.hidden { display: none; }
+.iat-overlay.active { pointer-events: auto; }
+.iat-overlay.active::before {
+  /* Backdrop fades the rest of the page slightly, doesn't block clicks behind */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 10, 31, 0.45);
+  pointer-events: none;
+}
+.iat-ring {
+  position: absolute;
+  border-radius: 12px;
+  box-shadow: 0 0 0 4px rgba(245, 192, 74, 0.85),
+              0 0 0 9999px rgba(14, 10, 31, 0.45),
+              0 0 24px rgba(245, 192, 74, 0.55);
+  pointer-events: none;
+  transition: top 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+              left 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: iat-pulse 2.0s ease-in-out infinite;
+}
+@keyframes iat-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(245, 192, 74, 0.85),
+                         0 0 0 9999px rgba(14, 10, 31, 0.45),
+                         0 0 24px rgba(245, 192, 74, 0.45); }
+  50%      { box-shadow: 0 0 0 6px rgba(245, 192, 74, 1.0),
+                         0 0 0 9999px rgba(14, 10, 31, 0.45),
+                         0 0 36px rgba(245, 192, 74, 0.75); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .iat-ring { animation: none; transition: none; }
+}
+.iat-tooltip {
+  position: absolute;
+  background: white;
+  color: #1A1530;
+  border-radius: 10px;
+  padding: 20px 22px;
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.32),
+              0 0 0 1px rgba(245, 192, 74, 0.50);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  pointer-events: auto;
+  z-index: 8600;
+}
+.iat-step-pill {
+  display: inline-block;
+  background: rgba(245, 192, 74, 0.18);
+  color: #946C0F;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+.iat-tooltip-h {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 19px;
+  color: #2A0D77;
+  margin: 0 0 8px 0;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.iat-tooltip-body {
+  font-size: 13.5px;
+  color: #4A4366;
+  line-height: 1.55;
+  margin: 0 0 18px 0;
+}
+.iat-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.iat-btn-primary {
+  background: #2A0D77;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 12.5px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.iat-btn-primary:hover { background: #3D1F8C; }
+.iat-btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(42, 13, 119, 0.18);
+  color: #4A4366;
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.iat-btn-ghost:hover { background: rgba(42, 13, 119, 0.04); }
+
+/* v=125 simulation overlay — clones the IAT styling pattern but with a cyan
+   accent so reps can tell they're in the deeper "simulated first call"
+   walkthrough not the earlier wizard tour. Locked (no Esc, no click-outside)
+   so reps can't accidentally bail mid-demo. */
+.sim-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: auto;
+  z-index: 9000;
+}
+.sim-overlay.hidden { display: none; }
+.sim-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 10, 31, 0.55);
+  pointer-events: auto;
+}
+.sim-ring {
+  position: absolute;
+  border-radius: 12px;
+  box-shadow: 0 0 0 4px rgba(0, 191, 241, 0.90),
+              0 0 0 9999px rgba(14, 10, 31, 0.55),
+              0 0 28px rgba(0, 191, 241, 0.70);
+  pointer-events: none;
+  transition: top 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+              left 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.32s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: sim-pulse 2.2s ease-in-out infinite;
+  z-index: 9050;
+}
+@keyframes sim-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(0, 191, 241, 0.90),
+                         0 0 0 9999px rgba(14, 10, 31, 0.55),
+                         0 0 28px rgba(0, 191, 241, 0.60); }
+  50%      { box-shadow: 0 0 0 7px rgba(0, 191, 241, 1.0),
+                         0 0 0 9999px rgba(14, 10, 31, 0.55),
+                         0 0 44px rgba(0, 191, 241, 0.85); }
+}
+@media (prefers-reduced-motion: reduce) { .sim-ring { animation: none; transition: none; } }
+.sim-tooltip {
+  position: absolute;
+  background: white;
+  color: #1A1530;
+  border-radius: 12px;
+  padding: 22px 24px;
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  box-shadow: 0 18px 56px rgba(0, 0, 0, 0.40),
+              0 0 0 1px rgba(0, 191, 241, 0.55);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  pointer-events: auto;
+  z-index: 9100;
+}
+.sim-step-pill {
+  display: inline-block;
+  background: rgba(0, 191, 241, 0.16);
+  color: #036584;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+.sim-tooltip-h {
+  font-family: "Fraunces", Georgia, serif;
+  font-size: 20px;
+  color: #2A0D77;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.sim-tooltip-body {
+  font-size: 14px;
+  color: #4A4366;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+}
+.sim-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.sim-btn-primary {
+  background: #00BFF1;
+  color: #04222b;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 13.5px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.sim-btn-primary:hover { background: #19CBF7; }
+.sim-btn-ghost {
+  background: transparent;
+  /* v=126: bump contrast — Sagi flagged the low-contrast skip button on the
+     cyan-bordered tooltip backdrop as ransomware-feel. Aubergine border +
+     darker text reads as a real escape route, not a hidden trap. */
+  border: 1px solid rgba(42, 13, 119, 0.40);
+  color: #2A0D77;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.sim-btn-ghost:hover:not(:disabled) { background: rgba(42, 13, 119, 0.08); }
+.sim-btn-ghost:disabled { opacity: 0.4; cursor: not-allowed; }
+/* Boost target element above the backdrop so it reads "highlighted" */
+.iat-highlighted {
+  position: relative;
+  z-index: 8550 !important;
+}
+.wiz-grid-input:focus { outline: none; }
+.wiz-actions-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+@media (max-width: 480px) {
+  .wiz-card { padding: 30px 22px; margin-top: 0; }
+  .wiz-h { font-size: 23px; }
+}
+/* v=103: wider wizard card on large monitors so Marcus W. (27" Studio Display)
+   doesn't see a postage stamp floating in gray. Bumps in 2 stages. */
+@media (min-width: 1280px) {
+  .wiz-card { max-width: 720px; }
+}
+@media (min-width: 1600px) {
+  .wiz-card { max-width: 780px; padding: 52px 46px; }
+  .wiz-h { font-size: 30px; }
+}
+/* v=103: global prefers-reduced-motion guard for the HELP keyframe + spinner
+   (Iris flagged: the :has() rule in v=102 only kills it during wizard open,
+   not for vestibular-sensitive users running the live tool). */
+@media (prefers-reduced-motion: reduce) {
+  #btn-help { animation: none !important; }
+  .wiz-spinner { animation: none; border: 2px solid #00BFF1; }
+}
