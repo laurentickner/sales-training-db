@@ -818,6 +818,11 @@
     "[[OFFER_ONBOARDING]]": { field: "onboardingLine",
       empty: "⚠ Fill in via ◆ My offer (top right). Who delivers, in what format, over what timeframe. Give them complete clarity on what happens in week 1 → end of engagement." },
     "[[OFFER_PRICE]]":      { field: "priceLine",
+      // v=144 Lauren: hardcoded default so PRICE DROP renders out of the box
+      // with Lauren's standard line ($18K + $7,500/mo) even if priceLine isn't
+      // filled in My Offer. Overrideable per-prospect via Settings → My Offer
+      // (e.g. for Thomas-style EU deals at €16K + €6.5K/mo).
+      "default": "$18K down, and then $7,500 a month should you wish to continue after the initial 90 days",
       empty: "⚠ Fill in via ◆ My offer (top right). The exact words you say at the price reveal. e.g. 'the investment is just $X.' Soft downward inflection, then silence." }
   };
   function applyOfferTokens(line) {
@@ -827,7 +832,7 @@
       if (out.indexOf(token) === -1) return;
       var slot = OFFER_TOKENS[token];
       var value = (m[slot.field] || "").trim();
-      out = out.split(token).join(value || slot.empty);
+      out = out.split(token).join(value || slot["default"] || slot.empty);
     });
     return out;
   }
@@ -839,6 +844,9 @@
     var m = state.myOffer || {};
     return Object.keys(OFFER_TOKENS).every(function (token) {
       if (line.indexOf(token) === -1) return true;
+      // A token with a hardcoded default counts as "filled" — no amber-empty
+      // styling, because the default renders cleanly without manual setup.
+      if (OFFER_TOKENS[token]["default"]) return true;
       return !!(m[OFFER_TOKENS[token].field] || "").trim();
     });
   }
