@@ -350,7 +350,7 @@
            '<button class="ors-tick" aria-pressed="' + on + '" title="Tick when delivered">' +
            (on ? "✓" : "") + '</button>' +
            '<span class="ors-num">' + (idx + 1) + '.</span>' +
-           '<span class="ors-text">' + esc(step) + '</span>' +
+           '<span class="ors-text">' + formatSayLine(step) + '</span>' +
            "</div>";
     });
     h += "</div>";
@@ -988,27 +988,38 @@
   function formatSayLine(line) {
     var safe = esc(line);
     var labelHtml = "";
+    var instructionHtml = "";
     var bodyHtml = safe;
     var colonIdx = safe.indexOf(": ");
-    if (colonIdx > 0 && colonIdx < 80) {
+    if (colonIdx > 0 && colonIdx < 100) {
       var candidate = safe.slice(0, colonIdx);
       var beforeParen = candidate.replace(/\s*\(.*$/, "").trim();
+      // 1) ALL-CAPS label pattern (e.g. "HARD TEMP", "PILLAR 1 — STRATEGY")
       if (/^[A-Z]{2,}/.test(beforeParen)) {
         var letters = beforeParen.replace(/[^A-Za-z]/g, "");
         var upper = beforeParen.replace(/[^A-Z]/g, "");
         if (letters.length === 0 || upper.length / letters.length >= 0.7) {
-          // Wrap parens inside the label with .say-meta-inline.
           labelHtml = '<strong class="say-label">' +
             candidate.replace(/\(([^)]+)\)/g, '<em class="say-meta-inline">($1)</em>') +
             ':</strong> ';
           bodyHtml = safe.slice(colonIdx + 2);
         }
       }
+      // 2) v=151 — instruction-prefix pattern: "If they X:", "When they X:",
+      //    "Don't X first:", "(Cue: X):". These are coaching directions to
+      //    the rep, not lines they speak — italic dim, lighter than the body.
+      else if (candidate.length < 80 && (
+        /^(If |When |Don['']?t |Otherwise |Then |Cue |Note )/.test(candidate) ||
+        /^\(/.test(candidate)
+      )) {
+        instructionHtml = '<em class="say-instruction">' + candidate + ':</em> ';
+        bodyHtml = safe.slice(colonIdx + 2);
+      }
     }
     // Italicise all parenthetical content in the body — these are
     // coaching/direction notes the rep reads but doesn't speak.
     bodyHtml = bodyHtml.replace(/\(([^)]+)\)/g, '<em class="say-meta">($1)</em>');
-    return labelHtml + '<span class="say-body">' + bodyHtml + "</span>";
+    return labelHtml + instructionHtml + '<span class="say-body">' + bodyHtml + "</span>";
   }
   function renderSayLi(stageId, idx, line, extraCls) {
     var resolved = applyOfferTokens(line);
