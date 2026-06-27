@@ -2400,9 +2400,18 @@ body.fs-s .empty-state p { font-size: 13px; }
   letter-spacing: 0.2px;
 }
 .ofb-step-cue {
-  font-size: 12px; line-height: 1.45;
+  font-size: 13px; line-height: 1.5;
+  color: var(--ink);
+  font-style: normal;
+  font-weight: 600;
+}
+.ofb-step-cue em {
+  display: block;
+  margin-top: 4px;
   color: var(--text-dim);
   font-style: italic;
+  font-weight: 500;
+  font-size: 11.5px;
 }
 .ofb-foot {
   margin-top: 8px;

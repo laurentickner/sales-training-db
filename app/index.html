@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.anthropic.com https://script.google.com https://script.googleusercontent.com; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Sales Call Copilot</title>
-<link rel="stylesheet" href="styles.css?v=153" />
+<link rel="stylesheet" href="styles.css?v=154" />
 </head>
 <body>
 
@@ -299,7 +299,7 @@
   </div>
 </div>
 
-<!-- v=153 Objection quick-pick modal — big 🚩 button mid-call opens this.
+<!-- v=154 Objection quick-pick modal — big 🚩 button mid-call opens this.
      Bucket-organised picker. Click a chip → response_steps render with
      each step tickable so the rep sees the next move clearly. Eliminates
      typing-while-on-call friction. -->
@@ -307,7 +307,7 @@
      aria-labelledby="objection-title">
   <div class="modal-card modal-card-wide modal-card-objection">
     <h3 id="objection-title">🚩 Objection — pick what they said</h3>
-    <!-- v=153 — two-column layout: main content (picker / response) on the
+    <!-- v=154 — two-column layout: main content (picker / response) on the
          left, sticky yellow framework reference on the right. Lauren feedback:
          she wants the universal handle visible no matter which objection she
          picks so she can run the sequence without looking away. -->
@@ -323,7 +323,7 @@
           <li>
             <span class="ofb-step-num">1</span>
             <span class="ofb-step-name">Diffuse</span>
-            <span class="ofb-step-cue">"No problem at all."<br>Take the pressure off.</span>
+            <span class="ofb-step-cue">"No problem at all."<em>Take the pressure off.</em></span>
           </li>
           <li>
             <span class="ofb-step-num">2</span>
@@ -343,7 +343,7 @@
           <li>
             <span class="ofb-step-num">5</span>
             <span class="ofb-step-name">Handle + re-tie-down</span>
-            <span class="ofb-step-cue">Address the specific logistic. Then trade:<br>"If I solved [X] for you, would you be 100% moving forward right now?"</span>
+            <span class="ofb-step-cue"><em>Address the specific logistic. Then trade:</em>"If I solved [X] for you, would you be 100% moving forward right now?"</span>
           </li>
         </ol>
         <div class="ofb-foot">Cole: <em>uncertainty FIRST, then logistics. The 100% question is the move — soft / passive kills it.</em></div>
@@ -373,7 +373,7 @@
      aria-labelledby="offer-title">
   <div class="modal-card modal-card-wide">
     <h3 id="offer-title">My offer — template fields</h3>
-    <!-- v=153: bracket explainer added per Ken (KTFitLife) confusion. He kept
+    <!-- v=154: bracket explainer added per Ken (KTFitLife) confusion. He kept
          the [X] / [your client's name] EXAMPLE placeholders in his saved
          values and thought they'd auto-fill. They don't — they're slots HE
          was meant to overwrite. Disambiguates from [[OFFER_*]] tokens which
@@ -637,7 +637,7 @@
   </div>
 </div>
 
-<!-- v=153: simulated first-call walk-through. Fires after Prep auto-closes on
+<!-- v=154: simulated first-call walk-through. Fires after Prep auto-closes on
      the first ▶ Start Call. Walks the rep through Notes → input box → Discovery
      belief loop → Pitch → Committing → End Call using an example prospect (Tara,
      fitness coach mum). Auto-fills the live UI as it goes so the rep SEES what
@@ -660,7 +660,7 @@
   </div>
 </div>
 
-<script src="data/data.js?v=153"></script>
-<script src="app.js?v=153"></script>
+<script src="data/data.js?v=154"></script>
+<script src="app.js?v=154"></script>
 </body>
 </html>
