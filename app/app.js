@@ -1013,6 +1013,16 @@
         instructionHtml = '<em class="say-instruction">' + candidate + ':</em> ';
         bodyHtml = safe.slice(colonIdx + 2);
       }
+      // 3) v=156 — short Title-Case coaching label (e.g. "Release the
+      //    pressure:", "Name it:", "Identity:", "Acknowledge:"). These
+      //    name the MOVE the rep is making; the script is what follows
+      //    the colon. Dim + italic so the spoken line stands out
+      //    mid-call. ≤32 chars + capital-then-lowercase guard avoids
+      //    eating mid-sentence colons in actual prospect quotes.
+      else if (candidate.length <= 32 && /^[A-Z][a-z]/.test(candidate)) {
+        instructionHtml = '<em class="say-instruction">' + candidate + ':</em> ';
+        bodyHtml = safe.slice(colonIdx + 2);
+      }
     }
     // Italicise all parenthetical content in the body — these are
     // coaching/direction notes the rep reads but doesn't speak.
