@@ -156,7 +156,10 @@
     sayLineDone: {},         // per-stage SAY-line tick state: { stageId: { "key": true, ... } } — Lauren feedback v=58
     advanceReady: {},        // per-stage "Advance when" tick: { stageId: true } — Lauren feedback v=59
     introOptionOverride: null,  // v=66 — null = auto-pick (based on prep), 0 = primary, 1 = alternate
-    myOffer: readJson(MY_OFFER_KEY, {})  // per-client template overrides (pillars, upside, price)
+    myOffer: readJson(MY_OFFER_KEY, {}),  // per-client template overrides (pillars, upside, price)
+    objectionPicker: { open: false, activeId: null },  // v=147 — big 🚩 button → quick-pick objection grid → tickable response_steps. Eliminates typing-while-on-call friction.
+    objectionStepsDone: {},  // v=147 — { objId: { stepIdx: true } } per-call tick state. Reset on newCall.
+    pitchPillarFilter: null  // v=147 — null = show all Pitch say-lines, "p1"/"p2"/"p3" = filter to that Pillar only
   };
   var nextId = 1;            // monotonic log id (Date.now can collide)
   var reqSeq = 0;            // smart-mode request token — stale fetches no-op
@@ -265,6 +268,110 @@
          " " + pips(m.score, "obj") + "</div>";
     h += "</div>";
     return h;
+  }
+
+  /* ---------- v=147 Objection quick-pick UI ----------
+     Lauren feedback: typing-while-on-call is hard, finding the right
+     objection card mid-conversation is slow. Big 🚩 OBJECTION button in
+     the topbar opens a picker modal organised by bucket (Cole's order:
+     uncertainty first). Pick an objection → response steps render with
+     each step tickable so the rep ticks as they deliver and the next
+     move stays visually obvious. */
+  var OBJ_BUCKET_ORDER = ["uncertainty", "support", "financial", "process"];
+  var OBJ_BUCKET_META = {
+    uncertainty: { glyph: "🤔", label: "Uncertainty", sub: "handle FIRST per Cole" },
+    support:     { glyph: "👥", label: "Support",     sub: "spouse / partner / team" },
+    financial:   { glyph: "💰", label: "Financial",   sub: "money / payment / discount" },
+    process:     { glyph: "🚪", label: "Process",     sub: "control / brochure / price" }
+  };
+  function pickerChipLabel(o) {
+    var lbl = (o.label || o.id || "").split("/")[0].trim();
+    return lbl.length > 38 ? lbl.slice(0, 36).trim() + "…" : lbl;
+  }
+  function objStepKey(objId, stepIdx) { return objId + "::" + stepIdx; }
+  function objStepDone(objId, stepIdx) {
+    return !!(state.objectionStepsDone && state.objectionStepsDone[objStepKey(objId, stepIdx)]);
+  }
+  function renderObjectionPicker() {
+    state.objectionPicker = { open: true, activeId: null };
+    var body = $("objection-modal-body");
+    if (!body) return;
+    var objections = (DATA.objections && DATA.objections.objections) || [];
+    var byBucket = {};
+    objections.forEach(function (o) {
+      var b = o.bucket || "other";
+      (byBucket[b] = byBucket[b] || []).push(o);
+    });
+    var h = '<div class="obj-picker">';
+    h += '<div class="obj-handle-strip">' + glyph("↳") +
+         " Universal handle every objection runs through: <b>diffuse → isolate → temp-check → scale → double tie-down</b></div>";
+    OBJ_BUCKET_ORDER.forEach(function (bucket) {
+      var items = byBucket[bucket] || [];
+      if (!items.length) return;
+      var meta = OBJ_BUCKET_META[bucket] || { glyph: "•", label: bucket, sub: "" };
+      h += '<div class="obj-picker-bucket">';
+      h += '<div class="obj-picker-bucket-head">' +
+           '<span class="opb-glyph">' + meta.glyph + "</span>" +
+           '<span class="opb-label">' + esc(meta.label.toUpperCase()) + "</span>" +
+           (meta.sub ? '<span class="opb-sub">' + esc(meta.sub) + "</span>" : "") +
+           "</div>";
+      h += '<div class="obj-picker-chips">';
+      items.forEach(function (o) {
+        h += '<button class="op-chip" type="button" data-op-id="' + esc(o.id) + '" title="' +
+             esc(o.label) + '">' + esc(pickerChipLabel(o)) + "</button>";
+      });
+      h += "</div></div>";
+    });
+    h += "</div>";
+    body.innerHTML = h;
+  }
+  function renderObjectionResponse(objId) {
+    state.objectionPicker = { open: true, activeId: objId };
+    var body = $("objection-modal-body");
+    if (!body) return;
+    var obj = ((DATA.objections && DATA.objections.objections) || []).find(function (o) { return o.id === objId; });
+    if (!obj) { renderObjectionPicker(); return; }
+    var h = '<div class="obj-response">';
+    h += '<div class="obj-response-nav">' +
+         '<button class="btn btn-ghost btn-sm op-back" type="button">← Back to picker</button>' +
+         "</div>";
+    h += '<div class="obj-response-head">' +
+         '<span class="obj-response-glyph">🚩</span>' +
+         '<span class="obj-response-title">' + esc(obj.label) + "</span>" +
+         (obj.bucket ? '<span class="obj-response-bucket">' + esc(obj.bucket) + "</span>" : "") +
+         "</div>";
+    h += '<div class="obj-handle-strip">' + glyph("↳") +
+         " <b>diffuse → isolate → temp-check → scale → double tie-down</b></div>";
+    h += '<div class="obj-response-steps">';
+    h += '<div class="ors-label">Say this — tick each as you deliver it:</div>';
+    (obj.response_steps || []).forEach(function (step, idx) {
+      var on = objStepDone(objId, idx);
+      h += '<div class="ors-step' + (on ? " on" : "") + '" data-op-step="' + idx + '" data-op-id="' + esc(objId) + '">' +
+           '<button class="ors-tick" aria-pressed="' + on + '" title="Tick when delivered">' +
+           (on ? "✓" : "") + '</button>' +
+           '<span class="ors-num">' + (idx + 1) + '.</span>' +
+           '<span class="ors-text">' + esc(step) + '</span>' +
+           "</div>";
+    });
+    h += "</div>";
+    if (obj.do_not) h += '<div class="ors-donot"><strong>Do NOT:</strong> ' + esc(obj.do_not) + "</div>";
+    if (obj.alt_reframes && obj.alt_reframes.length) {
+      h += '<div class="ors-alts"><div class="ors-alts-label">Alt reframes if needed:</div>';
+      obj.alt_reframes.forEach(function (alt) {
+        h += '<div class="ors-alt">' + esc(alt) + "</div>";
+      });
+      h += "</div>";
+    }
+    h += "</div>";
+    body.innerHTML = h;
+  }
+  function openObjectionPicker() {
+    renderObjectionPicker();
+    openModal("objection-modal", null);
+  }
+  function closeObjectionPicker() {
+    state.objectionPicker = { open: false, activeId: null };
+    closeModal();
   }
 
   function flagCard(m) {
@@ -957,6 +1064,20 @@
       panelRight.classList.add("stage-focus");
     }
   }
+  // v=147 Pitch Pillar classifier — reads the line's prefix to determine
+  // which Pillar it belongs to. Lines tagged "PRE-PITCH ..." classify as
+  // "pre"; "PILLAR 1 ..." → "p1"; "PILLAR 2 ..." → "p2"; "PILLAR 3 ..." → "p3".
+  // Unprefixed lines return null (show in "All" view only). Prefixes are
+  // applied in app-data/funnel-stages.json so they read naturally in the
+  // script + are scannable for the rep mid-call.
+  function pitchLinePillar(line) {
+    if (typeof line !== "string") return null;
+    if (line.indexOf("PILLAR 1") === 0) return "p1";
+    if (line.indexOf("PILLAR 2") === 0) return "p2";
+    if (line.indexOf("PILLAR 3") === 0) return "p3";
+    if (line.indexOf("PRE-PITCH") === 0) return "pre";
+    return null;
+  }
   function renderStageRef() {
     var s = currentStage();
     var stageId = s.id;
@@ -1017,9 +1138,31 @@
       // Standard SAY list — every line ticks individually so the rep can run a
       // visual checklist down the script. State persists in state.sayLineDone
       // and resets on New call.
+
+      // v=147 Pitch Pillar chip strip — Lauren feedback: mid-call the Pitch
+      // script is a wall of text. 3 chips at top (Pillar 1 / 2 / 3) filter
+      // the say-list to just that pillar so the rep can jump straight to it,
+      // tick lines, then switch. "All" chip returns to the full view.
+      if (stageId === "pitch") {
+        var pf = state.pitchPillarFilter;
+        h += '<div class="pillar-chips">' +
+             '<button type="button" class="pillar-chip' + (!pf ? " active" : "") + '" data-pillar="">All</button>' +
+             '<button type="button" class="pillar-chip' + (pf === "pre" ? " active" : "") + '" data-pillar="pre">📋 Pre-pitch</button>' +
+             '<button type="button" class="pillar-chip' + (pf === "p1"  ? " active" : "") + '" data-pillar="p1">🏯 Pillar 1</button>' +
+             '<button type="button" class="pillar-chip' + (pf === "p2"  ? " active" : "") + '" data-pillar="p2">⚙ Pillar 2</button>' +
+             '<button type="button" class="pillar-chip' + (pf === "p3"  ? " active" : "") + '" data-pillar="p3">🌉 Pillar 3</button>' +
+             "</div>";
+      }
       h += '<div class="sr-say-label">Say <span class="sr-say-hint">— tick each as you say it</span></div>';
       h += '<ul class="sr-say-list">';
       (s.say || []).forEach(function (line, idx) {
+        // v=147 Pitch filter: if a Pillar chip is active, skip lines that
+        // don't match. pitchLinePillar() parses the line's PILLAR/PRE-PITCH
+        // prefix to classify it. Unprefixed lines render in "All" only.
+        if (stageId === "pitch" && state.pitchPillarFilter) {
+          var lp = pitchLinePillar(line);
+          if (lp !== state.pitchPillarFilter) return;
+        }
         h += renderSayLi(stageId, idx, line);
       });
       h += "</ul>";
@@ -2563,6 +2706,9 @@
     state.activeObjection = null;
     state.activeBeliefView = null;
     state.introOptionOverride = null;  // v=66 — reset to auto-pick for the next call
+    state.objectionStepsDone = {};     // v=147: reset objection picker tick state
+    state.objectionPicker = { open: false, activeId: null };
+    state.pitchPillarFilter = null;    // v=147: reset Pitch Pillar filter to "all"
     // v=72 Persona B review: clear state.prospect so the next call's log
     // entries don't autosave into the PREVIOUS prospect's record via
     // autosaveActiveProspect(). To continue with the same prospect, the rep
@@ -2884,6 +3030,40 @@
       var map = loadProspects();
       if (map[this.value]) fillPrepForm(map[this.value]);
     });
+    // v=147 objection quick-pick — big 🚩 button mid-call, no typing required
+    var objBtn = $("btn-objection");
+    if (objBtn) objBtn.addEventListener("click", openObjectionPicker);
+    var objCloseBtn = $("btn-close-objection");
+    if (objCloseBtn) objCloseBtn.addEventListener("click", closeObjectionPicker);
+    var objModal = $("objection-modal");
+    if (objModal) {
+      objModal.addEventListener("click", function (e) {
+        // Backdrop click closes
+        if (e.target === objModal) { closeObjectionPicker(); return; }
+        // Chip click → render the response steps for that objection
+        var chip = e.target.closest ? e.target.closest(".op-chip") : null;
+        if (chip) {
+          var id = chip.getAttribute("data-op-id");
+          if (id) renderObjectionResponse(id);
+          return;
+        }
+        // Back to picker
+        var back = e.target.closest ? e.target.closest(".op-back") : null;
+        if (back) { renderObjectionPicker(); return; }
+        // Tick a response step
+        var step = e.target.closest ? e.target.closest(".ors-step") : null;
+        if (step) {
+          var oid = step.getAttribute("data-op-id");
+          var sidx = parseInt(step.getAttribute("data-op-step"), 10);
+          if (oid && !isNaN(sidx)) {
+            var key = objStepKey(oid, sidx);
+            state.objectionStepsDone[key] = !state.objectionStepsDone[key];
+            renderObjectionResponse(oid);
+          }
+          return;
+        }
+      });
+    }
     // post-call review (paste transcript -> Claude scoring -> copy to clipboard)
     $("btn-review").addEventListener("click", openReview);
     $("btn-generate-review").addEventListener("click", runReview);
@@ -2966,6 +3146,14 @@
       }
     });
     $("stage-ref").addEventListener("click", function (e) {
+      // v=147 Pitch Pillar chip click → set the filter + re-render
+      var pillarChip = e.target.closest ? e.target.closest(".pillar-chip") : null;
+      if (pillarChip) {
+        var pVal = pillarChip.getAttribute("data-pillar") || "";
+        state.pitchPillarFilter = pVal || null;
+        renderStageRef();
+        return;
+      }
       // Advance-when checkbox cascades into the stage's top-tracker chips
       var adv = e.target.closest ? e.target.closest(".sr-advance") : null;
       if (adv) {

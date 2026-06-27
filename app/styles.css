@@ -2234,3 +2234,214 @@ body.fs-s .empty-state p { font-size: 13px; }
   #btn-help { animation: none !important; }
   .wiz-spinner { animation: none; border: 2px solid #00BFF1; }
 }
+
+/* v=147 Objection quick-pick — big red 🚩 button in topbar opens a
+   bucket-organised picker. Lauren feedback: typing while on a call is
+   hard, the keyword input is slow, the existing card system buries the
+   right move. The picker = one tap to the response_steps.
+
+   The button uses the same urgency styling as HELP (saturated red,
+   pulse animation) so it's hard to miss under call pressure, but with
+   a flag glyph instead of SOS so the two don't get confused. */
+.btn-objection {
+  background: #b8410f; color: #fff;
+  border: 1.5px solid #ff7a4d;
+  font-weight: 800; letter-spacing: 0.5px;
+  box-shadow: 0 0 0 0 rgba(255, 122, 77, 0.45);
+  animation: obj-breathe 2.6s ease-in-out infinite;
+}
+.btn-objection:hover {
+  background: #d04d12; border-color: #ff8f63;
+  filter: brightness(1.1);
+  animation: none;
+}
+@keyframes obj-breathe {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 122, 77, 0.5); }
+  50%      { box-shadow: 0 0 0 6px rgba(255, 122, 77, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-objection { animation: none !important; }
+}
+
+/* Objection picker modal — wider than default modal, light background
+   to read fast on a call. Bucket sections stack, chips wrap in a flex
+   grid for fast scanning. */
+.modal-card-objection {
+  width: 760px; max-width: 95vw;
+  max-height: 90vh; overflow-y: auto;
+  border-top: 4px solid #b8410f;
+}
+.obj-handle-strip {
+  background: rgba(255, 122, 77, 0.08);
+  border-left: 3px solid #b8410f;
+  padding: 8px 12px;
+  margin: 8px 0 16px 0;
+  font-size: 13.5px; color: var(--ink);
+  border-radius: 4px;
+}
+.obj-handle-strip b { color: #b8410f; }
+
+.obj-picker-bucket { margin-bottom: 18px; }
+.obj-picker-bucket-head {
+  display: flex; align-items: baseline; gap: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 10px;
+}
+.opb-glyph { font-size: 18px; }
+.opb-label {
+  font-weight: 800; font-size: 13px;
+  letter-spacing: 1px; color: var(--ink);
+}
+.opb-sub {
+  font-size: 12px; color: var(--text-dim);
+  font-style: italic;
+}
+.obj-picker-chips {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.op-chip {
+  background: var(--bg-card); color: var(--ink);
+  border: 1.5px solid var(--rule);
+  padding: 8px 14px; border-radius: 20px;
+  font-size: 13.5px; font-weight: 500;
+  cursor: pointer; text-align: left;
+  transition: all 0.1s ease;
+  min-height: 38px;
+}
+.op-chip:hover {
+  background: rgba(255, 122, 77, 0.15);
+  border-color: #b8410f;
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+
+/* Response view — tickable steps so the rep ticks each line as they
+   deliver it and the next move stays visually clear. Modelled on the
+   existing .sr-say-li tick affordance for consistency. */
+.obj-response-nav {
+  display: flex; gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 12px;
+}
+.op-back, .op-close { font-size: 13px; }
+.obj-response-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 10px;
+}
+.obj-response-glyph { font-size: 22px; }
+.obj-response-title {
+  flex: 1;
+  font-size: 16px; font-weight: 700;
+  color: var(--ink);
+}
+.obj-response-bucket {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1px; color: #b8410f;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  background: rgba(255, 122, 77, 0.12);
+  border-radius: 3px;
+}
+.obj-response-steps { margin: 12px 0; }
+.ors-label {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 1px; color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.ors-step {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--rule);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.ors-step:hover {
+  border-color: rgba(255, 122, 77, 0.5);
+  background: rgba(255, 122, 77, 0.04);
+}
+.ors-step.on {
+  background: rgba(80, 200, 120, 0.08);
+  border-color: rgba(80, 200, 120, 0.45);
+}
+.ors-step.on .ors-text { text-decoration: line-through; color: var(--text-dim); }
+.ors-tick {
+  width: 22px; height: 22px; flex-shrink: 0;
+  border-radius: 4px; border: 1.5px solid var(--rule);
+  background: var(--bg-panel); color: #50c878;
+  cursor: pointer; font-weight: 800; font-size: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0; margin-top: 1px;
+}
+.ors-step.on .ors-tick {
+  background: rgba(80, 200, 120, 0.2);
+  border-color: #50c878;
+}
+.ors-num {
+  font-weight: 700; color: var(--text-dim);
+  flex-shrink: 0;
+  min-width: 18px;
+}
+.ors-text {
+  flex: 1; color: var(--ink);
+  font-size: 14px; line-height: 1.5;
+}
+.ors-donot {
+  margin-top: 14px; padding: 10px 12px;
+  background: rgba(220, 70, 70, 0.08);
+  border-left: 3px solid #c92a2a;
+  border-radius: 4px;
+  font-size: 13px; color: var(--ink);
+}
+.ors-donot strong { color: #c92a2a; }
+.ors-alts {
+  margin-top: 14px; padding: 10px 12px;
+  background: var(--bg-card);
+  border-radius: 4px;
+}
+.ors-alts-label {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 1px; color: var(--text-dim);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.ors-alt {
+  font-size: 13px; color: var(--ink);
+  font-style: italic;
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--rule);
+}
+.ors-alt:last-child { border-bottom: none; }
+@media (max-width: 600px) {
+  .modal-card-objection { width: 95vw; padding: 16px; }
+  .op-chip { font-size: 13px; padding: 7px 12px; }
+}
+
+/* v=147 Pitch Pillar chip strip — 3 chips at top of Pitch stage to filter
+   say-lines by Pillar (mirror of Discovery's belief-letter chip pattern). */
+.pillar-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg-panel);
+  margin-bottom: 8px;
+}
+.pillar-chip {
+  background: var(--bg-card); color: var(--ink);
+  border: 1.5px solid var(--rule);
+  padding: 6px 14px; border-radius: 16px;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+.pillar-chip:hover { border-color: var(--cyan); }
+.pillar-chip.active {
+  background: rgba(0, 191, 241, 0.18);
+  border-color: var(--cyan);
+  color: var(--ink);
+}
