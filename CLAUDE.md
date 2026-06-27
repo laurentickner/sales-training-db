@@ -10,9 +10,10 @@ Daniel Matyas, and Mariana to run sales calls FOR Scale Systems prospects.
 - Lauren's locked-state methodology + script — Mariana, AI Content System,
   100K-views / 200K-posts stats, Japan / gym / bridge analogies, [LTV × 12]
   conservative upside math, 12-week onboarding line, $X price placeholder
-- Cole Gordon + Ravi Abuvala + Matt Ryder + Jeremy Miner / NEPQ named-author
-  attribution in `buildPrepSystemPrompt` + `buildReviewSystemPrompt` — the
-  rep sees which framework each move comes from
+- Ravi Abuvala + Matt Ryder + Jeremy Miner / NEPQ named-author attribution
+  in `buildPrepSystemPrompt` + `buildReviewSystemPrompt` — the rep sees
+  which framework each move comes from (Cole Gordon attribution stripped
+  2026-06-27 at Lauren's request — methodology stays, name does not)
 - v1 paste-transcript post-call review (calibrated v2.2 prompt — Sonnet 4.5,
   6000 max_tokens, 180s timeout, scoring discipline + phase score caps so
   closed deals don't inflate execution scores)
@@ -23,7 +24,9 @@ Daniel Matyas, and Mariana to run sales calls FOR Scale Systems prospects.
 ## ⚠️ AGENT INSTRUCTIONS — repo identity
 
 **This is the INTERNAL tool. Do not templatize it.** Do not strip
-Lauren-specific content. Do not remove Cole/Ravi/Miner attribution.
+Lauren-specific content. Do not remove Ravi/Miner attribution. (Cole
+Gordon attribution was stripped 2026-06-27 at Lauren's explicit request —
+methodology stays in the tool, his name does not. Do not reintroduce it.)
 
 The **client-distributable fork** is at
 [`laurentickner/sales-training-db-client`](https://github.com/laurentickner/sales-training-db-client).
@@ -31,7 +34,7 @@ That's where niche-agnostic work goes.
 
 If you're an AI agent working on this repo and you find yourself wanting to:
 - remove a "Scale Systems" / "AI Content System" / "Mariana" reference
-- strip a Cole Gordon / Ravi Abuvala / Jeremy Miner attribution
+- strip a Ravi Abuvala / Jeremy Miner attribution
 - remove Lauren's example numbers (100K, 200K, $7,800, $25k)
 - remove the GHL push (when restored server-side)
 - generalise the Prep prompt to "any niche"
@@ -60,8 +63,9 @@ then restored internal flavor here.
 Translation:
 1. ✅ Lauren's pre-templatize script restored (locked-state `data.js` +
    `funnel-stages.json` content, plus index.html placeholders restored)
-2. ✅ Review prompt explicitly cites Cole / Ravi / Matt Ryder / Jeremy Miner /
-   NEPQ as the source frameworks the call is scored against
+2. ✅ Review prompt explicitly cites Ravi / Matt Ryder / Jeremy Miner / NEPQ
+   as the source frameworks the call is scored against (Cole stripped
+   2026-06-27 per Lauren — methodology stays, name does not)
 3. 🟡 v2 email-trigger Worker — Meet transcripts auto-pull from Drive on the
    gemini-notes@google.com email + auto-generate review + append a "Sales
    Methodology Review" tab to the same Notes-by-Gemini Doc + push to GHL

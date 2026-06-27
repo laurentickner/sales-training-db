@@ -764,7 +764,7 @@ body {
   background: rgba(0, 191, 241, 0.10);
 }
 .say-step-text { flex: 1; }
-/* v=135 Marcus/Cole P1: HEADS UP prefix on math letter probe 1 (3-sub-question
+/* v=135 Marcus P1: HEADS UP prefix on math letter probe 1 (3-sub-question
    warning) was inlined with [TONE] cue and got mistaken for tonality. Detect
    the prefix at the data-rendering layer and wrap it in this amber span so
    it visually separates from the spoken script. */

@@ -273,13 +273,13 @@
   /* ---------- v=147 Objection quick-pick UI ----------
      Lauren feedback: typing-while-on-call is hard, finding the right
      objection card mid-conversation is slow. Big 🚩 OBJECTION button in
-     the topbar opens a picker modal organised by bucket (Cole's order:
+     the topbar opens a picker modal organised by bucket (order:
      uncertainty first). Pick an objection → response steps render with
      each step tickable so the rep ticks as they deliver and the next
      move stays visually obvious. */
   var OBJ_BUCKET_ORDER = ["uncertainty", "support", "financial", "process"];
   var OBJ_BUCKET_META = {
-    uncertainty: { glyph: "🤔", label: "Uncertainty", sub: "handle FIRST per Cole" },
+    uncertainty: { glyph: "🤔", label: "Uncertainty", sub: "handle FIRST" },
     support:     { glyph: "👥", label: "Support",     sub: "spouse / partner / team" },
     financial:   { glyph: "💰", label: "Financial",   sub: "money / payment / discount" },
     process:     { glyph: "🚪", label: "Process",     sub: "control / brochure / price" }
@@ -1870,7 +1870,7 @@
     h += '<div class="say-block"><div class="say-label">Ask this — tick each as you do</div>';
     prompts.forEach(function (p, i) {
       var ticked = !!probeTicks[i];
-      // v=135 Marcus/Cole P1: detect HEADS UP prefix on compound probes
+      // v=135 Marcus P1: detect HEADS UP prefix on compound probes
       // (e.g. math letter Q1/Q2/Q3) and wrap in amber pill so it visually
       // separates from the spoken script + [TONE] cue. Without this, reps
       // parsed the warning as another tonality directive.
@@ -1911,7 +1911,7 @@
       // v=134 Marcus P0: replaced fitness-leaky "broken one" with niche-neutral
       // identity tells. v=135 cycle-2 fix: example #2 "not really a closer"
       // was sales/B2B-coded + ESL-hostile + a competence-deficit not an
-      // identity-layer statement (flagged by Marcus, Priya, Cole). Swap for
+      // identity-layer statement (flagged by Marcus, Priya). Swap for
       // Marcus-suggested cross-niche shape that holds across fitness + B2B
       // + info-product + coaching.
       h += '<div class="identity-examples">e.g. &ldquo;I&rsquo;m the one who never finishes what I start&rdquo; / &ldquo;I&rsquo;m the type who plans more than I do&rdquo; / &ldquo;I always get this close and then back off&rdquo;</div>';
@@ -1923,7 +1923,7 @@
       // Logistics letter — probes-only footer.
       // v=134 ESL P1 (Priya): "probes" + "button up top" + "will glow" all
       // jargon. Rewrite uses plain English: "questions" + "Mark covered button
-      // at the top" + "light up green." Cole P1: teach methodology not button
+      // at the top" + "light up green." P1: teach methodology not button
       // behavior. Lead with what coverage achieves ("lock the numbers"), not
       // what the UI will do.
       h += '<div class="belief-tools belief-tools-logistics">';
@@ -2130,8 +2130,8 @@
     return [
       "You are a pre-call strategist for a Scale Systems sales rep (Lauren Tickner / Daniel / Mariana). Scale Systems sells an AI-powered organic-social-media revenue system — primarily B2B, ~$4k front-end offer, 90-day programme. Ideal client = established business owners with real revenue, often 7-figure+, currently driving inbound from social / email / referrals but inconsistent. The rep is preparing for a sales call against a methodology built for prospects who have real desire + capacity but haven't yet committed.",
       "",
-      "SOURCE FRAMEWORKS YOU ARE APPLYING (attribute these inside the brief where relevant so the rep sees the lineage):",
-      "- Cole Gordon: 7-stage funnel (Introduction → Discovery → Transition → Pitch → Committing → Objections → Close Confirmation), the 7 beliefs to install in discovery, the universal objection handle, and 'the sale is won or lost at hello'. Handle uncertainty BEFORE logistics.",
+      "SOURCE FRAMEWORKS YOU ARE APPLYING:",
+      "- 7-stage funnel (Introduction → Discovery → Transition → Pitch → Committing → Objections → Close Confirmation), the 7 beliefs to install in discovery, the universal objection handle, and 'the sale is won or lost at hello'. Handle uncertainty BEFORE logistics.",
       "- Ravi Abuvala: discovery must extract EXACT numbers — revenue last month + the month before, leads/week, close rate, client LTV. Conservative upside math (LTV × 12) runs BEFORE the temp check.",
       "- Matt Ryder: catalyst-event move for prospects with no acute pain. 'People don't book a call for no reason — what shifted recently that made now the time?' Measure the gap forward: 'with your current way, how close does that realistically get you to [goal]?' That gap IS the urgency.",
       "- Jeremy Miner / NEPQ: loop-back 'why though?' / 'how do you mean?' 5–7 layers deep — first answer is rarely the real one. Slow + drop tone at the end of every discovery question. The 4 levels of persuasion: features → behaviors → beliefs → identity. Mask-off as the goal of discovery — the prospect saying something they'd only say to a close friend, not a stranger.",
@@ -2282,8 +2282,8 @@
     return [
       "You are a senior sales coach reviewing a finished Scale Systems sales call (Lauren Tickner / Daniel / Mariana running for Scale Systems — AI-powered organic social revenue system, ~$4k front-end, 90-day programme, B2B 7-figure+ ICP). Be specific, surgical, and honest — your job is to make the rep better, not to flatter them. No fluff, no generic advice.",
       "",
-      "SOURCE FRAMEWORKS YOU ARE SCORING AGAINST (cite by name in the review when a move maps onto one — the rep needs to see the lineage):",
-      "- Cole Gordon — the 7-stage funnel + the 7 beliefs + the universal objection handle + 'the sale is won or lost at hello' principle. Handle uncertainty BEFORE logistics.",
+      "SOURCE FRAMEWORKS YOU ARE SCORING AGAINST:",
+      "- 7-stage funnel + the 7 beliefs + the universal objection handle + 'the sale is won or lost at hello' principle. Handle uncertainty BEFORE logistics.",
       "- Ravi Abuvala — discovery extracts EXACT numbers (revenue last month + the month before, leads/week, close rate, client LTV). Conservative upside math (LTV × 12) BEFORE the temp check.",
       "- Matt Ryder — catalyst-event move for prospects with no acute pain ('what shifted recently that made now the time?'). Measure the gap forward to the goal.",
       "- Jeremy Miner / NEPQ — loop-back 5–7 layers; slow + drop tone at end of questions; the 4 levels of persuasion (features → behaviors → beliefs → identity); mask-off as the goal of discovery.",
@@ -3794,7 +3794,7 @@
       notice.innerHTML =
         '<strong>ℹ This draft used template stubs.</strong> ' +
         'A Claude API key is now set on your account. Re-extract with Claude to fill the ' +
-        '3 pillars in the Cole framework, this takes about 10 seconds. ' +
+        '3 pillars, this takes about 10 seconds. ' +
         '<button type="button" id="wiz-reextract-btn" class="wiz-inline-btn">Re-extract with Claude</button>';
     } else {
       notice.innerHTML =
@@ -3802,7 +3802,7 @@
         'You don’t have a Claude API key set, so we’ve only extracted the basics ' +
         '(offer name, who buys, price). The 3 pillars below are <strong>template stubs</strong> ' +
         'in the right structure that you’ll need to fill in yourself. ' +
-        '<a id="wiz-add-key-link" href="#">Add a Claude API key in settings</a> for smart extraction that generates the pillars for you in the Cole framework.';
+        '<a id="wiz-add-key-link" href="#">Add a Claude API key in settings</a> for smart extraction that generates the pillars for you.';
     }
     subHeading.parentNode.insertBefore(notice, subHeading.nextSibling);
     if (hasKeyNow) {
@@ -4443,7 +4443,7 @@
       "If 2 labels match OR 2 sit in the same parent category, REWRITE the second. Pillar 1 + Pillar 2 + Pillar 3 must " +
       "land on 3 distinct category labels.\n\n" +
 
-      "BANNED CLAUDE-ISMS (CRITICAL — these are phrases Claude tends to invent that SOUND like Cole-method but are NOT in the rep's actual script):\n" +
+      "BANNED CLAUDE-ISMS (CRITICAL — these are phrases Claude tends to invent that SOUND like the methodology but are NOT in the rep's actual script):\n" +
       "Never output ANY of these phrases or close variants. They are not in the methodology. They are stylish-sounding " +
       "fillers Claude reaches for to make a pitch feel polished. Each one is a REWRITE trigger:\n" +
       "  - 'the difference isn't [X], it's [Y]' / 'isn't about [X], it's about [Y]' / 'isn't [X], it's [Y]'\n" +
@@ -5046,7 +5046,7 @@
   //  - target: CSS selector list, or null to centre on screen.
   //  - postAction: optional action verb fired on Next click of THIS step.
   //  - nicheChooser: optional flag → renders the niche dropdown in tooltip.
-  // Cole-methodology rewrites: step 9 splits into surface/loop/identity micro-
+  // Methodology rewrites: step 9 splits into surface/loop/identity micro-
   // loop; step 14 teaches acknowledge-not-engage; step 15 splits into upside
   // math + temp-check + price + silence; new dedicated loop-back demo step.
   // Sagi/ESL: shorter, less jargon, every "tie-down" / "downward inflection"

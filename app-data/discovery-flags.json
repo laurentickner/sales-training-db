@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "description": "Discovery flags for the Call Copilot. During discovery, when the prospect says something that should be dug into, the app surfaces the flag + the exact probe question. Built from Cole Gordon's discovery methodology (the 7 beliefs: pain, doubt, cost, desire, money, support, trust).",
+  "description": "Discovery flags for the Call Copilot. During discovery, when the prospect says something that should be dug into, the app surfaces the flag + the exact probe question. Built from the 7-beliefs discovery methodology (pain, doubt, cost, desire, money, support, trust).",
   "belief_prompts": {
     "pain": [
       "What's the single biggest challenge in the business right now? Or what's not working at the level it truly could be?",
@@ -15,7 +15,7 @@
       "What's been the single biggest thing keeping you from fixing this on your own?"
     ],
     "cost": [
-      "Can I ask you another personal question — and I really hate to ask this — but what's your plan if nothing changes? What if the last five years are like the next five years? (Cole, Batch 3:105 / Batch 4:143 — exact verbatim.)",
+      "Can I ask you another personal question — and I really hate to ask this — but what's your plan if nothing changes? What if the last five years are like the next five years?",
       "If we roll forward 12 months and the business is still exactly here, what does that actually cost you — money, time, energy?",
       "What's it costing you right now to keep going the way you are?"
     ],
@@ -34,7 +34,7 @@
       "Is your partner supportive of you making this change? Do they know you're on this call — what would they think if they knew?",
       "If your team has to implement this, do they have the bandwidth this quarter?",
       "(no-fly surface — Charlie Platt loss) When you mentioned [their language — e.g. 'we as a couple', 'we plan together', 'our 5-year plan'], it sounds like your partner is part of how decisions like this get made. Tell me how that usually plays out when you make a big call like this — do you decide and inform, or genuinely decide together?",
-      "(open partner-tonight probe — Cole, Batch 8): When you go talk to them tonight, what are you going to tell them about what we discussed?"
+      "(open partner-tonight probe): When you go talk to them tonight, what are you going to tell them about what we discussed?"
     ],
     "trust": [
       "What would make you 100% confident that we're the team to get you there?",
@@ -49,7 +49,7 @@
     "why": [
       "What's the REAL reason they want to make this change RIGHT NOW — not the surface goal?",
       "If they had to write the why on a sticky note in one sentence, what would it actually say? (And does it sound like something they'd say to a stranger, or only to someone close — the latter means the mask is off.)",
-      "People don't book a call for no reason (Cole). What shifted recently that made NOW the time? What happened?"
+      "People don't book a call for no reason. What shifted recently that made NOW the time? What happened?"
     ]
   },
   "flags": [
@@ -261,7 +261,7 @@
         "looking to improve"
       ],
       "probe": "On a scale of one to ten, where's [their area] at right now? ... And what does that number mean to you? ... If pain / money clearly isn't the lever (Matt Ryder): people don't book a call for no reason — what shifted recently that made NOW the time to look at this? Have you tried anything before, and why didn't it stick? Then measure the gap: how close does your current way realistically get you to [their goal]?",
-      "note": "No problem, no sale. If the prospect downplays, run the 1-10 gap question. If they say money / pain isn't the issue, switch to the catalyst-event line — there is always a reason they got on the call; the gap between their current method and their goal IS the urgency.\n\nIf they're a HIGH-REVENUE / no-pain prospect (Cole): you're not building from pain, you're building from unfulfilled desire. Playful disarm FIRST: 'we never have companies come to us wanting to learn how to sell less -- they always want to learn how to sell more. Is that why you came to us?' Then build the gap forward: 'if we came in and did [X], where do you FEEL you could get in 12 months?' (verbal pace + 'feel' to keep them emotional). If they lob a humble number, call it: 'OK, 15 -- is that your humble goal? You can tell me, we're not posting it on Instagram.'\n\nSEQUENCING (Jeremy Miner): the 'we never have companies come to us wanting to sell less' line must be delivered PLAYFUL FIRST to disarm — then switch to serious/concerned. Lead with serious tone = guard goes up, prospect rejects the frame. Playful tone IS the disarm — not a vibe, a deliberate sequence. Triggers to add: 'sharpen our sword', 'sharpen the sword', 'always looking to improve', 'looking to improve'."
+      "note": "No problem, no sale. If the prospect downplays, run the 1-10 gap question. If they say money / pain isn't the issue, switch to the catalyst-event line — there is always a reason they got on the call; the gap between their current method and their goal IS the urgency.\n\nIf they're a HIGH-REVENUE / no-pain prospect: you're not building from pain, you're building from unfulfilled desire. Playful disarm FIRST: 'we never have companies come to us wanting to learn how to sell less -- they always want to learn how to sell more. Is that why you came to us?' Then build the gap forward: 'if we came in and did [X], where do you FEEL you could get in 12 months?' (verbal pace + 'feel' to keep them emotional). If they lob a humble number, call it: 'OK, 15 -- is that your humble goal? You can tell me, we're not posting it on Instagram.'\n\nSEQUENCING (Jeremy Miner): the 'we never have companies come to us wanting to sell less' line must be delivered PLAYFUL FIRST to disarm — then switch to serious/concerned. Lead with serious tone = guard goes up, prospect rejects the frame. Playful tone IS the disarm — not a vibe, a deliberate sequence. Triggers to add: 'sharpen our sword', 'sharpen the sword', 'always looking to improve', 'looking to improve'."
     },
     {
       "id": "story-not-numbers",
@@ -546,7 +546,7 @@
         "stuck where i am"
       ],
       "probe": "Can I ask you another personal question — and I really hate to ask this — but what's your plan if nothing changes? What if the last five years are like the next five years?",
-      "note": "The cost-of-inaction lever. This is Cole's single most-repeated cost question — it makes the prospect feel the price of standing still."
+      "note": "The cost-of-inaction lever. This is the single most-repeated cost question in the methodology — it makes the prospect feel the price of standing still."
     },
     {
       "id": "lead-volume-no-fit",
@@ -612,7 +612,7 @@
         "doing about",
         "year we did"
       ],
-      "probe": "Got it -- and just based on last month specifically, what did you do? ... And the month before? (Cole: small biz owners quote 'about $1M/yr' then concede '$40k last month' -- the annual is the brag number, the monthly is the real one. Anchor the upside math to the monthly, not the annual.)",
+      "probe": "Got it -- and just based on last month specifically, what did you do? ... And the month before? (Small biz owners quote 'about $1M/yr' then concede '$40k last month' -- the annual is the brag number, the monthly is the real one. Anchor the upside math to the monthly, not the annual.)",
       "note": "If the monthly comes in <1/12 of the stated annual, it's the one-good-month tell. Pivot the rest of discovery off the real number. Saying nothing and accepting the annual figure means the upside math at committing is built on fiction."
     }
   ]
