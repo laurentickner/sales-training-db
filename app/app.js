@@ -968,6 +968,48 @@
     var bucket = (state.sayLineDone && state.sayLineDone[stageId]) || {};
     return !!bucket[sayLineKey(stageId, idx, line)];
   }
+  // v=148 Lauren feedback — visual hierarchy inside say-lines so the
+  // spoken scripting reads bold/easy mid-call and the coaching/meta
+  // annotations (labels, attributions, "8 or under" notes, etc.) fall
+  // back into italic + dim so they don't compete with the spoken text.
+  //
+  // Three styled zones:
+  //   .say-label       — leading ALL-CAPS prefix up to ': ' (e.g.
+  //                       "HARD TEMP", "PILLAR 1 — STRATEGY"). Bold cyan.
+  //   .say-meta-inline — parens INSIDE the label (e.g. "(scale 1-10)",
+  //                       "(Concession Trade)"). Italic + dim.
+  //   .say-meta        — parens in the BODY (e.g. "(8 or under: 'why so
+  //                       low?'...)"). Italic + dim.
+  //   .say-body        — everything else = spoken script. Bolder weight.
+  //
+  // Heuristic for label detection: line must contain ': ' and the prefix
+  // (up to first '(') must start with 2+ uppercase letters and be ≥70%
+  // uppercase. Avoids false-positives on capitalised first-word sentences.
+  function formatSayLine(line) {
+    var safe = esc(line);
+    var labelHtml = "";
+    var bodyHtml = safe;
+    var colonIdx = safe.indexOf(": ");
+    if (colonIdx > 0 && colonIdx < 80) {
+      var candidate = safe.slice(0, colonIdx);
+      var beforeParen = candidate.replace(/\s*\(.*$/, "").trim();
+      if (/^[A-Z]{2,}/.test(beforeParen)) {
+        var letters = beforeParen.replace(/[^A-Za-z]/g, "");
+        var upper = beforeParen.replace(/[^A-Z]/g, "");
+        if (letters.length === 0 || upper.length / letters.length >= 0.7) {
+          // Wrap parens inside the label with .say-meta-inline.
+          labelHtml = '<strong class="say-label">' +
+            candidate.replace(/\(([^)]+)\)/g, '<em class="say-meta-inline">($1)</em>') +
+            ':</strong> ';
+          bodyHtml = safe.slice(colonIdx + 2);
+        }
+      }
+    }
+    // Italicise all parenthetical content in the body — these are
+    // coaching/direction notes the rep reads but doesn't speak.
+    bodyHtml = bodyHtml.replace(/\(([^)]+)\)/g, '<em class="say-meta">($1)</em>');
+    return labelHtml + '<span class="say-body">' + bodyHtml + "</span>";
+  }
   function renderSayLi(stageId, idx, line, extraCls) {
     var resolved = applyOfferTokens(line);
     var filled = lineIsOfferFilled(line);
@@ -979,7 +1021,7 @@
       '" data-stage-id="' + esc(stageId) + '">' +
       '<button class="sr-say-tick" aria-pressed="' + on + '" title="Tick once you\'ve said this on the call">' +
       (on ? "✓" : "") + "</button>" +
-      '<span class="sr-say-text">' + esc(resolved) + "</span>" +
+      '<span class="sr-say-text">' + formatSayLine(resolved) + "</span>" +
       "</li>";
   }
   // Short-form "Get out of them" copy per stage — shown in the new top banner
