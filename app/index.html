@@ -8,7 +8,7 @@
 <meta http-equiv="Content-Security-Policy"
   content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src https://api.anthropic.com https://script.google.com https://script.googleusercontent.com; img-src 'self' data:; base-uri 'none'; form-action 'none'" />
 <title>Sales Call Copilot</title>
-<link rel="stylesheet" href="styles.css?v=151" />
+<link rel="stylesheet" href="styles.css?v=152" />
 </head>
 <body>
 
@@ -299,7 +299,7 @@
   </div>
 </div>
 
-<!-- v=151 Objection quick-pick modal — big 🚩 button mid-call opens this.
+<!-- v=152 Objection quick-pick modal — big 🚩 button mid-call opens this.
      Bucket-organised picker. Click a chip → response_steps render with
      each step tickable so the rep sees the next move clearly. Eliminates
      typing-while-on-call friction. -->
@@ -307,7 +307,48 @@
      aria-labelledby="objection-title">
   <div class="modal-card modal-card-wide modal-card-objection">
     <h3 id="objection-title">🚩 Objection — pick what they said</h3>
-    <div id="objection-modal-body"></div>
+    <!-- v=152 — two-column layout: main content (picker / response) on the
+         left, sticky yellow framework reference on the right. Lauren feedback:
+         she wants the universal handle visible no matter which objection she
+         picks so she can run the sequence without looking away. -->
+    <div class="obj-two-col">
+      <div id="objection-modal-body" class="obj-main"></div>
+      <aside class="obj-framework-box" aria-label="Universal objection handle reference">
+        <div class="ofb-head">
+          <span class="ofb-icon">⚡</span>
+          <span class="ofb-title">Universal Handle</span>
+        </div>
+        <div class="ofb-sub">Run every objection through these 5 steps, in order:</div>
+        <ol class="ofb-steps">
+          <li>
+            <span class="ofb-step-num">1</span>
+            <span class="ofb-step-name">Diffuse</span>
+            <span class="ofb-step-cue">"No problem at all."<br>Lower the temperature.</span>
+          </li>
+          <li>
+            <span class="ofb-step-num">2</span>
+            <span class="ofb-step-name">Isolate</span>
+            <span class="ofb-step-cue">"Just so I can stay organised — when you say [X], are you in a 'should I' place or a 'how can I' place?"</span>
+          </li>
+          <li>
+            <span class="ofb-step-num">3</span>
+            <span class="ofb-step-name">Temp-check</span>
+            <span class="ofb-step-cue">"[X] aside — how do you feel about the process? 100% what you need?"</span>
+          </li>
+          <li>
+            <span class="ofb-step-num">4</span>
+            <span class="ofb-step-name">Scale</span>
+            <span class="ofb-step-cue">"1 to 10, where do you fall? What's keeping you from a 9 or 10?"</span>
+          </li>
+          <li>
+            <span class="ofb-step-num">5</span>
+            <span class="ofb-step-name">Double tie-down</span>
+            <span class="ofb-step-cue">"If I solved [X], would you be 100% moving forward right now?"</span>
+          </li>
+        </ol>
+        <div class="ofb-foot">Cole: <em>handle uncertainty BEFORE logistics.</em></div>
+      </aside>
+    </div>
     <div class="modal-actions">
       <button id="btn-close-objection" class="btn btn-ghost">← Back to call</button>
     </div>
@@ -332,7 +373,7 @@
      aria-labelledby="offer-title">
   <div class="modal-card modal-card-wide">
     <h3 id="offer-title">My offer — template fields</h3>
-    <!-- v=151: bracket explainer added per Ken (KTFitLife) confusion. He kept
+    <!-- v=152: bracket explainer added per Ken (KTFitLife) confusion. He kept
          the [X] / [your client's name] EXAMPLE placeholders in his saved
          values and thought they'd auto-fill. They don't — they're slots HE
          was meant to overwrite. Disambiguates from [[OFFER_*]] tokens which
@@ -596,7 +637,7 @@
   </div>
 </div>
 
-<!-- v=151: simulated first-call walk-through. Fires after Prep auto-closes on
+<!-- v=152: simulated first-call walk-through. Fires after Prep auto-closes on
      the first ▶ Start Call. Walks the rep through Notes → input box → Discovery
      belief loop → Pitch → Committing → End Call using an example prospect (Tara,
      fitness coach mum). Auto-fills the live UI as it goes so the rep SEES what
@@ -619,7 +660,7 @@
   </div>
 </div>
 
-<script src="data/data.js?v=151"></script>
-<script src="app.js?v=151"></script>
+<script src="data/data.js?v=152"></script>
+<script src="app.js?v=152"></script>
 </body>
 </html>

@@ -303,8 +303,7 @@
       (byBucket[b] = byBucket[b] || []).push(o);
     });
     var h = '<div class="obj-picker">';
-    h += '<div class="obj-handle-strip">' + glyph("↳") +
-         " Universal handle every objection runs through: <b>diffuse → isolate → temp-check → scale → double tie-down</b></div>";
+    // v=152 — handle strip removed from here; lives in sticky yellow box on right.
     OBJ_BUCKET_ORDER.forEach(function (bucket) {
       var items = byBucket[bucket] || [];
       if (!items.length) return;
@@ -340,8 +339,7 @@
          '<span class="obj-response-title">' + esc(obj.label) + "</span>" +
          (obj.bucket ? '<span class="obj-response-bucket">' + esc(obj.bucket) + "</span>" : "") +
          "</div>";
-    h += '<div class="obj-handle-strip">' + glyph("↳") +
-         " <b>diffuse → isolate → temp-check → scale → double tie-down</b></div>";
+    // v=152 — handle strip removed from here; lives in sticky yellow box on right.
     h += '<div class="obj-response-steps">';
     h += '<div class="ors-label">Say this — tick each as you deliver it:</div>';
     (obj.response_steps || []).forEach(function (step, idx) {

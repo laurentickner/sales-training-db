@@ -2313,10 +2313,13 @@ body.fs-s .empty-state p { font-size: 13px; }
    to read fast on a call. Bucket sections stack, chips wrap in a flex
    grid for fast scanning. */
 .modal-card-objection {
-  width: 760px; max-width: 95vw;
-  max-height: 90vh; overflow-y: auto;
+  width: 1080px; max-width: 96vw;
+  max-height: 92vh; overflow-y: auto;
   border-top: 4px solid #b8410f;
 }
+/* v=152 — handle strip kept (not used in picker/response anymore, but still
+   styled in case it appears elsewhere). The Universal Handle now lives in
+   the sticky yellow box on the right. */
 .obj-handle-strip {
   background: rgba(255, 122, 77, 0.08);
   border-left: 3px solid #b8410f;
@@ -2326,6 +2329,102 @@ body.fs-s .empty-state p { font-size: 13px; }
   border-radius: 4px;
 }
 .obj-handle-strip b { color: #b8410f; }
+
+/* v=152 — two-column layout: main (picker / response) on left, sticky
+   yellow Universal Handle box on right. Lauren wants the handle visible
+   no matter which objection she picks so she can run the 5-step sequence
+   without losing her place. The right box stays in view as she scrolls. */
+.obj-two-col {
+  display: flex; gap: 18px;
+  align-items: flex-start;
+  margin-top: 4px;
+}
+.obj-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.obj-framework-box {
+  flex: 0 0 280px;
+  position: sticky; top: 8px;
+  background: rgba(245, 192, 74, 0.14);
+  border: 2px solid #F5C04A;
+  border-radius: 10px;
+  padding: 14px 14px 12px 14px;
+  box-shadow: 0 4px 16px rgba(245, 192, 74, 0.18);
+  color: var(--ink);
+}
+.ofb-head {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 4px;
+}
+.ofb-icon { font-size: 18px; }
+.ofb-title {
+  font-weight: 800; font-size: 14.5px;
+  letter-spacing: 0.6px;
+  color: #B07A0A;
+  text-transform: uppercase;
+}
+.ofb-sub {
+  font-size: 12px; font-style: italic;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.ofb-steps {
+  list-style: none; padding: 0; margin: 0;
+}
+.ofb-steps li {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 6px 10px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(245, 192, 74, 0.35);
+}
+.ofb-steps li:last-child {
+  border-bottom: none;
+  margin-bottom: 4px;
+  padding-bottom: 0;
+}
+.ofb-step-num {
+  grid-row: span 2;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px;
+  background: #F5C04A; color: #2A0D77;
+  border-radius: 50%;
+  font-weight: 800; font-size: 13px;
+}
+.ofb-step-name {
+  font-weight: 800; font-size: 14px;
+  color: var(--ink);
+  letter-spacing: 0.2px;
+}
+.ofb-step-cue {
+  font-size: 12px; line-height: 1.45;
+  color: var(--text-dim);
+  font-style: italic;
+}
+.ofb-foot {
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--text-dim);
+  border-top: 1px solid rgba(245, 192, 74, 0.35);
+  padding-top: 8px;
+  font-weight: 500;
+}
+.ofb-foot em {
+  color: #B07A0A; font-style: normal; font-weight: 700;
+}
+
+/* Mobile / narrow viewport — stack the framework box on top instead. */
+@media (max-width: 880px) {
+  .obj-two-col { flex-direction: column; }
+  .obj-framework-box {
+    flex: 1 1 auto; width: 100%;
+    position: static; top: auto;
+    order: -1;
+  }
+}
 
 .obj-picker-bucket { margin-bottom: 18px; }
 .obj-picker-bucket-head {
