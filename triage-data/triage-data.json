@@ -377,6 +377,8 @@
         "Ok great — when are you planning to watch it, so I can check in with you to make sure you've been able to go through it in full, and confirm your call with Lauren?",
         "Ok cool — I will hold you accountable to that. So expect a call or text from me right around then!",
         "Just a note, your strategy session will take place on a google meet link, not a phone call. So please make sure you are somewhere quiet, where you can focus. Sounds ok?",
+        "Also — quick one before we wrap: what's your best number for iMessage (US) or WhatsApp (int'l)? Sending you a confirmation right now to make sure it goes through.",
+        "▸ SEND THE TEST MESSAGE LIVE — do not skip this. Confirm they received it before ending the call. If it doesn't go through, ask for a second number.",
         "It's been great chatting today — I'll be waiting for your reply to that email confirming you've been through the doc.",
         "IDENTITY LOCK before hand-off: 'Honestly, sounds like you're the type of person who, once they see something that actually fits, they MOVE on it. Would I be right?' Get the YES. Now when Lauren (the closer) gets them, they've already committed to the identity of 'I'm the kind of person who moves when I see fit' — much harder to stall.",
         "— IF NOT QUALIFIED — Lauren reaches out personally via DM",
@@ -387,6 +389,7 @@
         "Lauren checks her DMs a couple of times per day. What times later today could you be on your phone to have a chat with her?"
       ],
       "green_light": [
+        "[QUALIFIED] Got their phone number + confirmed a test iMessage/WhatsApp went through live during the call",
         "[QUALIFIED] Strategy call booked + on the calendar",
         "[QUALIFIED] Confirmation email received + they checked",
         "[QUALIFIED] They committed to a specific time they'll watch the doc",
@@ -603,9 +606,11 @@
         "goal": "Once they name their problem, book the call right away. If they ghost, send a voice memo.",
         "say": [
           "oh, well we should find a time to chat for 5 or 10 mins this week. Which day would work?",
-          "we can see how we can help with that in a way that is a no brainer for you"
+          "we can see how we can help with that in a way that is a no brainer for you",
+          "and quick one — what's your best number for iMessage (US) or WhatsApp (international)? just want to make sure the invite lands + we can reach you if there's a hiccup"
         ],
         "green_light": [
+          "Got their best phone number (iMessage US or WhatsApp int'l)",
           "Call time confirmed and on the calendar",
           "OR if they ghosted: voice memo sent"
         ],
