@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0e1117">
+<title>Sales Copilot — live</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%;background:#0e1117;color:#e6edf3;
+    font:15px/1.45 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  body{display:flex;flex-direction:column;min-height:100vh;
+    padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0)}
+  header{padding:10px 14px;background:#161b22;border-bottom:1px solid #2a3138;
+    display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:10}
+  header .who{font-weight:600;font-size:15px}
+  header .who small{display:block;font-weight:400;color:#97a2b3;font-size:11px;letter-spacing:.04em}
+  header .conn{margin-left:auto;font-size:11px;padding:4px 8px;border-radius:999px;background:#272e36;color:#97a2b3}
+  header .conn.live{background:#1f3a2c;color:#7ee2a8}
+  header .conn.lost{background:#3a1f1f;color:#ffb4b4}
+  .stage-strip{display:flex;gap:6px;padding:8px 12px;overflow-x:auto;background:#11151b;
+    border-bottom:1px solid #2a3138;scrollbar-width:none}
+  .stage-strip::-webkit-scrollbar{display:none}
+  .stage-pill{flex:0 0 auto;font:600 12px/1 -apple-system,Segoe UI,sans-serif;padding:8px 11px;border-radius:999px;
+    border:1px solid #2a3138;background:transparent;color:#97a2b3;cursor:pointer;letter-spacing:.02em;white-space:nowrap}
+  .stage-pill.active{background:#f5c04a;color:#0e1117;border-color:#f5c04a}
+  .belief-strip{display:flex;flex-wrap:wrap;gap:5px;padding:8px 12px;background:#0e1117;border-bottom:1px solid #2a3138}
+  .belief-label{flex:0 0 100%;font-size:10px;letter-spacing:.1em;color:#97a2b3;text-transform:uppercase;margin:0 0 2px}
+  .belief-chip{font:600 11px/1 -apple-system,sans-serif;padding:7px 10px;border-radius:999px;
+    border:1px solid #2a3138;background:transparent;color:#97a2b3;cursor:pointer}
+  .belief-chip.on{background:#2A0D77;color:#fff;border-color:#3a1da8}
+  .belief-chip .letter{display:inline-block;width:14px;text-align:center;font-weight:800;color:#f5c04a}
+  .belief-chip.on .letter{color:#fff}
+  main{flex:1;padding:12px;display:flex;flex-direction:column;gap:10px}
+  .card{background:#161b22;border:1px solid #2a3138;border-radius:12px;padding:12px 14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.02)}
+  .card-obj{border-color:#5a1f3b;background:linear-gradient(180deg,#1f1218,#161b22)}
+  .card-flag{border-color:#1f3a5a}
+  .card-smart{border-color:#3a1da8}
+  .card-retie{border-color:#f5c04a}
+  .card-none{color:#97a2b3;text-align:center;padding:18px 14px;font-size:13px}
+  .card-end{border-color:#7ee2a8;background:linear-gradient(180deg,#0f1f17,#161b22)}
+  .kicker{font:700 11px/1 -apple-system,sans-serif;text-transform:uppercase;letter-spacing:.12em;color:#f5c04a;margin-bottom:6px}
+  .card-obj .kicker{color:#ff6b9e}
+  .card-flag .kicker{color:#7eb4ff}
+  .card-smart .kicker{color:#c8b6ff}
+  .title{font:700 17px/1.25 -apple-system,sans-serif;margin:0 0 8px}
+  .handle-strip{font-size:12px;color:#97a2b3;margin-bottom:8px;line-height:1.4}
+  .say-label{font:700 10px/1 -apple-system,sans-serif;text-transform:uppercase;letter-spacing:.14em;
+    color:#97a2b3;margin:8px 0 6px}
+  .say-step{display:flex;gap:8px;padding:7px 0;border-top:1px dashed #2a3138;font-size:14px;line-height:1.45}
+  .say-step:first-of-type{border-top:0;padding-top:2px}
+  .say-num{flex:0 0 22px;font:700 12px/1.4 ui-monospace,SF Mono,monospace;color:#f5c04a;padding-top:2px}
+  .meta{font-size:11px;color:#74808e;margin-top:8px;letter-spacing:.02em}
+  .donot{font-size:12px;color:#ff8888;margin-top:8px;padding:6px 8px;background:#2a1414;border-radius:6px}
+  .smart-body{font-size:14px;line-height:1.5;white-space:pre-wrap}
+  .input-bar{padding:10px 12px env(safe-area-inset-bottom,12px);background:#161b22;border-top:1px solid #2a3138;
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;position:sticky;bottom:0}
+  .btn{font:600 13px/1 -apple-system,sans-serif;padding:11px 12px;border-radius:8px;border:1px solid #2a3138;
+    background:#1f2630;color:#e6edf3;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .btn.primary{background:#f5c04a;color:#0e1117;border-color:#f5c04a}
+  .btn.danger{background:#3a1f1f;color:#ffb4b4;border-color:#5a2828}
+  .last-utt{font-size:12px;color:#97a2b3;font-style:italic;margin-bottom:6px}
+  .empty{color:#97a2b3;text-align:center;padding:24px 14px}
+  .empty p.big{font-size:22px;color:#e6edf3;margin:0 0 4px;font-weight:700}
+  .end-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;
+    padding:16px;z-index:50}
+  .end-modal.open{display:flex}
+  .end-card{background:#161b22;border:1px solid #2a3138;border-radius:14px;padding:16px;max-width:520px;width:100%}
+  .end-card h2{margin:0 0 10px;font-size:18px}
+  .end-card label{display:block;font-size:11px;color:#97a2b3;text-transform:uppercase;letter-spacing:.12em;margin:10px 0 4px}
+  .end-card select,.end-card textarea{width:100%;background:#0e1117;color:#e6edf3;border:1px solid #2a3138;
+    border-radius:8px;padding:10px;font:14px/1.4 -apple-system,sans-serif}
+  .end-card textarea{min-height:80px;resize:vertical}
+  .end-card .row{display:flex;gap:8px;margin-top:14px}
+  .review-out{margin-top:14px;font-size:13px;line-height:1.5;max-height:50vh;overflow:auto;
+    background:#0e1117;border:1px solid #2a3138;border-radius:8px;padding:10px;white-space:pre-wrap;display:none}
+  .review-out.shown{display:block}
+  .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#1f2630;color:#e6edf3;
+    padding:10px 14px;border-radius:8px;font-size:13px;border:1px solid #2a3138;display:none;max-width:90vw}
+  .toast.shown{display:block}
+</style>
+</head>
+<body>
+<header>
+  <div class="who">
+    <span id="prospect-name">Connecting…</span>
+    <small id="call-id">CALL __CALL_ID__</small>
+  </div>
+  <span id="conn-badge" class="conn">…</span>
+</header>
+
+<div class="stage-strip" id="stage-strip"></div>
+<div class="belief-strip" id="belief-strip" hidden></div>
+
+<main id="copilot">
+  <div class="card card-none empty">
+    <p class="big">Standing by.</p>
+    <p>Guidance will land here as the prospect speaks.</p>
+  </div>
+</main>
+
+<div class="input-bar">
+  <button class="btn" id="btn-prev-stage">◀ Prev stage</button>
+  <button class="btn primary" id="btn-next-stage">Next stage ▶</button>
+  <button class="btn" id="btn-livefacts" style="grid-column:1/3">📝 Live notes</button>
+  <button class="btn danger" id="btn-end" style="grid-column:1/3">End call</button>
+</div>
+
+<div class="end-modal" id="end-modal" role="dialog" aria-modal="true">
+  <div class="end-card">
+    <h2>End call + write review</h2>
+    <label for="end-outcome">Outcome</label>
+    <select id="end-outcome">
+      <option value="">— pending —</option>
+      <option value="closed-pif">Closed (paid in full)</option>
+      <option value="closed-plan">Closed (payment plan)</option>
+      <option value="followup">Follow-up booked</option>
+      <option value="not-closed">Not closed</option>
+      <option value="no-show">No-show</option>
+      <option value="other">Other</option>
+    </select>
+    <label for="end-notes">Notes (optional)</label>
+    <textarea id="end-notes" placeholder="One-line outcome summary for the review header"></textarea>
+    <div class="row">
+      <button class="btn" id="btn-cancel-end" style="flex:1">Cancel</button>
+      <button class="btn primary" id="btn-confirm-end" style="flex:2">Generate review &amp; push to GHL</button>
+    </div>
+    <div class="review-out" id="review-out"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>window.__CALL_ID__ = "__CALL_ID__";</script>
+<script src="/coach-view/coach.js"></script>
+</body>
+</html>
